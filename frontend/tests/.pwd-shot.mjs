@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const out = process.argv[2];
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+await ctx.addCookies([{ name: 'okare_session', value: 'visitor', url: 'http://localhost:3300' }]);
+const p = await ctx.newPage();
+await p.goto('http://localhost:3300/login?mode=register'); await p.waitForTimeout(1000);
+const tab = p.getByRole('tab', { name: 'Créer un compte' }).or(p.getByRole('button', { name: 'Créer un compte' }));
+if (await tab.count()) await tab.first().click();
+await p.locator('input[autocomplete=new-password]:visible').first().fill('Maman20');
+await p.waitForTimeout(300);
+await p.screenshot({ path: `${out}/pwd.png` });
+await b.close();

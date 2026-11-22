@@ -1,0 +1,1173 @@
+// OKARE — schéma de la base (PostgreSQL 16 + PostGIS). Version 10 — 20/11/2026.
+// Chaque champ porte son nom français en commentaire « /// ». 42 tables.
+// Règles : id en UUID v7 ; montants en FCFA entiers (suffixe Xof) ; dates « jour métier » en @db.Date (heure de Porto-Novo).
+// Colonnes d'auteur (createdById, updatedById, …) : uuid simple vers User, sans clé étrangère (l'historique complet est dans AuditLog).
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis, pg_trgm, unaccent]
+}
+
+// =====================================================================
+// Listes de valeurs
+// =====================================================================
+
+/// Rôle (cumulables)
+enum Role {
+  CLIENT      /// client
+  VENDOR      /// vendeur
+  FIELD_AGENT /// agent terrain
+  ADMIN       /// admin
+  SUPER_ADMIN /// super-admin
+}
+
+/// Type de point de vente
+enum PosType {
+  PARTICULIER /// particulier (vente en ligne)
+  MAQUIS      /// maquis (étals compris)
+  RESTAURANT  /// restaurant
+}
+
+/// Statut d'un point de vente (aucune validation : publié directement)
+enum PosStatus {
+  PUBLISHED /// publié
+  PENDING   /// en attente (invisible pour les clients)
+  SUSPENDED /// suspendu par un admin
+  ARCHIVED  /// archivé
+}
+
+/// Statut d'un plat (aucune validation : publié directement)
+enum DishStatus {
+  PUBLISHED /// publié
+  PENDING   /// en attente (invisible pour les clients)
+}
+
+/// Moment du repas
+enum MealMoment {
+  BREAKFAST /// petit-déjeuner
+  LUNCH     /// déjeuner
+  DINNER    /// dîner
+  ALL_DAY   /// toute la journée
+}
+
+/// Jours fériés
+enum HolidayPolicy {
+  OPEN    /// ouvert
+  CLOSED  /// fermé
+  UNKNOWN /// inconnu
+}
+
+/// Origine d'une exception du jour
+enum DayStatusSource {
+  TEAM           /// équipe
+  VENDOR         /// vendeur
+  CLIENT_REPORTS /// signalements de clients
+  AUTO           /// automatique
+}
+
+/// Statut d'une demande de rattachement
+enum ClaimStatus {
+  PENDING  /// en attente
+  APPROVED /// acceptée
+  REJECTED /// refusée
+  EXPIRED  /// expirée
+}
+
+/// Objet auquel une photo est rattachée
+enum MediaOwner {
+  POS    /// point de vente
+  DISH   /// plat
+  USER   /// profil
+  REVIEW /// avis
+  REPORT /// signalement
+}
+
+/// Statut d'une photo
+enum MediaStatus {
+  PROCESSING /// en traitement
+  READY      /// prête
+  REJECTED   /// refusée
+}
+
+/// Canal de contact
+enum ContactChannel {
+  WHATSAPP /// WhatsApp
+  CALL     /// appel
+}
+
+/// Écran d'où vient un contact
+enum ContactSource {
+  HOME      /// accueil
+  SEARCH    /// recherche
+  MAP       /// carte
+  DISH_PAGE /// page du plat
+  POS_PAGE  /// page du point de vente
+  FAVORITES /// favoris
+  QR        /// QR code
+  PUSH      /// notification
+}
+
+/// Réponse au suivi
+enum FollowUpAnswer {
+  YES     /// oui
+  NOT_YET /// pas encore
+  NO      /// non
+}
+
+/// Origine d'un plat commandé
+enum OrderItemOrigin {
+  DISH_BUTTON /// bouton du plat (automatique)
+  DECLARED    /// déclaré par le client (« Tu as pris quoi ? »)
+}
+
+/// Statut d'un avis
+enum ReviewStatus {
+  PUBLISHED /// publié
+  HIDDEN    /// masqué
+  REMOVED   /// retiré
+}
+
+/// Cible d'un signalement
+enum ReportTarget {
+  POS    /// point de vente
+  DISH   /// plat
+  REVIEW /// avis
+  USER   /// utilisateur
+}
+
+/// Motif d'un signalement
+enum ReportReason {
+  WRONG_INFO         /// information fausse
+  WRONG_PRICE        /// prix faux
+  CLOSED_TODAY       /// fermé aujourd'hui
+  WRONG_HOURS        /// horaires faux
+  CLOSED_PERMANENTLY /// fermé définitivement
+  NO_ANSWER          /// ne répond pas
+  FAKE_REVIEW        /// faux avis
+  FOOD_SAFETY        /// hygiène, sécurité alimentaire
+  INAPPROPRIATE      /// contenu choquant
+  FRAUD              /// arnaque
+  OTHER              /// autre
+}
+
+/// Statut d'un signalement
+enum ReportStatus {
+  OPEN     /// ouvert
+  RESOLVED /// résolu
+  REJECTED /// rejeté
+}
+
+/// Formule de pub (abonnement)
+enum AdPlan {
+  DAY     /// un jour (3 zones)
+  PERIOD  /// période de 2 à 21 jours, dates de début et de fin (5 zones)
+  MONTH   /// un mois (30 jours, 7 zones)
+  PREMIUM /// Premium (30 jours, 15 zones, passe devant les abonnés normaux)
+}
+
+/// Statut d'une commande de pubs
+enum OrderStatus {
+  PENDING_PAYMENT /// en attente de paiement
+  PAID            /// payée
+  EXPIRED         /// expirée (pas payée à temps)
+  CANCELLED       /// annulée
+  REFUNDED        /// remboursée
+}
+
+/// Statut d'une pub (abonnement d'un point de vente)
+enum SubscriptionStatus {
+  PENDING_PAYMENT /// en attente de paiement
+  PAID            /// payée (en cours ou à venir selon les dates)
+  ENDED           /// terminée
+  CANCELLED       /// annulée
+  EXPIRED         /// expirée (pas payée à temps)
+  REFUNDED        /// remboursée
+}
+
+/// Moyen de paiement (FedaPay)
+enum PaymentMethod {
+  MTN     /// MTN Mobile Money
+  MOOV    /// Moov Money
+  CELTIIS /// Celtiis Cash
+  CARD    /// carte bancaire
+  OTHER   /// autre moyen FedaPay
+}
+
+/// Statut d'un paiement
+enum PaymentStatus {
+  PENDING  /// en attente
+  APPROVED /// approuvé
+  DECLINED /// refusé
+  CANCELED /// annulé
+  EXPIRED  /// expiré
+  REFUNDED /// remboursé
+}
+
+/// D'où le paiement a été lancé
+enum PaymentOrigin {
+  VENDOR_APP   /// espace vendeur
+  PAYMENT_LINK /// lien envoyé par l'équipe
+}
+
+/// Statut d'une inscription en liste d'attente
+enum WaitlistStatus {
+  WAITING   /// en attente
+  OFFERED   /// place proposée
+  CONVERTED /// payée
+  EXPIRED   /// expirée
+  LEFT      /// retirée
+}
+
+/// Canal d'un message au vendeur
+enum NoticeChannel {
+  WHATSAPP /// WhatsApp (API WhatsApp Business)
+  EMAIL    /// e-mail
+  IN_APP   /// espace vendeur
+}
+
+/// Sorte de message au vendeur
+enum NoticeKind {
+  ANNOUNCEMENT /// annonce des abonnements
+  REMINDER     /// rappel
+  LAST_DAY     /// dernier jour du préavis
+  NOTICE_ENDED /// fin du préavis
+  RECEIPT      /// reçu de paiement
+}
+
+/// Statut d'un message au vendeur
+enum NoticeStatus {
+  QUEUED    /// en file
+  SENT      /// envoyé
+  DELIVERED /// reçu
+  FAILED    /// échec
+  SKIPPED   /// ignoré
+}
+
+/// Type de notification dans l'appli
+enum NotificationType {
+  FAVORITE_SPECIAL    /// plat du jour d'un favori
+  FOLLOW_UP           /// suivi « t'a-t-il répondu ? »
+  PAYMENT_APPROVED    /// paiement réussi
+  PAYMENT_FAILED      /// paiement échoué
+  SUBSCRIPTION_NOTICE /// annonce des abonnements
+  SUBSCRIPTION_ENDING /// fin de pub proche
+  REVIEW_RECEIVED     /// nouvel avis
+  REPORT_RESOLVED     /// signalement traité
+  SYSTEM              /// système
+}
+
+// =====================================================================
+// 1. Comptes et accès
+// =====================================================================
+
+/// Utilisateur — tout le monde a un compte ; les rôles se cumulent
+model User {
+  id              String    @id @default(uuid(7)) @db.Uuid /// Identifiant
+  phone           String?   @unique /// Téléphone (+229…)
+  email           String?   @unique /// E-mail
+  googleSub       String?   @unique /// Identifiant Google
+  passwordHash    String? /// Mot de passe chiffré (argon2id)
+  fullName        String? /// Nom complet
+  avatarMediaId   String?   @db.Uuid /// Photo de profil
+  roles           Role[]    @default([CLIENT]) /// Rôles
+  homeZoneId      String?   @db.Uuid /// Zone habituelle
+  budgetMaxXof    Int? /// Budget habituel
+  notifyFavorites Boolean   @default(true) /// Plats du jour des favoris
+  askFollowUp     Boolean   @default(true) /// Demander « t'a-t-il répondu ? »
+  notifyNews      Boolean   @default(false) /// Nouveautés OKARE
+  phoneVerifiedAt DateTime? /// Téléphone vérifié le
+  totpSecret      String? /// Secret de double authentification (chiffré, équipe)
+  totpEnabledAt   DateTime? /// Double authentification activée le
+  isBlocked       Boolean   @default(false) /// Bloqué
+  blockedReason   String? /// Motif du blocage
+  lastSeenAt      DateTime? /// Dernière visite
+  createdAt       DateTime  @default(now()) /// Créé le
+  updatedAt       DateTime  @updatedAt /// Modifié le
+  deletedAt       DateTime? /// Supprimé le
+
+  homeZone          Zone?              @relation(fields: [homeZoneId], references: [id])
+  sessions          Session[]
+  agentZones        AgentZone[]
+  pushSubscriptions PushSubscription[]
+  notifications     Notification[]
+  vendor            Vendor?            @relation("VendorAccount")
+  favorites         Favorite[]
+  contacts          ContactEvent[]
+  reviews           Review[]
+  reports           Report[]           @relation("ReportAuthor")
+
+  @@map("users")
+}
+
+/// Session de connexion
+model Session {
+  id         String    @id @default(uuid(7)) @db.Uuid /// Identifiant
+  userId     String    @db.Uuid /// Utilisateur
+  tokenHash  String    @unique /// Jeton de connexion chiffré (rafraîchissement)
+  deviceId   String? /// Appareil
+  userAgent  String? /// Navigateur
+  ipHash     String? /// Adresse IP chiffrée
+  expiresAt  DateTime /// Expire le (30 jours)
+  revokedAt  DateTime? /// Révoquée le
+  createdAt  DateTime  @default(now()) /// Créée le
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+/// Permission par rôle — modifiée dans l'écran « Rôles et permissions »
+model RolePermission {
+  role        Role /// Rôle
+  permission  String /// Permission (ex. dish.manage, subscriptions.toggle)
+  granted     Boolean  @default(true) /// Accordée
+  updatedById String?  @db.Uuid /// Modifiée par
+  updatedAt   DateTime @updatedAt /// Modifiée le
+
+  @@id([role, permission])
+  @@map("role_permissions")
+}
+
+/// Zone d'un agent — un agent a une ou plusieurs zones ; admin et super-admin voient toutes les zones (aucune ligne ici)
+model AgentZone {
+  userId       String   @db.Uuid /// Agent
+  zoneId       String   @db.Uuid /// Zone
+  assignedById String   @db.Uuid /// Attribuée par
+  createdAt    DateTime @default(now()) /// Attribuée le
+
+  user User @relation(fields: [userId], references: [id])
+  zone Zone @relation(fields: [zoneId], references: [id])
+
+  @@id([userId, zoneId])
+  @@map("agent_zones")
+}
+
+/// Abonnement aux notifications du téléphone (web push)
+model PushSubscription {
+  id         String    @id @default(uuid(7)) @db.Uuid /// Identifiant
+  userId     String    @db.Uuid /// Utilisateur
+  endpoint   String    @unique /// Adresse d'envoi (fournie par le navigateur)
+  keys       Json /// Clés
+  userAgent  String? /// Navigateur
+  lastUsedAt DateTime? /// Dernier envoi
+  createdAt  DateTime  @default(now()) /// Créé le
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("push_subscriptions")
+}
+
+/// Notification dans l'appli
+model Notification {
+  id        String           @id @default(uuid(7)) @db.Uuid /// Identifiant
+  userId    String           @db.Uuid /// Destinataire
+  type      NotificationType /// Type
+  title     String /// Titre
+  body      String /// Texte
+  link      String? /// Lien (page à ouvrir)
+  data      Json? /// Données
+  readAt    DateTime? /// Lue le
+  pushedAt  DateTime? /// Envoyée sur le téléphone le
+  createdAt DateTime         @default(now()) /// Créée le
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+// =====================================================================
+// 2. Géographie
+// =====================================================================
+
+/// Pays
+model Country {
+  id         String  @id @default(uuid(7)) @db.Uuid /// Identifiant
+  code       String  @unique /// Code (BJ)
+  name       String /// Nom
+  currency   String  @default("XOF") /// Monnaie
+  timezone   String  @default("Africa/Porto-Novo") /// Fuseau horaire
+  phoneRegex String /// Format des numéros
+  isActive   Boolean @default(false) /// Actif
+
+  cities   City[]
+  holidays PublicHoliday[]
+
+  @@map("countries")
+}
+
+/// Ville
+model City {
+  id        String                                 @id @default(uuid(7)) @db.Uuid /// Identifiant
+  countryId String                                 @db.Uuid /// Pays
+  name      String /// Nom
+  slug      String                                 @unique /// Adresse courte
+  center    Unsupported("geography(Point,4326)")? /// Centre
+  isActive  Boolean                                @default(false) /// Active
+
+  country    Country        @relation(fields: [countryId], references: [id])
+  categories ZoneCategory[]
+  zones      Zone[]
+
+  @@map("cities")
+}
+
+/// Catégorie de zone (A centre d'affaires, B résidentiel dense, C périphérie)
+model ZoneCategory {
+  id                String @id @default(uuid(7)) @db.Uuid /// Identifiant
+  cityId            String @db.Uuid /// Ville
+  code              String /// Code (A, B, C)
+  label             String /// Libellé
+  defaultDailySlots Int /// Places de pub par zone et par jour (défaut)
+
+  city      City        @relation(fields: [cityId], references: [id])
+  zones     Zone[]
+  priceGrid PriceGrid[]
+
+  @@unique([cityId, code])
+  @@map("zone_categories")
+}
+
+/// Zone
+model Zone {
+  id                 String                                        @id @default(uuid(7)) @db.Uuid /// Identifiant
+  cityId             String                                        @db.Uuid /// Ville
+  categoryId         String                                        @db.Uuid /// Catégorie
+  name               String /// Nom
+  code               String /// Code (unique par ville)
+  boundary           Unsupported("geography(MultiPolygon,4326)")? /// Contour
+  dailySlotsOverride Int? /// Places par jour (si différent de la catégorie)
+  priceOverride      Json? /// Prix spécifiques (par type et formule ; sinon la grille)
+  isActive           Boolean                                       @default(false) /// Active
+
+  city          City               @relation(fields: [cityId], references: [id])
+  category      ZoneCategory       @relation(fields: [categoryId], references: [id])
+  neighborhoods Neighborhood[]
+  agents        AgentZone[]
+  pointsOfSale  PointOfSale[]
+  residents     User[]
+  targeting     SubscriptionZone[]
+  slots         ZoneDaySlot[]
+  waitlist      WaitlistEntry[]
+
+  @@unique([cityId, code])
+  @@map("zones")
+}
+
+/// Quartier
+model Neighborhood {
+  id      String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  zoneId  String   @db.Uuid /// Zone
+  name    String /// Nom
+  aliases String[] /// Autres écritures (recherche)
+
+  zone         Zone          @relation(fields: [zoneId], references: [id])
+  pointsOfSale PointOfSale[]
+
+  @@unique([zoneId, name])
+  @@map("neighborhoods")
+}
+
+/// Jour férié
+model PublicHoliday {
+  id        String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  countryId String   @db.Uuid /// Pays
+  date      DateTime @db.Date /// Date
+  name      String /// Nom
+
+  country Country @relation(fields: [countryId], references: [id])
+
+  @@unique([countryId, date])
+  @@map("public_holidays")
+}
+
+// =====================================================================
+// 3. Vendeurs et points de vente
+// =====================================================================
+
+/// Vendeur (le titulaire) — un ou plusieurs points de vente
+model Vendor {
+  id                       String    @id @default(uuid(7)) @db.Uuid /// Identifiant
+  displayName              String /// Nom affiché
+  contactName              String? /// Nom du responsable
+  contactPhone             String /// Téléphone du responsable
+  email                    String? /// E-mail
+  userId                   String?   @unique @db.Uuid /// Compte OKARE du vendeur
+  followedById             String?   @db.Uuid /// Agent référent
+  notes                    String? /// Notes internes (équipe)
+  mainPosId                String?   @unique @db.Uuid /// Point de vente principal (désigné par OKARE)
+  mainPosComputedAt        DateTime? /// Point principal calculé le
+  firstPublishedAt         DateTime? /// Première publication le (ancienneté)
+  subscriptionNoticeAt     DateTime? /// Prévenu des abonnements le
+  subscriptionRequiredFrom DateTime? /// Abonnement nécessaire à partir du (fin du préavis)
+  createdById              String    @db.Uuid /// Créé par
+  createdAt                DateTime  @default(now()) /// Créé le
+  updatedAt                DateTime  @updatedAt /// Modifié le
+  deletedAt                DateTime? /// Supprimé le
+
+  user          User?               @relation("VendorAccount", fields: [userId], references: [id])
+  mainPos       PointOfSale?        @relation("MainPos", fields: [mainPosId], references: [id])
+  pointsOfSale  PointOfSale[]       @relation("VendorPos")
+  claims        ClaimRequest[]
+  orders        SubscriptionOrder[]
+  subscriptions Subscription[]
+  payments      Payment[]
+  notices       VendorNotice[]
+
+  @@map("vendors")
+}
+
+/// Point de vente
+model PointOfSale {
+  id                 String                                 @id @default(uuid(7)) @db.Uuid /// Identifiant
+  vendorId           String                                 @db.Uuid /// Vendeur
+  slug               String                                 @unique /// Adresse courte (okare.bj/p/…)
+  name               String /// Nom
+  description        String? /// Présentation
+  type               PosType /// Type
+  status             PosStatus                              @default(PUBLISHED) /// Statut
+  version            Int                                    @default(1) /// Version (modifications simultanées)
+  qrCode             String                                 @unique /// Code du QR (6 caractères)
+  zoneId             String                                 @db.Uuid /// Zone (calculée depuis la position)
+  neighborhoodId     String?                                @db.Uuid /// Quartier
+  location           Unsupported("geography(Point,4326)") /// Position exacte
+  locationAccuracyM  Int? /// Précision GPS (m)
+  hasPublicPlace     Boolean                                @default(true) /// A un lieu public
+  publicPoint        Unsupported("geography(Point,4326)")? /// Position affichée (décalée si pas de lieu public)
+  landmark           String? /// Repère
+  whatsappPhone      String /// WhatsApp des commandes
+  whatsappVerifiedAt DateTime? /// WhatsApp vérifié le
+  callPhone          String? /// Numéro d'appel (si différent)
+  openingHours       Json /// Horaires de la semaine
+  hoursConfirmedAt   DateTime? /// Horaires confirmés le
+  holidayPolicy      HolidayPolicy                          @default(UNKNOWN) /// Jours fériés
+  servesOnSite       Boolean                                @default(true) /// Sur place
+  servesTakeaway     Boolean                                @default(true) /// À emporter
+  delivers           Boolean                                @default(false) /// Livraison
+  deliveryZoneIds    String[]                               @db.Uuid /// Zones livrées
+  acceptsCash        Boolean                                @default(true) /// Accepte les espèces (repas)
+  acceptsMomo        Boolean                                @default(false) /// Accepte Mobile Money (repas)
+  coverMediaId       String?                                @db.Uuid /// Photo de couverture
+  vendorOffer        String? /// Offre du vendeur
+  identityCheckedAt  DateTime? /// Identité vérifiée le (badge, ne bloque rien)
+  kitchenVisitedAt   DateTime? /// Cuisine visitée le (badge, ne bloque rien)
+  consentAt          DateTime /// Accord du vendeur le
+  consentById        String                                 @db.Uuid /// Accord recueilli par
+  publishedAt        DateTime? /// Publié le
+  pricesCheckedAt    DateTime? /// Prix vérifiés le
+  responseRate       Float? /// Taux de réponse (calculé)
+  ratingAvg          Float? /// Note moyenne (affichée à partir de 5 avis)
+  ratingCount        Int                                    @default(0) /// Nombre d'avis publiés
+  createdById        String                                 @db.Uuid /// Créé par
+  updatedById        String?                                @db.Uuid /// Modifié par
+  createdAt          DateTime                               @default(now()) /// Créé le
+  updatedAt          DateTime                               @updatedAt /// Modifié le
+  deletedAt          DateTime? /// Supprimé le
+
+  vendor        Vendor           @relation("VendorPos", fields: [vendorId], references: [id])
+  mainOf        Vendor?          @relation("MainPos")
+  zone          Zone             @relation(fields: [zoneId], references: [id])
+  neighborhood  Neighborhood?    @relation(fields: [neighborhoodId], references: [id])
+  dishes        Dish[]
+  dailySpecials DailySpecial[]
+  dayOverrides  PosDayOverride[]
+  favorites     Favorite[]
+  contacts      ContactEvent[]
+  reviews       Review[]
+  reports       Report[]
+  responseTests ResponseTest[]
+  subscriptions Subscription[]
+  waitlist      WaitlistEntry[]
+  shareLinks    StatsShareLink[]
+
+  @@index([zoneId, status])
+  @@index([vendorId])
+  @@map("points_of_sale")
+}
+
+/// Exception du jour (fermé aujourd'hui, horaires spéciaux)
+model PosDayOverride {
+  id           String          @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId        String          @db.Uuid /// Point de vente
+  businessDate DateTime        @db.Date /// Jour
+  isClosed     Boolean /// Fermé toute la journée
+  ranges       Json? /// Horaires spéciaux
+  reason       String? /// Raison (interne)
+  source       DayStatusSource /// Origine
+  createdById  String?         @db.Uuid /// Créée par
+  createdAt    DateTime        @default(now()) /// Créée le
+
+  pos PointOfSale @relation(fields: [posId], references: [id])
+
+  @@unique([posId, businessDate])
+  @@map("pos_day_overrides")
+}
+
+/// Demande de rattachement — un vendeur récupère la fiche créée par l'équipe
+model ClaimRequest {
+  id           String      @id @default(uuid(7)) @db.Uuid /// Identifiant
+  vendorId     String      @db.Uuid /// Vendeur
+  userId       String      @db.Uuid /// Compte demandeur
+  code         String /// Code reçu
+  status       ClaimStatus @default(PENDING) /// Statut
+  reviewedById String?     @db.Uuid /// Traitée par
+  expiresAt    DateTime /// Expire le
+  createdAt    DateTime    @default(now()) /// Créée le
+
+  vendor Vendor @relation(fields: [vendorId], references: [id])
+
+  @@map("claim_requests")
+}
+
+/// Fichier (photo) — toutes les photos du site (médiathèque)
+model Media {
+  id              String      @id @default(uuid(7)) @db.Uuid /// Identifiant
+  ownerType       MediaOwner /// Rattaché à
+  ownerId         String      @db.Uuid /// Identifiant rattaché
+  sortOrder       Int         @default(0) /// Ordre (0 = photo principale)
+  originalKey     String /// Fichier original (stockage)
+  variants        Json /// Tailles réduites (WebP)
+  width           Int? /// Largeur
+  height          Int? /// Hauteur
+  status          MediaStatus @default(PROCESSING) /// Statut
+  rejectionReason String? /// Motif du refus
+  uploadedById    String      @db.Uuid /// Envoyée par
+  createdAt       DateTime    @default(now()) /// Créée le
+  deletedAt       DateTime? /// Supprimée le
+
+  @@index([ownerType, ownerId, sortOrder])
+  @@map("media")
+}
+
+// =====================================================================
+// 4. Menus (rien ne bloque : publier, mettre en attente, épuiser, supprimer)
+// =====================================================================
+
+/// Catégorie de plat (liste commune)
+model DishCategory {
+  id              String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  name            String   @unique /// Nom
+  slug            String   @unique /// Adresse courte
+  aliases         String[] /// Autres écritures
+  family          String? /// Famille (Riz, Pâtes, Igname…)
+  illustrationKey String? /// Dessin par défaut (riz, pate, atassi, igname, spaghetti, aloko, attieke)
+  sortOrder       Int      @default(0) /// Ordre (pastilles de l'accueil)
+  isActive        Boolean  @default(true) /// Active
+
+  dishes Dish[]
+
+  @@map("dish_categories")
+}
+
+/// Plat
+model Dish {
+  id          String     @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId       String     @db.Uuid /// Point de vente
+  categoryId  String?    @db.Uuid /// Catégorie
+  slug        String /// Adresse courte (page du plat)
+  name        String /// Nom
+  description String? /// Description
+  priceXof    Int /// Prix
+  moment      MealMoment @default(LUNCH) /// Moment
+  status      DishStatus @default(PUBLISHED) /// Statut
+  soldOutOn   DateTime?  @db.Date /// Épuisé le (remis à zéro le lendemain)
+  sortOrder   Int        @default(0) /// Ordre dans le menu
+  publishedAt DateTime? /// Publié le
+  createdById String     @db.Uuid /// Créé par
+  updatedById String?    @db.Uuid /// Modifié par
+  createdAt   DateTime   @default(now()) /// Créé le
+  updatedAt   DateTime   @updatedAt /// Modifié le
+  deletedAt   DateTime? /// Supprimé le
+
+  pos           PointOfSale    @relation(fields: [posId], references: [id])
+  category      DishCategory?  @relation(fields: [categoryId], references: [id])
+  dailySpecials DailySpecial[]
+  reviews       Review[]
+
+  @@unique([posId, slug])
+  @@map("dishes")
+}
+
+/// Plat du jour
+model DailySpecial {
+  id            String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId         String   @db.Uuid /// Point de vente
+  dishId        String   @db.Uuid /// Plat
+  businessDate  DateTime @db.Date /// Jour
+  priceTodayXof Int? /// Prix du jour (si différent)
+  createdById   String   @db.Uuid /// Publié par
+  createdAt     DateTime @default(now()) /// Publié le
+
+  pos  PointOfSale @relation(fields: [posId], references: [id])
+  dish Dish        @relation(fields: [dishId], references: [id])
+
+  @@unique([posId, dishId, businessDate])
+  @@index([businessDate])
+  @@map("daily_specials")
+}
+
+// =====================================================================
+// 5. Clients : favoris, contacts, suivis, avis, signalements
+// =====================================================================
+
+/// Favori
+model Favorite {
+  userId      String   @db.Uuid /// Client
+  posId       String   @db.Uuid /// Point de vente
+  notifyDaily Boolean  @default(true) /// Prévenir de son plat du jour
+  createdAt   DateTime @default(now()) /// Ajouté le
+
+  user User        @relation(fields: [userId], references: [id])
+  pos  PointOfSale @relation(fields: [posId], references: [id])
+
+  @@id([userId, posId])
+  @@map("favorites")
+}
+
+/// Contact (WhatsApp ou appel)
+model ContactEvent {
+  id               String         @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId            String         @db.Uuid /// Point de vente
+  vendorId         String         @db.Uuid /// Vendeur
+  userId           String         @db.Uuid /// Client
+  dishId           String?        @db.Uuid /// Plat (bouton d'un plat) ; vide = bouton du point de vente
+  dishNameSnap     String? /// Nom du plat à ce moment
+  dishPriceSnap    Int? /// Prix du plat à ce moment
+  dishCategoryId   String?        @db.Uuid /// Catégorie du plat
+  channel          ContactChannel /// Canal
+  source           ContactSource /// Venu de
+  posZoneId        String         @db.Uuid /// Zone du point de vente
+  viewerZoneId     String?        @db.Uuid /// Zone du client
+  subscriptionId   String?        @db.Uuid /// Pub affichée à ce moment
+  deviceId         String? /// Appareil
+  ipHash           String? /// IP chiffrée
+  isCounted        Boolean        @default(true) /// Compté
+  notCountedReason String? /// Raison du non-comptage
+  createdAt        DateTime       @default(now()) /// Le
+
+  pos        PointOfSale        @relation(fields: [posId], references: [id])
+  user       User               @relation(fields: [userId], references: [id])
+  followUp   ContactFollowUp?
+  orderItems ContactOrderItem[]
+  review     Review?
+
+  @@index([posId, createdAt])
+  @@index([userId, createdAt])
+  @@map("contact_events")
+}
+
+/// Suivi « t'a-t-il répondu ? »
+model ContactFollowUp {
+  contactId  String          @id @db.Uuid /// Contact
+  posId      String          @db.Uuid /// Point de vente
+  userId     String          @db.Uuid /// Client
+  askDish    Boolean         @default(false) /// Demander « Tu as pris quoi ? » (seulement si le contact n'a pas de plat)
+  askCount   Int             @default(0) /// Nombre de fois demandé (2 au plus)
+  askedAt    DateTime? /// Demandé le
+  nextAskAt  DateTime? /// Redemander le
+  answer     FollowUpAnswer? /// Réponse
+  answeredAt DateTime? /// Répondu le
+
+  contact ContactEvent @relation(fields: [contactId], references: [id])
+
+  @@index([userId, answer])
+  @@map("contact_follow_ups")
+}
+
+/// Plat commandé
+model ContactOrderItem {
+  id             String          @id @default(uuid(7)) @db.Uuid /// Identifiant
+  contactId      String          @db.Uuid /// Contact
+  dishId         String?         @db.Uuid /// Plat (vide = « autre chose »)
+  dishNameSnap   String /// Nom du plat
+  dishCategoryId String?         @db.Uuid /// Catégorie
+  origin         OrderItemOrigin /// Origine
+  createdAt      DateTime        @default(now()) /// Le
+
+  contact ContactEvent @relation(fields: [contactId], references: [id])
+
+  @@map("contact_order_items")
+}
+
+/// Avis — seulement après un contact suivi d'un « Oui » ; note affichée à partir de 5 avis
+model Review {
+  id                String       @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId             String       @db.Uuid /// Point de vente
+  dishId            String?      @db.Uuid /// Plat
+  userId            String       @db.Uuid /// Client
+  contactId         String       @unique @db.Uuid /// Contact d'origine (un avis par contact)
+  rating            Int /// Note (1 à 5)
+  comment           String? /// Commentaire
+  status            ReviewStatus @default(PUBLISHED) /// Statut
+  hiddenReason      String? /// Motif du masquage
+  hiddenById        String?      @db.Uuid /// Masqué par
+  vendorReply       String? /// Réponse du vendeur
+  vendorRepliedAt   DateTime? /// Répondu le
+  vendorRepliedById String?      @db.Uuid /// Répondu par
+  createdAt         DateTime     @default(now()) /// Créé le
+  updatedAt         DateTime     @updatedAt /// Modifié le
+
+  pos     PointOfSale  @relation(fields: [posId], references: [id])
+  dish    Dish?        @relation(fields: [dishId], references: [id])
+  user    User         @relation(fields: [userId], references: [id])
+  contact ContactEvent @relation(fields: [contactId], references: [id])
+  reports Report[]
+
+  @@index([posId, status])
+  @@map("reviews")
+}
+
+/// Signalement — sur un point de vente, un plat, un avis ou un utilisateur
+model Report {
+  id           String       @id @default(uuid(7)) @db.Uuid /// Identifiant
+  targetType   ReportTarget /// Cible
+  posId        String?      @db.Uuid /// Point de vente
+  dishId       String?      @db.Uuid /// Plat
+  reviewId     String?      @db.Uuid /// Avis
+  targetUserId String?      @db.Uuid /// Utilisateur signalé
+  userId       String       @db.Uuid /// Auteur du signalement
+  reason       ReportReason /// Motif
+  comment      String? /// Commentaire
+  businessDate DateTime     @db.Date /// Jour
+  status       ReportStatus @default(OPEN) /// Statut
+  resolvedById String?      @db.Uuid /// Traité par
+  resolvedAt   DateTime? /// Traité le
+  resolution   String? /// Décision
+  createdAt    DateTime     @default(now()) /// Créé le
+
+  pos    PointOfSale? @relation(fields: [posId], references: [id])
+  review Review?      @relation(fields: [reviewId], references: [id])
+  author User         @relation("ReportAuthor", fields: [userId], references: [id])
+
+  @@unique([userId, targetType, posId, dishId, reviewId, targetUserId, reason, businessDate])
+  @@index([status, createdAt])
+  @@map("reports")
+}
+
+/// Test de réponse — message test envoyé par un agent
+model ResponseTest {
+  id                String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  posId             String   @db.Uuid /// Point de vente
+  agentId           String   @db.Uuid /// Agent
+  sentAt            DateTime /// Envoyé le
+  answeredWithinMin Int? /// Répondu en (minutes) ; vide = pas de réponse sous 2 h
+  note              String? /// Remarque
+  createdAt         DateTime @default(now()) /// Créé le
+
+  pos PointOfSale @relation(fields: [posId], references: [id])
+
+  @@map("response_tests")
+}
+
+// =====================================================================
+// 6. Statistiques (cumuls de la nuit)
+// =====================================================================
+
+/// Statistiques du jour d'un point de vente
+model PosDailyStat {
+  posId               String   @db.Uuid /// Point de vente
+  businessDate        DateTime @db.Date /// Jour
+  impressions         Int      @default(0) /// Affichages dans les listes
+  promotedImpressions Int      @default(0) /// Affichages grâce à une pub
+  views               Int      @default(0) /// Visites de la page
+  dishViews           Int      @default(0) /// Visites des pages de plats
+  qrScans             Int      @default(0) /// Scans du QR code
+  whatsappContacts    Int      @default(0) /// Contacts WhatsApp comptés
+  callContacts        Int      @default(0) /// Appels comptés
+  uniqueClients       Int      @default(0) /// Clients différents
+  confirmedOrders     Int      @default(0) /// Commandes confirmées
+
+  @@id([posId, businessDate])
+  @@map("pos_daily_stats")
+}
+
+/// Statistiques du jour par plat
+model PosDishDailyStat {
+  posId        String   @db.Uuid /// Point de vente
+  dishId       String   @db.Uuid /// Plat
+  businessDate DateTime @db.Date /// Jour
+  views        Int      @default(0) /// Visites de la page du plat
+  contacts     Int      @default(0) /// Contacts
+  confirmed    Int      @default(0) /// Commandes confirmées
+
+  @@id([posId, dishId, businessDate])
+  @@map("pos_dish_daily_stats")
+}
+
+/// Lien de rapport partagé (lecture seule)
+model StatsShareLink {
+  token       String    @id /// Jeton (dans l'adresse)
+  posId       String    @db.Uuid /// Point de vente
+  createdById String    @db.Uuid /// Créé par
+  expiresAt   DateTime /// Expire le
+  revokedAt   DateTime? /// Retiré le
+  createdAt   DateTime  @default(now()) /// Créé le
+
+  pos PointOfSale @relation(fields: [posId], references: [id])
+
+  @@map("stats_share_links")
+}
+
+// =====================================================================
+// 7. Pubs (abonnements) et paiements en ligne FedaPay
+// =====================================================================
+
+/// Grille tarifaire — prix PAR ZONE ciblée, par catégorie de zone et type de point de vente
+model PriceGrid {
+  id              String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  categoryId      String   @db.Uuid /// Catégorie de zone
+  posType         PosType /// Type de point de vente
+  dayPriceXof     Int /// Prix d'un jour (seul prix de la grille ; Période, Mois et Premium en découlent)
+  updatedById     String?  @db.Uuid /// Modifié par
+  updatedAt       DateTime @updatedAt /// Modifié le
+
+  category ZoneCategory @relation(fields: [categoryId], references: [id])
+
+  @@unique([categoryId, posType])
+  @@map("price_grid")
+}
+
+/// Commande de pubs — plusieurs points de vente, un seul paiement FedaPay
+model SubscriptionOrder {
+  id            String        @id @default(uuid(7)) @db.Uuid /// Identifiant
+  number        String        @unique /// Numéro de commande (OK-2026-000123)
+  vendorId      String        @db.Uuid /// Vendeur
+  origin        PaymentOrigin /// Lancée depuis
+  status        OrderStatus   @default(PENDING_PAYMENT) /// Statut
+  subtotalXof   Int /// Total avant remises
+  discountXof   Int /// Total des remises
+  totalXof      Int /// Total à payer
+  holdUntil     DateTime? /// Places gardées jusqu'à (30 minutes)
+  paidAt        DateTime? /// Payée le
+  receiptUrl    String? /// Reçu (PDF)
+  createdById   String        @db.Uuid /// Créée par (vendeur ou équipe)
+  createdAt     DateTime      @default(now()) /// Créée le
+  updatedAt     DateTime      @updatedAt /// Modifiée le
+
+  vendor        Vendor         @relation(fields: [vendorId], references: [id])
+  subscriptions Subscription[]
+  payments      Payment[]
+
+  @@index([vendorId, status])
+  @@map("subscription_orders")
+}
+
+/// Pub d'un point de vente (abonnement)
+model Subscription {
+  id                  String             @id @default(uuid(7)) @db.Uuid /// Identifiant
+  orderId             String?            @db.Uuid /// Commande (vide si offerte)
+  posId               String             @db.Uuid /// Point de vente
+  vendorId            String             @db.Uuid /// Vendeur
+  plan                AdPlan /// Formule
+  startDate           DateTime           @db.Date /// Début
+  endDate             DateTime           @db.Date /// Fin (incluse)
+  days                Int /// Nombre de jours (Période : calculé depuis les deux dates, 2 à 21)
+  isMainPos           Boolean /// Point principal au moment de l'achat
+  baseXof             Int /// Prix avant remise (somme des zones)
+  discountPct         Int                @default(0) /// Remise : 10 (point principal en Période), 20 (autre point), 0
+  totalXof            Int /// Prix après remise
+  status              SubscriptionStatus @default(PENDING_PAYMENT) /// Statut
+  isComplimentary     Boolean            @default(false) /// Offerte (essai, 7 jours au plus)
+  complimentaryReason String? /// Motif de l'offre
+  renewedFromId       String?            @db.Uuid /// Renouvelle la pub
+  createdById         String             @db.Uuid /// Créée par
+  paidAt              DateTime? /// Payée le
+  cancelledAt         DateTime? /// Annulée le
+  cancelledById       String?            @db.Uuid /// Annulée par
+  cancelReason        String? /// Motif d'annulation
+  createdAt           DateTime           @default(now()) /// Créée le
+  updatedAt           DateTime           @updatedAt /// Modifiée le
+
+  order  SubscriptionOrder? @relation(fields: [orderId], references: [id])
+  pos    PointOfSale        @relation(fields: [posId], references: [id])
+  vendor Vendor             @relation(fields: [vendorId], references: [id])
+  zones  SubscriptionZone[]
+  slots  ZoneDaySlot[]
+
+  @@index([posId, status])
+  @@index([status, startDate, endDate])
+  @@map("subscriptions")
+}
+
+/// Zone ciblée par une pub (3, 5, 7 ou 15 au plus selon la formule)
+model SubscriptionZone {
+  subscriptionId String @db.Uuid /// Pub
+  zoneId         String @db.Uuid /// Zone
+  priceXof       Int /// Prix de cette zone (figé, avant remise)
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+  zone         Zone         @relation(fields: [zoneId], references: [id])
+
+  @@id([subscriptionId, zoneId])
+  @@map("subscription_zones")
+}
+
+/// Place occupée — une ligne par zone, par jour et par pub (limite les places)
+model ZoneDaySlot {
+  zoneId         String   @db.Uuid /// Zone
+  businessDate   DateTime @db.Date /// Jour
+  subscriptionId String   @db.Uuid /// Pub
+
+  zone         Zone         @relation(fields: [zoneId], references: [id])
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+
+  @@id([zoneId, businessDate, subscriptionId])
+  @@index([zoneId, businessDate])
+  @@map("zone_day_slots")
+}
+
+/// Paiement en ligne (FedaPay) — une commande peut avoir plusieurs tentatives
+model Payment {
+  id                    String        @id @default(uuid(7)) @db.Uuid /// Identifiant
+  orderId               String        @db.Uuid /// Commande
+  vendorId              String        @db.Uuid /// Vendeur
+  amountXof             Int /// Montant
+  feeXof                Int? /// Frais FedaPay
+  currency              String        @default("XOF") /// Monnaie
+  provider              String        @default("FEDAPAY") /// Prestataire
+  providerTransactionId String?       @unique /// Numéro de transaction FedaPay
+  providerReference     String? /// Référence FedaPay
+  checkoutUrl           String? /// Lien de paiement
+  method                PaymentMethod? /// Moyen de paiement
+  payerPhone            String? /// Téléphone du payeur
+  payerName             String? /// Nom du payeur
+  payerEmail            String? /// E-mail du payeur
+  status                PaymentStatus @default(PENDING) /// Statut
+  origin                PaymentOrigin /// Lancé depuis
+  initiatedById         String        @db.Uuid /// Lancé par
+  approvedAt            DateTime? /// Approuvé le
+  failedAt              DateTime? /// Échoué le
+  failureReason         String? /// Raison de l'échec
+  refundedAt            DateTime? /// Remboursé le
+  refundedById          String?       @db.Uuid /// Remboursé par (super-admin)
+  refundReason          String? /// Motif du remboursement
+  receiptNumber         String?       @unique /// Numéro de reçu
+  lastProviderStatus    Json? /// Dernière réponse FedaPay
+  createdAt             DateTime      @default(now()) /// Créé le
+  updatedAt             DateTime      @updatedAt /// Modifié le
+
+  order  SubscriptionOrder @relation(fields: [orderId], references: [id])
+  vendor Vendor            @relation(fields: [vendorId], references: [id])
+  events PaymentEvent[]
+
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+/// Événement reçu de FedaPay (webhook) — gardé pour ne jamais traiter deux fois le même
+model PaymentEvent {
+  id                    String    @id @default(uuid(7)) @db.Uuid /// Identifiant
+  provider              String    @default("FEDAPAY") /// Prestataire
+  providerEventId       String?   @unique /// Identifiant de l'événement
+  name                  String /// Type (transaction.approved, .declined, .canceled…)
+  providerTransactionId String /// Transaction FedaPay
+  paymentId             String?   @db.Uuid /// Paiement
+  payload               Json /// Contenu reçu
+  signatureValid        Boolean /// Signature valide (X-FEDAPAY-SIGNATURE)
+  receivedAt            DateTime  @default(now()) /// Reçu le
+  processedAt           DateTime? /// Traité le
+  error                 String? /// Erreur
+
+  payment Payment? @relation(fields: [paymentId], references: [id])
+
+  @@index([providerTransactionId])
+  @@map("payment_events")
+}
+
+/// Liste d'attente (zone complète)
+model WaitlistEntry {
+  id             String         @id @default(uuid(7)) @db.Uuid /// Identifiant
+  zoneId         String         @db.Uuid /// Zone
+  posId          String         @db.Uuid /// Point de vente
+  plan           AdPlan /// Formule souhaitée
+  wantedStart    DateTime       @db.Date /// Début souhaité
+  wantedEnd      DateTime       @db.Date /// Fin souhaitée
+  status         WaitlistStatus @default(WAITING) /// Statut
+  offeredAt      DateTime? /// Place proposée le
+  offerExpiresAt DateTime? /// Offre valable jusqu'au (48 h)
+  createdAt      DateTime       @default(now()) /// Inscrit le
+
+  zone Zone        @relation(fields: [zoneId], references: [id])
+  pos  PointOfSale @relation(fields: [posId], references: [id])
+
+  @@map("waitlist_entries")
+}
+
+/// Activation des abonnements — un clic sur « Activer les abonnements »
+model SubscriptionLaunch {
+  id                 String          @id @default(uuid(7)) @db.Uuid /// Identifiant
+  activatedById      String          @db.Uuid /// Activé par
+  activatedAt        DateTime        @default(now()) /// Activé le
+  minVendorAgeDays   Int /// Ancienneté minimale (30 ou 60 jours)
+  noticeDays         Int /// Préavis (3, 7 ou 14 jours)
+  channels           NoticeChannel[] /// Canaux
+  messageTemplate    String /// Modèle du message (copie)
+  vendorsNotified    Int             @default(0) /// Vendeurs prévenus
+  deactivatedAt      DateTime? /// Désactivé le
+  deactivatedById    String?         @db.Uuid /// Désactivé par
+  deactivationReason String? /// Motif de désactivation
+
+  notices VendorNotice[]
+
+  @@map("subscription_launches")
+}
+
+/// Message envoyé à un vendeur (annonce, rappel, reçu)
+model VendorNotice {
+  id          String        @id @default(uuid(7)) @db.Uuid /// Identifiant
+  vendorId    String        @db.Uuid /// Vendeur
+  launchId    String?       @db.Uuid /// Activation
+  kind        NoticeKind /// Sorte
+  channel     NoticeChannel /// Canal
+  status      NoticeStatus  @default(QUEUED) /// Statut
+  body        String /// Texte envoyé
+  providerRef String? /// Identifiant du message
+  error       String? /// Erreur
+  createdAt   DateTime      @default(now()) /// Créé le
+  sentAt      DateTime? /// Envoyé le
+
+  vendor Vendor              @relation(fields: [vendorId], references: [id])
+  launch SubscriptionLaunch? @relation(fields: [launchId], references: [id])
+
+  @@index([vendorId, kind])
+  @@map("vendor_notices")
+}
+
+// =====================================================================
+// 8. Administration
+// =====================================================================
+
+/// Journal d'audit — qui a fait quoi, avant et après (lecture seule)
+model AuditLog {
+  id         String   @id @default(uuid(7)) @db.Uuid /// Identifiant
+  actorId    String?  @db.Uuid /// Auteur (vide = système, FedaPay)
+  actorRole  Role? /// Rôle de l'auteur
+  action     String /// Action (ex. dish.publish, subscriptions.activate)
+  entityType String /// Objet modifié
+  entityId   String   @db.Uuid /// Identifiant de l'objet
+  before     Json? /// Avant
+  after      Json? /// Après
+  ipHash     String? /// IP chiffrée
+  createdAt  DateTime @default(now()) /// Le
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+  @@map("audit_logs")
+}
+
+/// Paramètre (les clés secrètes FedaPay restent dans les variables d'environnement)
+model Setting {
+  key         String   @id /// Clé
+  value       Json /// Valeur
+  updatedById String?  @db.Uuid /// Modifié par
+  updatedAt   DateTime @updatedAt /// Modifié le
+
+  @@map("settings")
+}

@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const out = process.argv[2];
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+await p.goto('http://localhost:3200/dashboard/geography'); await p.waitForTimeout(900);
+await p.getByRole('button', { name: /Suivant/ }).click(); await p.waitForTimeout(300);
+const pager = p.locator('nav[aria-label="Pagination"]');
+await pager.scrollIntoViewIfNeeded();
+await p.screenshot({ path: `${out}/pager.png` });
+console.log('pagination :', (await pager.innerText()).replace(/\s+/g, ' '));
+await b.close();

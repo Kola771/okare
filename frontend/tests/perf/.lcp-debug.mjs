@@ -1,0 +1,13 @@
+import { chromium } from '@playwright/test';
+const [,, path, session] = process.argv;
+const b = await chromium.launch();
+const c = await b.newContext({ viewport: { width: 390, height: 844 } });
+if (session) await c.addCookies([{ name: 'okare_session', value: session, url: 'http://localhost:3200' }]);
+const p = await c.newPage();
+await p.addInitScript(() => { window.__l = []; new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__l.push([Math.round(e.startTime), e.element?.tagName, (e.element?.textContent || e.url || '').slice(0, 60)]); }).observe({ type: 'largest-contentful-paint', buffered: true }); });
+const t = Date.now();
+const r = await p.goto('http://localhost:3200' + path, { waitUntil: 'networkidle' });
+console.log('status', r.status(), 'ttfb-ish', await p.evaluate(() => Math.round(performance.getEntriesByType('navigation')[0].responseStart)), 'total', Date.now() - t);
+await p.waitForTimeout(300);
+console.log(JSON.stringify(await p.evaluate(() => window.__l)));
+await b.close();

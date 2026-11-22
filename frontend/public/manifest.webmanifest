@@ -1,0 +1,13 @@
+{
+  "name": "OKARE",
+  "short_name": "OKARE",
+  "description": "Où manger près de toi, à ton budget.",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#C2410C",
+  "background_color": "#FAF7F2",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

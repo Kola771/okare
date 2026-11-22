@@ -1,0 +1,52 @@
+import { chromium } from 'playwright';
+const out = process.argv[2];
+const B = 'http://localhost:3300';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+// une image de test dessinée dans le navigateur
+const png = await p.evaluate(() => { const c = document.createElement('canvas'); c.width = 1200; c.height = 900; const g = c.getContext('2d');
+  g.fillStyle = '#C2410C'; g.fillRect(0, 0, 1200, 900); g.fillStyle = '#FBBF24'; g.fillRect(300, 300, 600, 400); g.fillStyle = '#fff'; g.font = 'bold 90px sans-serif'; g.fillText('ENTRÉE', 420, 520);
+  return c.toDataURL('image/png').split(',')[1]; });
+const file = { name: 'devanture.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') };
+// 1. Médiathèque
+await p.goto(`${B}/dashboard/media`); await p.waitForTimeout(1200);
+await p.screenshot({ path: `${out}/media-new.png`, fullPage: true });
+// 2. Création avec photo (en tant qu'agent : publiée tout de suite)
+await p.goto(`${B}/dashboard/points/new`); await p.waitForTimeout(1000);
+await p.getByLabel('Nom affiché du point de vente').fill('Chez Tantie Ablavi');
+await p.getByLabel('Téléphone du responsable').fill('0197112233');
+await p.getByLabel('WhatsApp des commandes').fill('0197112233');
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(800);
+await p.locator('input[type=file]').first().setInputFiles(file); await p.waitForTimeout(1200);
+await p.screenshot({ path: `${out}/create-photo.png`, fullPage: true });
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(500);
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(500);
+await p.getByLabel(/J’accepte/).check();
+await p.getByRole('button', { name: /Publier/ }).first().click(); await p.waitForURL(/tab=menu/, { timeout: 30000 }); await p.waitForTimeout(800);
+const id = p.url().split('/points/')[1].split('?')[0];
+console.log('point créé :', id);
+await p.goto(`${B}/p/chez-tantie-ablavi`); await p.waitForTimeout(1200);
+const hero = await p.locator('img[alt="Chez Tantie Ablavi"]').first().getAttribute('src');
+console.log('photo sur la page client :', hero?.slice(0, 40));
+await p.screenshot({ path: `${out}/client-cover.png` });
+// 3. Vendeur : photo en relecture, puis publiée par l'équipe
+await p.goto(`${B}/seller/points/new`); await p.waitForTimeout(1000);
+await p.getByLabel('Nom affiché du point de vente').fill('Maquis Sika');
+await p.getByLabel('Téléphone du responsable').fill('0197445566');
+await p.getByLabel('WhatsApp des commandes').fill('0197445566');
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(800);
+await p.locator('input[type=file]').first().setInputFiles(file); await p.waitForTimeout(1200);
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(500);
+await p.getByRole('button', { name: /Continuer/ }).first().click(); await p.waitForTimeout(500);
+await p.getByLabel(/J’accepte/).check();
+await p.getByRole('button', { name: /Publier/ }).first().click(); await p.waitForURL(/\/menu/, { timeout: 30000 }); await p.waitForTimeout(800);
+await p.goto(`${B}/p/maquis-sika`); await p.waitForTimeout(1000);
+console.log('vendeur, avant relecture :', (await p.locator('img[alt="Maquis Sika"]').first().getAttribute('src'))?.slice(0, 30));
+await p.goto(`${B}/dashboard/media`); await p.waitForTimeout(1000);
+await p.getByRole('button', { name: /^À relire/ }).click(); await p.waitForTimeout(300);
+await p.getByRole('button', { name: /facade-maquis-sika/ }).click(); await p.waitForTimeout(400);
+await p.screenshot({ path: `${out}/media-sheet.png` });
+await p.getByRole('dialog').getByRole('button', { name: 'Publier' }).click(); await p.waitForTimeout(800);
+await p.goto(`${B}/p/maquis-sika`); await p.waitForTimeout(1000);
+console.log('vendeur, après relecture :', (await p.locator('img[alt="Maquis Sika"]').first().getAttribute('src'))?.slice(0, 30));
+await b.close();

@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const out = process.argv[2];
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+await p.goto('http://localhost:3200/seller?year=2026&month=10'); await p.waitForTimeout(1200);
+await p.getByRole('button', { name: /Tous mes points/ }).click(); await p.waitForTimeout(300);
+await p.screenshot({ path: `${out}/seller-home.png` });
+await p.getByRole('menuitem', { name: /Akpakpa/ }).click(); await p.waitForURL(/pos=/); await p.waitForTimeout(800);
+console.log('après choix :', p.url().replace('http://localhost:3200', ''), '|', (await p.locator('main h1 + div').first().innerText()));
+await p.mouse.wheel(0, 900); await p.waitForTimeout(800);
+await p.screenshot({ path: `${out}/seller-zones.png` });
+await p.goto('http://localhost:3200/seller/points'); await p.waitForTimeout(800);
+await p.locator('section[aria-label="Filtres"] select').nth(2).selectOption({ label: 'Ganhi' }); await p.waitForURL(/zone=/); await p.waitForTimeout(800);
+await p.screenshot({ path: `${out}/seller-points.png` });
+await b.close();

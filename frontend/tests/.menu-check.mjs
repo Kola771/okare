@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+await p.goto('http://localhost:3300/seller', { timeout: 120000 }); await p.waitForTimeout(1500);
+await p.getByRole('button', { name: /Tous mes points/ }).click();
+await p.getByRole('menuitem', { name: /Chez Maman · Ganhi/ }).click();
+await p.waitForURL(/\/seller\/points\//, { timeout: 120000 }); await p.waitForTimeout(1500);
+console.log('adresse :', p.url().replace('http://localhost:3300', ''));
+console.log('bouton :', await p.getByRole('button', { name: /Chez Maman · Ganhi/ }).innerText());
+await b.close();
