@@ -25,8 +25,8 @@ export function PeriodFilter({ period, years }: { period: Period; years: number[
   const toVal = period.custom ? period.to : today();
 
   return (
-    <section aria-label="Période" className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4">
+    <section aria-label="Période" className="@container rounded-2xl border border-[#E7E5E4] bg-white p-4">
+      <div className="grid grid-cols-1 gap-3 @min-[500px]:grid-cols-4">
         <label className={lbl}>Année
           <select className={ctl} value={period.custom ? '' : period.year} onChange={(e) => ym(Number(e.target.value), period.month)}>
             {period.custom && <option value="">—</option>}{years.map((y) => <option key={y} value={y}>{y}</option>)}

@@ -44,8 +44,8 @@ export function FiltersBar({ geo: initialGeo, dateHint, dates = true }: { geo?: 
   const defaultTo = () => new Date().toISOString().slice(0, 10);
 
   return (
-    <section aria-label="Filtres" className="flex flex-col gap-3 rounded-2xl border border-[#E7E5E4] bg-white p-4">
-      <div className={`grid gap-3 ${dates ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-6' : 'grid-cols-2 sm:grid-cols-4'}`}>
+    <section aria-label="Filtres" className="@container flex flex-col gap-3 rounded-2xl border border-[#E7E5E4] bg-white p-4">
+      <div className={`grid gap-3 ${dates ? 'grid-cols-1 @min-[650px]:grid-cols-6' : 'grid-cols-1 @min-[500px]:grid-cols-4'}`}>
         <Pick label="Pays" all="Tous les pays" value={f.countryId ?? ''} options={geo?.countries ?? []}
           onChange={(v) => set({ countryId: v || undefined, cityId: undefined, zoneId: undefined, neighborhoodId: undefined })} />
         <Pick label="Ville" all="Toutes les villes" value={f.cityId ?? ''} options={cities}
