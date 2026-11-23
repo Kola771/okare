@@ -40,7 +40,27 @@ export function ReportsScreen() {
       <FilterChips value={f} onChange={setF} options={[['open', `Ouverts (${list.data.filter((r) => r.status === 'OPEN').length})`], ['FRAUD', 'Fraude'], ['FOOD_SAFETY', 'Santé'],
         ['CLOSED_TODAY', 'Fermé aujourd’hui'], ['WRONG_PRICE', 'Prix'], ['NO_ANSWER', 'Pas de réponse'], ['done', 'Traités']]} />
       <div className="grid gap-4 xl:grid-cols-[3fr_2fr]">
-        <DataTable columns={cols} rows={rows} onRow={setSel} empty="Rien à traiter." />
+        {/* Mobile : cartes */}
+        <div className="flex flex-col gap-3 md:hidden">
+          {rows.length ? rows.map((r) => (
+            <button key={r.id} type="button" onClick={() => setSel(r)}
+              className={`flex flex-col gap-2 rounded-2xl border p-4 text-left ${sel?.id === r.id ? 'border-piment bg-[#FFF8F5]' : 'border-[#E7E5E4] bg-white'}`}>
+              <div className="flex items-start justify-between gap-2">
+                <div><b className="block text-sm">{r.posName}</b><span className="text-xs text-ardoise">{POS_TYPE_LABEL[r.posType as PosType] ?? ''} · {r.zone}</span></div>
+                <Pill tone={urgent(r) ? 'bad' : 'warn'}>{REPORT_REASON_LABEL[r.reason]}</Pill>
+              </div>
+              {r.comment && <p className="m-0 text-xs text-ardoise">« {r.comment.slice(0, 80)} »</p>}
+              <div className="flex items-center justify-between text-xs text-ardoise">
+                <span>{new Date(r.at).toLocaleDateString('fr-FR')}</span>
+                <span>{r.status === 'OPEN' ? r.effect : r.status === 'RESOLVED' ? 'Résolu' : 'Rejeté'}</span>
+              </div>
+            </button>
+          )) : <p className="py-6 text-center text-sm text-ardoise">Rien à traiter.</p>}
+        </div>
+        {/* Desktop : tableau */}
+        <div className="hidden md:block">
+          <DataTable columns={cols} rows={rows} onRow={setSel} empty="Rien à traiter." />
+        </div>
         {sel ? (
           <Panel title={`${REPORT_REASON_LABEL[sel.reason]} · ${sel.posName}`} sub={`Signalé par un client · ${new Date(sel.at).toLocaleString('fr-FR')}`}>
             {sel.comment && <p className="m-0 rounded-xl bg-[#F7F6F3] p-3 text-sm">« {sel.comment} »</p>}

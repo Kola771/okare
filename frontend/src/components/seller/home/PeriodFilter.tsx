@@ -25,8 +25,8 @@ export function PeriodFilter({ period, years }: { period: Period; years: number[
   const toVal = period.custom ? period.to : today();
 
   return (
-    <section aria-label="Période" className="flex flex-col gap-3 rounded-2xl border border-[#E7E5E4] bg-white p-4">
-      <div className="grid grid-cols-2 gap-3">
+    <section aria-label="Période" className="rounded-2xl border border-[#E7E5E4] bg-white p-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <label className={lbl}>Année
           <select className={ctl} value={period.custom ? '' : period.year} onChange={(e) => ym(Number(e.target.value), period.month)}>
             {period.custom && <option value="">—</option>}{years.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -38,8 +38,6 @@ export function PeriodFilter({ period, years }: { period: Period; years: number[
             {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
           </select>
         </label>
-      </div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label className={lbl}>Date de début
           <input type="date" className={ctl} value={fromVal} max={toVal}
             onChange={(e) => go({ from: e.target.value || null, year: null, month: null })} />

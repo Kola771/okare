@@ -59,7 +59,35 @@ export function ClaimsScreen() {
         <div className="px-5 pb-4">
           <FilterChips value={f} onChange={setF} options={[['PENDING', `En attente (${pending})`], ['done', 'Traitées'], ['all', 'Toutes']]} />
         </div>
-        <DataTable bare columns={cols} rows={rows} empty="Aucune demande." />
+        {/* Mobile : cartes */}
+        <div className="flex flex-col gap-3 px-4 md:hidden">
+          {rows.length ? rows.map((c) => (
+            <div key={c.id} className="flex flex-col gap-2 rounded-2xl border border-[#E7E5E4] p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <Link href={`/dashboard/vendors/${c.vendor.id}`} className="block font-bold text-charbon">{c.vendor.contactName ?? c.vendor.name}</Link>
+                  <span className="text-xs text-ardoise">{c.vendor.points.join(', ')} · {c.vendor.phone}</span>
+                </div>
+                <Pill tone={STATUS[c.status][1]}>{STATUS[c.status][0]}</Pill>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <div><b className="block text-xs">{c.requester.name}</b><span className="text-xs text-ardoise">{c.requester.phone}</span></div>
+                {c.byCode ? <Pill tone="ok">code agent</Pill> : c.samePhone ? <Pill tone="ok">même n°</Pill> : <Pill tone="bad">n° différent</Pill>}
+              </div>
+              <div className="flex items-center justify-between text-xs text-ardoise">
+                <span>{ago(c.createdAt)}</span>
+                {c.status === 'PENDING' && <span className="flex gap-3">
+                  <button type="button" className="font-bold text-feuille underline" onClick={() => decide(c, 'approve')}>Accepter</button>
+                  <button type="button" className="font-semibold text-ardoise underline" onClick={() => decide(c, 'reject')}>Refuser</button>
+                </span>}
+              </div>
+            </div>
+          )) : <p className="py-6 text-center text-sm text-ardoise">Aucune demande.</p>}
+        </div>
+        {/* Desktop : tableau */}
+        <div className="hidden md:block">
+          <DataTable bare columns={cols} rows={rows} empty="Aucune demande." />
+        </div>
         <p className="m-0 border-t border-[#E7E5E4] px-5 py-4 text-[13px] text-ardoise">
           Accepte si le numéro du compte est celui de la fiche. Sinon, appelle le numéro de la fiche avant d’accepter, ou envoie plutôt un code depuis la fiche du vendeur.
         </p>
