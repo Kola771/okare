@@ -8,6 +8,7 @@ import { ZoneButton } from '@/components/customer/layout/ZonePicker';
 import { Logo } from '@/components/ui/Logo';
 import type { MealMoment } from '@/shared/enums';
 import { BudgetChips } from './Filters';
+import { PriceFilterChipCompact } from './PriceFilterSheet';
 
 export const momentQuestion = (m: MealMoment) =>
   m === 'BREAKFAST' ? 'Tu manges quoi ce matin ?' : m === 'DINNER' ? 'Tu manges quoi ce soir ?' : 'Tu manges quoi ce midi ?';
@@ -30,7 +31,7 @@ export function MobileHomeHeader({ moment }: { moment: MealMoment }) {
       </form>
       <div className="flex flex-col gap-2 md:hidden">
         <div className="text-[13px] font-semibold text-ardoise">Mon budget</div>
-        <div className="no-scrollbar flex gap-2 overflow-x-auto"><BudgetChips compact /></div>
+        <div className="no-scrollbar flex gap-2 overflow-x-auto"><BudgetChips compact /><PriceFilterChipCompact /></div>
       </div>
     </div>
   );

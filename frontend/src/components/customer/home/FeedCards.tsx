@@ -75,35 +75,47 @@ export function FeedCard({ item, selected = false, onHover, priority = false, so
   });
   return (
     <article onMouseEnter={() => onHover?.(item.pos.id)} onMouseLeave={() => onHover?.(null)}
-      className={`flex flex-col overflow-hidden rounded-card bg-white ${selected
-        ? 'border-2 border-piment shadow-[0_10px_28px_rgba(194,65,12,0.16)]' : 'border border-trait shadow-[0_1px_2px_rgba(28,25,23,0.04)]'}`}>
-      <div className="relative h-[150px]">
-        <Link href={dishHref(item)} className="block h-full" tabIndex={-1} aria-hidden>
+      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 ${selected
+        ? 'ring-2 ring-piment shadow-[0_10px_28px_rgba(194,65,12,0.16)]' : 'shadow-[0_2px_12px_rgba(28,25,23,0.07)] hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(28,25,23,0.13)]'}`}>
+      {/* Image avec overlay gradient */}
+      <Link href={dishHref(item)} className="relative block h-[190px] overflow-hidden" tabIndex={-1} aria-hidden>
+        <span className="block h-full transition-transform duration-500 ease-out group-hover:scale-105">
           <DishImage imageUrl={item.dish.imageUrl} illustrationKey={item.dish.illustrationKey} alt="" priority={priority} />
-        </Link>
-        <span className="absolute bottom-3 left-3"><OpenBadge status={item.pos.openStatus} /></span>
-        <button type="button" onClick={() => toggle(item.pos.id, item.pos.name)} aria-pressed={fav}
-          aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-          className="absolute right-2.5 top-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-white text-piment shadow">
-          <Heart size={18} className={fav ? 'fill-piment' : ''} />
-        </button>
-      </div>
-      <div className="flex flex-1 flex-col gap-2.5 px-4 pb-4 pt-3.5">
-        <div className="flex items-baseline justify-between gap-2.5">
-          <Link href={dishHref(item)} className="text-base font-bold text-charbon no-underline hover:underline">{item.dish.name}</Link>
-          <Price xof={item.dish.priceXof} className="text-lg" />
+        </span>
+        <span className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        {/* Prix sur l'image */}
+        <span className="absolute bottom-3 right-3.5 rounded-lg bg-white/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
+          <Price xof={item.dish.priceXof} className="text-[17px]" />
+        </span>
+        {/* Badge ouvert sur l'image */}
+        <span className="absolute bottom-3 left-3.5"><OpenBadge status={item.pos.openStatus} /></span>
+      </Link>
+      {/* Coeur */}
+      <button type="button" onClick={() => toggle(item.pos.id, item.pos.name)} aria-pressed={fav}
+        aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+        className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-110 ${fav ? 'bg-piment text-white' : 'bg-white/80 text-piment'}`}>
+        <Heart size={16} className={fav ? 'fill-white' : ''} />
+      </button>
+      {/* Contenu */}
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
+        <Link href={dishHref(item)} className="line-clamp-1 text-[16px] font-bold text-charbon no-underline transition-colors group-hover:text-piment">{item.dish.name}</Link>
+        <div className="mt-1 flex items-center gap-x-1.5 text-[13px] text-ardoise">
+          <span className="truncate font-semibold text-encre">{item.pos.name}</span>
+          <span aria-hidden className="text-bordure-douce">·</span>
+          <span className="whitespace-nowrap">{POS_TYPE_LABEL[item.pos.type]}</span>
+          {item.pos.distanceM != null && <>
+            <span aria-hidden className="text-bordure-douce">·</span>
+            <span className="inline-flex items-center gap-0.5 whitespace-nowrap"><MapPin size={12} />{formatDistance(item.pos.distanceM)}</span>
+          </>}
         </div>
-        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] text-ardoise">
-          <b className="font-semibold text-charbon">{item.pos.name}</b><span aria-hidden>·</span>{POS_TYPE_LABEL[item.pos.type]}
-          {item.pos.distanceM != null && <><span aria-hidden>·</span><MapPin size={13} />{formatDistance(item.pos.distanceM)}</>}
-        </div>
-        <div className="mt-auto flex gap-2">
-          <button type="button" onClick={() => contact(target('WHATSAPP'))}
-            className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-feuille text-sm font-bold text-white">
-            <WhatsAppIcon /> Commander sur WhatsApp
+        {/* Actions */}
+        <div className="mt-3 flex items-center gap-2">
+          <button type="button" onClick={() => contact(target('WHATSAPP'))} aria-label={`Commander ${item.dish.name} sur WhatsApp`}
+            className="flex h-11 flex-1 items-center justify-center gap-2.5 rounded-xl bg-feuille text-[13px] font-bold text-white shadow-[0_2px_8px_rgba(21,128,61,0.3)] transition-all hover:shadow-[0_4px_16px_rgba(21,128,61,0.4)] active:scale-[0.98]">
+            <WhatsAppIcon size={18} /> Commander
           </button>
           <button type="button" onClick={() => contact(target('CALL'))} aria-label={`Appeler pour ${item.dish.name}`}
-            className="flex min-h-11 w-11 items-center justify-center rounded-xl border border-trait text-charbon">
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-trait text-ardoise transition-all hover:border-charbon hover:text-charbon active:scale-95">
             <Phone size={18} />
           </button>
         </div>

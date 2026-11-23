@@ -39,7 +39,7 @@ export const BUSINESS_RULES = {
   hours: { closingSoonMinutes: 30, closedTodayReportThreshold: 2, reconfirmAfterDays: 60 },
   search: { nearbyRadiusMeters: 1500 },
   whatsappMessageTemplate:
-    "Bonjour {posName}, je vous ai trouvé sur OKARE. {dishLine}Qu'est-ce que vous avez aujourd'hui ?",
+    "Bonjour {posName}, je vous ai trouvé sur OKARE. {dishLine}Qu'est-ce que vous avez aujourd'hui ?\n\n{link}\n{siteUrl}",
 };
 
 export type BusinessRules = typeof BUSINESS_RULES;

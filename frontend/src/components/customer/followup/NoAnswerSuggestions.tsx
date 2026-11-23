@@ -10,15 +10,15 @@ import { Price } from '@/components/ui/Badges';
 import { formatDistance } from '@/shared/format';
 
 export function NoAnswerSuggestions({ excludePosId, onNavigate }: { excludePosId: string; onNavigate: () => void }) {
-  const { zoneId, budgetMax, position } = useViewer();
+  const { zoneId, budgetMin, budgetMax, position } = useViewer();
   const [items, setItems] = useState<FeedItem[] | null>(null);
 
   useEffect(() => {
     if (!zoneId) return;
-    getFeed({ zoneId, budgetMax, lat: position?.lat, lng: position?.lng, limit: 6 })
+    getFeed({ zoneId, budgetMin, budgetMax, lat: position?.lat, lng: position?.lng, limit: 6 })
       .then((p) => setItems(p.items.filter((i) => i.pos.id !== excludePosId).slice(0, 2)))
       .catch(() => setItems([]));
-  }, [zoneId, budgetMax, position, excludePosId]);
+  }, [zoneId, budgetMin, budgetMax, position, excludePosId]);
 
   if (!items?.length) return null;
   return (

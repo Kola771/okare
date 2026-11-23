@@ -22,7 +22,7 @@ export function DataTable<T extends { id: string }>({ columns, rows, empty = 'Au
   return (
     <div className={bare ? '' : 'overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white'}>
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+        <table className="w-full min-w-max border-collapse text-left text-sm">
           <thead>
             <tr className="bg-[#FAFAF9] text-xs text-ardoise">
               {columns.map((c) => <th key={c.key} className={`px-4 py-3 font-semibold ${c.className ?? ''}`}>{c.label}</th>)}
@@ -31,7 +31,7 @@ export function DataTable<T extends { id: string }>({ columns, rows, empty = 'Au
           <tbody>
             {shown.length ? shown.map((r) => (
               <tr key={r.id} onClick={onRow ? () => onRow(r) : undefined} className={`border-t border-[#E7E5E4] ${onRow ? 'cursor-pointer hover:bg-[#FAFAF9]' : ''}`}>
-                {columns.map((c) => <td key={c.key} className={`px-4 py-3 align-middle ${c.className ?? ''}`}>{c.render(r)}</td>)}
+                {columns.map((c) => <td key={c.key} className={`whitespace-nowrap px-4 py-3 align-middle ${c.className ?? ''}`}>{c.render(r)}</td>)}
               </tr>
             )) : (
               <tr><td colSpan={columns.length} className="px-4 py-8 text-center text-ardoise">{empty}</td></tr>

@@ -13,6 +13,7 @@ import type { DishCategory } from '@/shared/types';
 import { BudgetChips, CategoryChips, MomentTabs, OpenNowChip } from './Filters';
 import { FeedList } from './FeedList';
 import { MobileHomeHeader, momentQuestion } from './MobileHomeHeader';
+import { PriceFilterChip } from './PriceFilterSheet';
 import { useFeed } from './useFeed';
 
 const WEEKDAYS = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
@@ -56,6 +57,7 @@ export function HomeScreen({ initialFeed, initialMoment, weekday, categories }: 
           <div className="hidden flex-wrap items-center gap-2 rounded-2xl border border-trait bg-white/85 px-3 py-2.5 md:flex">
             <span className="mx-1 text-[13px] font-bold text-ardoise">Budget</span>
             <BudgetChips variant="dark" />
+            <PriceFilterChip />
             <span className="mx-1 h-[26px] w-px bg-trait" />
             <OpenNowChip />
           </div>

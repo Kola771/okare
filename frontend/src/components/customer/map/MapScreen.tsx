@@ -22,7 +22,7 @@ const pill = (on: boolean) =>
 export function MapScreen() {
   const router = useRouter();
   const isDesktop = useIsDesktop();
-  const { zone, budgetMax, setBudget, openNow, setOpenNow } = useViewer();
+  const { zone, budgetMin, budgetMax, setBudget, openNow, setOpenNow } = useViewer();
   const [moment, setMoment] = useState<MealMoment>(() => momentOfDay(new Date()));
   const [selected, setSelected] = useState<string | null>(null);
   const [q, setQ] = useState('');
@@ -50,8 +50,8 @@ export function MapScreen() {
           </Link>
         </div>
         <div className="no-scrollbar pointer-events-auto flex gap-2 overflow-x-auto pb-1">
-          <button type="button" className={pill(budgetMax != null)} onClick={() => setBudget(budgetMax == null ? 1000 : null)}>
-            {budgetMax != null ? `≤ ${formatPrice(budgetMax)}` : 'Tous les budgets'}
+          <button type="button" className={pill(budgetMax != null || budgetMin != null)} onClick={() => setBudget(budgetMax == null && budgetMin == null ? 1000 : null)}>
+            {budgetMin != null ? `${formatPrice(budgetMin)} – ${formatPrice(budgetMax!)}` : budgetMax != null ? `≤ ${formatPrice(budgetMax)}` : 'Tous les budgets'}
           </button>
           <button type="button" aria-pressed={openNow} className={pill(openNow)} onClick={() => setOpenNow(!openNow)}>Ouvert maintenant</button>
           <button type="button" className={pill(false)} onClick={() => setMoment(nextMoment[moment] ?? 'LUNCH')}>

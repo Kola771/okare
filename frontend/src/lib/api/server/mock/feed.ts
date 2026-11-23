@@ -74,6 +74,7 @@ export function computeFeed(query: FeedQuery, now: Date): FeedItem[] {
       .map((d) => ({ d, card: dishCard(d, now) }))
       .filter(({ d, card }) =>
         !card.isSoldOut
+        && (query.budgetMin == null || card.priceXof >= query.budgetMin)
         && (query.budgetMax == null || card.priceXof <= query.budgetMax)
         && (!query.moment || d.moment === query.moment || d.moment === 'ALL_DAY')
         && (!catKey || card.illustrationKey === catKey)

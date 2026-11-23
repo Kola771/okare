@@ -10,14 +10,21 @@ import type { ManagedPos } from '@/lib/api';
 import { QrActions } from './QrActions';
 import { QrPoster } from './QrPoster';
 
-/** Domaine public à confirmer (spec 12.6). */
-export const QR_BASE = 'okare.bj/q/';
+export function qrBase() {
+  const host = typeof window !== 'undefined' ? window.location.host : 'localhost:3000';
+  return `${host}/q/`;
+}
+
+export function qrUrl(code: string) {
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000';
+  return `${origin}/q/${code}`;
+}
 
 const STEPS = ['L’agent colle l’autocollant à l’entrée', 'Le client le scanne avec son appareil photo', 'Il voit ton menu et commande sur WhatsApp'];
 
 export function QrPanel({ pos }: { pos: ManagedPos }) {
-  const short = `${QR_BASE}${pos.qrCode}`;
-  const url = `https://${short}`;
+  const short = `${qrBase()}${pos.qrCode}`;
+  const url = qrUrl(pos.qrCode);
   return (
     <section className="grid overflow-hidden rounded-[24px] border border-[#E7E5E4] bg-white lg:grid-cols-[400px_minmax(0,1fr)]">
       <div className="relative flex items-center justify-center overflow-hidden bg-charbon px-6 py-10 lg:py-12">

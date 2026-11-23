@@ -8,7 +8,7 @@ import { Pill } from '@/components/admin/AdminParts';
 import { Card } from '@/components/admin/Card';
 import { useToast } from '@/components/providers/ToastProvider';
 import { OpenBadge } from '@/components/ui/Badges';
-import { QR_BASE } from '@/components/seller/points/QrPanel';
+import { qrBase, qrUrl } from '@/components/seller/points/QrPanel';
 
 const hhmm = (iso: string) => new Date(iso).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Porto-Novo' }).replace(':', 'h');
 const linkCls = 'text-left text-[13px] font-semibold text-piment underline';
@@ -37,9 +37,9 @@ export function SheetSide({ pos, sheet, onChange }: { pos: ManagedPos; sheet: Po
       </Card>
       <Card title="QR code">
         <div className="flex items-center gap-4">
-          <span className="rounded-xl border border-[#E7E5E4] p-2"><QRCodeSVG value={`https://${QR_BASE}${pos.qrCode}`} size={100} marginSize={0} /></span>
+          <span className="rounded-xl border border-[#E7E5E4] p-2"><QRCodeSVG value={qrUrl(pos.qrCode)} size={100} marginSize={0} /></span>
           <div className="flex min-w-0 flex-col gap-1.5">
-            <b className="text-[13px]">{QR_BASE}{pos.qrCode}</b>
+            <b className="text-[13px]">{qrBase()}{pos.qrCode}</b>
             <span className="text-[13px] text-ardoise">{pos.qrScans7d} scans cette semaine</span>
             <Link href={`/dashboard/points/${pos.id}?tab=qr`} className={linkCls}>Télécharger l’affiche A5</Link>
             <button type="button" className={linkCls} onClick={() => toast('Demande de réimpression envoyée à l’agent de la zone.', 'success')}>Réimprimer l’autocollant</button>

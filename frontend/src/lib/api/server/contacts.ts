@@ -3,6 +3,7 @@
  * POST /followups/:contactId · GET /me/contacts.
  */
 import 'server-only';
+import { headers } from 'next/headers';
 import { db } from '@/mocks';
 import { BUSINESS_RULES } from '@/shared/business-rules';
 import { whatsappMessage, whatsappUrl } from '@/shared/format';
@@ -17,7 +18,11 @@ import { dishCard, visibleDishes } from './mock/views';
 const MIN = 60_000;
 
 /** Enregistre le contact puis renvoie l'URL WhatsApp pré-remplie ou tel:. */
-export function createContact(input: ContactInput): Promise<ContactResult> {
+export async function createContact(input: ContactInput): Promise<ContactResult> {
+  const h = await headers();
+  const host = h.get('host') ?? 'localhost:3000';
+  const proto = h.get('x-forwarded-proto') ?? 'http';
+  const siteUrl = `${proto}://${host}`;
   return simulate(() => {
     hydrate();
     const user = requireUser();
@@ -57,7 +62,7 @@ export function createContact(input: ContactInput): Promise<ContactResult> {
     const phone = channel === 'CALL' ? pos.callPhone ?? pos.whatsappPhone : pos.whatsappPhone;
     const url = channel === 'CALL'
       ? `tel:${phone}`
-      : whatsappUrl(phone, whatsappMessage(pos.name, card ? { name: card.name, priceXof: card.priceXof } : null));
+      : whatsappUrl(phone, whatsappMessage(pos.name, card ? { name: card.name, priceXof: card.priceXof, slug: dish?.slug } : null, pos.slug, siteUrl));
     return { contactId: id, url };
   });
 }

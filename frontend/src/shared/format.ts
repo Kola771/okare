@@ -68,10 +68,14 @@ export function displayPhone(e164: string): string {
 }
 
 /** Message pré-rempli (9.3) — jamais retiré : c'est la preuve visible pour le vendeur. */
-export function whatsappMessage(posName: string, dish?: { name: string; priceXof: number } | null,
-  template = BUSINESS_RULES.whatsappMessageTemplate): string {
+export function whatsappMessage(posName: string, dish?: { name: string; priceXof: number; slug?: string } | null,
+  posSlug?: string, siteUrl?: string, template = BUSINESS_RULES.whatsappMessageTemplate): string {
+  const base = siteUrl ?? '';
   const dishLine = dish ? `Je suis intéressé(e) par « ${dish.name} » (${formatPrice(dish.priceXof)}). ` : '';
-  return template.replace('{posName}', posName).replace('{dishLine}', dishLine);
+  const link = dish?.slug && posSlug
+    ? `${base}/p/${posSlug}/dish/${dish.slug}`
+    : posSlug ? `${base}/p/${posSlug}` : base;
+  return template.replace('{posName}', posName).replace('{dishLine}', dishLine).replace('{link}', link).replace('{siteUrl}', base);
 }
 
 export function whatsappUrl(e164: string, text: string): string {

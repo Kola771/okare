@@ -14,11 +14,12 @@ const budgetLabel = (b: number | null, compact: boolean) =>
   b == null ? (compact ? '+' : 'Tout') : `≤ ${new Intl.NumberFormat('fr-FR').format(b).replace(/ /g, ' ')}${compact ? '' : ' F'}`;
 
 export function BudgetChips({ compact = false, variant = 'piment' }: { compact?: boolean; variant?: 'piment' | 'dark' }) {
-  const { budgetMax, setBudget } = useViewer();
+  const { budgetMin, budgetMax, setBudget } = useViewer();
+  const isRange = budgetMin != null;
   return (
     <>
       {BUDGET_STEPS.map((b) => (
-        <Chip key={String(b)} active={budgetMax === b} variant={variant} onClick={() => setBudget(b)}
+        <Chip key={String(b)} active={!isRange && budgetMax === b} variant={variant} onClick={() => setBudget(b)}
           aria-label={b == null ? 'Tous les budgets' : `Budget jusqu'à ${b} francs`}>
           {budgetLabel(b, compact)}
         </Chip>

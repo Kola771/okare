@@ -15,6 +15,8 @@ interface ViewerValue extends Prefs {
   zone: ZoneOption | null;
   setZone: (zoneId: string) => void;
   setBudget: (b: number | null) => void;
+  /** Filtre par fourchette de prix autour d'un montant (±30 %). */
+  setBudgetRange: (min: number | null, max: number | null) => void;
   setOpenNow: (v: boolean) => void;
   /** Demande la position ; renvoie un message à afficher (hors zones, refus…) ou null. */
   locateMe: () => Promise<string | null>;
@@ -38,7 +40,8 @@ export function ViewerProvider({ children, initialPrefs, zones }: { children: Re
   }, [prefs]);
 
   const setZone = useCallback((zoneId: string) => setPrefs((p) => ({ ...p, zoneId, position: null })), []);
-  const setBudget = useCallback((budgetMax: number | null) => setPrefs((p) => ({ ...p, budgetMax })), []);
+  const setBudget = useCallback((budgetMax: number | null) => setPrefs((p) => ({ ...p, budgetMin: null, budgetMax })), []);
+  const setBudgetRange = useCallback((budgetMin: number | null, budgetMax: number | null) => setPrefs((p) => ({ ...p, budgetMin, budgetMax })), []);
   const setOpenNow = useCallback((openNow: boolean) => setPrefs((p) => ({ ...p, openNow })), []);
 
   const locateMe = useCallback(async (): Promise<string | null> => {
@@ -57,8 +60,8 @@ export function ViewerProvider({ children, initialPrefs, zones }: { children: Re
 
   const value = useMemo<ViewerValue>(() => ({
     ...prefs, zones, zone: zones.find((z) => z.id === prefs.zoneId) ?? null,
-    setZone, setBudget, setOpenNow, locateMe, ready,
-  }), [prefs, zones, setZone, setBudget, setOpenNow, locateMe, ready]);
+    setZone, setBudget, setBudgetRange, setOpenNow, locateMe, ready,
+  }), [prefs, zones, setZone, setBudget, setBudgetRange, setOpenNow, locateMe, ready]);
 
   return <ViewerContext.Provider value={value}>{children}</ViewerContext.Provider>;
 }

@@ -25,7 +25,7 @@ interface Props {
 }
 
 export function MapPanel({ filters, selectedId, onSelect, variant, summaryBottom = 'bottom-3' }: Props) {
-  const { zoneId, zone, position, budgetMax, openNow, locateMe } = useViewer();
+  const { zoneId, zone, position, budgetMin, budgetMax, openNow, locateMe } = useViewer();
   const toast = useToast();
   const [markers, setMarkers] = useState<MapMarker[]>([]);
   const [searchOnMove, setSearchOnMove] = useState(variant === 'desktop');
@@ -36,10 +36,10 @@ export function MapPanel({ filters, selectedId, onSelect, variant, summaryBottom
 
   useEffect(() => {
     if (!zoneId) return;
-    getMap({ zoneId, lat: position?.lat, lng: position?.lng, budgetMax, openNow, ...filters, bbox: searchOnMove ? bbox : undefined })
+    getMap({ zoneId, lat: position?.lat, lng: position?.lng, budgetMin, budgetMax, openNow, ...filters, bbox: searchOnMove ? bbox : undefined })
       .then(setMarkers)
       .catch((e) => toast(errorMessage(e), 'error'));
-  }, [zoneId, position, budgetMax, openNow, filters, bbox, searchOnMove, toast]);
+  }, [zoneId, position, budgetMin, budgetMax, openNow, filters, bbox, searchOnMove, toast]);
 
   const onMoved = useCallback((b: [number, number, number, number]) => {
     if (first.current) {

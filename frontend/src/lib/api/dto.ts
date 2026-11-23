@@ -66,6 +66,7 @@ export interface FeedQuery {
   zoneId: Uuid;
   lat?: number;
   lng?: number;
+  budgetMin?: number | null;
   budgetMax?: number | null;
   moment?: MealMoment;
   categoryId?: Uuid;

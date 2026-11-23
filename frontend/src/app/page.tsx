@@ -11,7 +11,7 @@ export default async function HomePage() {
   const moment = momentOfDay(clock);
   const empty: FeedPage = { items: [], total: 0, nextCursor: null };
   const [feed, categories] = await Promise.all([
-    prefs.zoneId ? getFeed({ zoneId: prefs.zoneId, lat: point?.lat, lng: point?.lng, budgetMax: prefs.budgetMax, openNow: prefs.openNow, moment, limit: 12 })
+    prefs.zoneId ? getFeed({ zoneId: prefs.zoneId, lat: point?.lat, lng: point?.lng, budgetMin: prefs.budgetMin, budgetMax: prefs.budgetMax, openNow: prefs.openNow, moment, limit: 12 })
       .catch(() => empty) : empty,
     getDishCategories().catch(() => []),
   ]);

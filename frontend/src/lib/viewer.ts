@@ -5,12 +5,13 @@
 export interface ViewerPrefs {
   zoneId: string | null;
   position: { lat: number; lng: number; accuracy: number } | null;
+  budgetMin: number | null;
   budgetMax: number | null;
   openNow: boolean;
 }
 
 export const VIEWER_COOKIE = 'okare_viewer';
-export const DEFAULT_VIEWER: ViewerPrefs = { zoneId: null, position: null, budgetMax: 1000, openNow: true };
+export const DEFAULT_VIEWER: ViewerPrefs = { zoneId: null, position: null, budgetMin: null, budgetMax: 1000, openNow: true };
 
 export function parseViewer(raw: string | undefined | null): ViewerPrefs {
   if (!raw) return DEFAULT_VIEWER;

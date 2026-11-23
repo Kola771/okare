@@ -13,7 +13,7 @@ export interface FeedFilters {
 
 /** `initial` = première page calculée par le serveur : pas de chargement au premier affichage (spec 0ter.9). */
 export function useFeed(filters: FeedFilters, limit = 12, initial?: FeedPage) {
-  const { zoneId, position, budgetMax, openNow, ready } = useViewer();
+  const { zoneId, position, budgetMin, budgetMax, openNow, ready } = useViewer();
   const [items, setItems] = useState<FeedItem[]>(initial?.items ?? []);
   const [total, setTotal] = useState(initial?.total ?? 0);
   const [cursor, setCursor] = useState<string | null>(initial?.nextCursor ?? null);
@@ -23,9 +23,9 @@ export function useFeed(filters: FeedFilters, limit = 12, initial?: FeedPage) {
   const [error, setError] = useState<string | null>(null);
 
   const query = useCallback((c?: string): FeedQuery | null => (zoneId ? {
-    zoneId, lat: position?.lat, lng: position?.lng, budgetMax, openNow, limit, cursor: c,
+    zoneId, lat: position?.lat, lng: position?.lng, budgetMin, budgetMax, openNow, limit, cursor: c,
     moment: filters.moment, categoryId: filters.categoryId, q: filters.q || undefined,
-  } : null), [zoneId, position, budgetMax, openNow, limit, filters.moment, filters.categoryId, filters.q]);
+  } : null), [zoneId, position, budgetMin, budgetMax, openNow, limit, filters.moment, filters.categoryId, filters.q]);
 
   const load = useCallback(async () => {
     const q = query();

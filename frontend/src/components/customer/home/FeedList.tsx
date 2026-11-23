@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function FeedList({ feed, hoveredId, onHover, withFavorites = false, source = 'HOME', emptyText }: Props) {
-  const { openNow, setOpenNow, budgetMax, setBudget } = useViewer();
+  const { openNow, setOpenNow, budgetMin, budgetMax, setBudget, setBudgetRange } = useViewer();
   if (feed.loading) return <LoadingList count={4} className="h-32" />;
   if (feed.error) return <ErrorState message={feed.error} onRetry={feed.reload} />;
   if (!feed.items.length) {
@@ -31,7 +31,7 @@ export function FeedList({ feed, hoveredId, onHover, withFavorites = false, sour
         action={
           <div className="flex flex-wrap justify-center gap-2">
             {openNow && <button onClick={() => setOpenNow(false)} className="min-h-11 rounded-btn bg-charbon px-4 text-sm font-bold text-white">Voir aussi les points fermés</button>}
-            {budgetMax != null && <button onClick={() => setBudget(null)} className="min-h-11 rounded-btn border border-bordure px-4 text-sm font-bold">Tous les budgets</button>}
+            {(budgetMax != null || budgetMin != null) && <button onClick={() => { setBudget(null); }} className="min-h-11 rounded-btn border border-bordure px-4 text-sm font-bold">Tous les budgets</button>}
           </div>
         }
       />
