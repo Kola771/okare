@@ -45,7 +45,8 @@ export function UsersScreen() {
 
   const cols: Column<AdminUserRow>[] = [
     { key: 'n', label: 'Utilisateur', render: (u) => <span className="flex items-center gap-3"><Avatar name={u.name} />
-      <span><b className="block">{u.name}</b><span className="text-xs text-ardoise">{u.contact}</span></span></span> },
+      <span><b className="block">{u.name}</b><span className="text-xs text-ardoise">{u.phone}</span></span></span> },
+    { key: 'e', label: 'E-mail', render: (u) => <span className="text-sm text-ardoise">{u.email || '—'}</span> },
     { key: 'r', label: 'Rôle', render: (u) => { const r = u.roles[0]; return r ? <Pill tone={ROLE_TONE[r]}>{ROLE_FR[r]}</Pill> : <Pill>—</Pill>; } },
     { key: 'l', label: 'Connexion', render: (u) => u.login },
     { key: 't', label: '2FA', render: (u) => (u.totp === '—' ? <Pill>—</Pill> : <Pill tone={u.totp === 'Activée' ? 'ok' : 'bad'}>{u.totp}</Pill>) },
@@ -128,8 +129,8 @@ function UserFormSheet({ open, onClose, target, onDone }: {
     if (!open) return;
     if (target) {
       setName(target.name);
-      setPhone(target.contact.startsWith('+') ? target.contact : '');
-      setEmail(target.contact.includes('@') ? target.contact : '');
+      setPhone(target.phone);
+      setEmail(target.email);
       setRole(target.roles[0] ?? 'CLIENT');
     } else {
       setName('');

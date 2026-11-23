@@ -11,7 +11,7 @@ import { audit } from './mock/manage';
 import { persist, simulate } from './mock/runtime';
 import { requireTeam, rolePermissionTable } from './mock/team';
 
-export interface AdminUserRow { id: string; name: string; contact: string; roles: Role[]; login: string; totp: string; scope: string; lastSeen: string | null; blocked: boolean }
+export interface AdminUserRow { id: string; name: string; phone: string; email: string; contact: string; roles: Role[]; login: string; totp: string; scope: string; lastSeen: string | null; blocked: boolean }
 
 export function listUsers(): Promise<AdminUserRow[]> {
   return simulate(() => {
@@ -28,6 +28,8 @@ export function listUsers(): Promise<AdminUserRow[]> {
       else if (role === 'VENDOR' && points) scope = `${points} point${points > 1 ? 's' : ''} de vente`;
       return {
         id: u.id, name: u.fullName ?? 'Client', roles: u.roles, blocked: u.isBlocked, lastSeen: u.lastSeenAt ?? u.updatedAt,
+        phone: team || role === 'VENDOR' || superAdmin ? u.phone ?? '' : maskPhone(u.phone),
+        email: u.email ?? '',
         contact: u.email ?? (team || role === 'VENDOR' || superAdmin ? u.phone ?? '' : maskPhone(u.phone)),
         login: u.googleSub ? 'Google' : 'Téléphone', totp: team ? (u.totpEnabledAt ? 'Activée' : 'À activer') : '—',
         scope,
