@@ -2,14 +2,14 @@
 
 ## Stack
 
-| Couche | Choix |
-|---|---|
-| Framework | NestJS 11 (TypeScript) |
-| ORM | TypeORM 0.3 |
-| Base de données | PostgreSQL 16 + PostGIS (principal) / MySQL 8 (compatible) |
-| Sécurité | Helmet |
-| Validation | class-validator + class-transformer |
-| Hachage | argon2 |
+| Couche            | Choix                                                                          |
+| ----------------- | ------------------------------------------------------------------------------ |
+| Framework         | NestJS 11 (TypeScript)                                                         |
+| ORM               | TypeORM 0.3                                                                    |
+| Base de données  | PostgreSQL 16 + PostGIS (principal) / MySQL 8 (compatible)                     |
+| Sécurité        | Helmet                                                                         |
+| Validation        | class-validator + class-transformer                                            |
+| Hachage           | argon2                                                                         |
 | Stockage fichiers | S3 compatible (Cloudflare R2 / MinIO en local) — pas de dossier uploads local |
 
 ## Dépendances installées
