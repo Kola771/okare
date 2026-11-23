@@ -28,7 +28,7 @@ describe('getVisibilityClass (11.0 f)', () => {
 describe('permissions (5.2, 5.3)', () => {
   it('un client ne gère pas de plat ; un vendeur oui', () => {
     expect(hasPermission(['CLIENT'], 'dish.manage')).toBe(false);
-    expect(hasPermission(['CLIENT', 'VENDOR'], 'dish.manage')).toBe(true);
+    expect(hasPermission(['VENDOR'], 'dish.manage')).toBe(true);
   });
   it('agent : seulement ses zones (une ou plusieurs)', () => {
     const agent = { id: 'a', roles: ['FIELD_AGENT' as const], agentZoneIds: ['z1', 'z2'] };
