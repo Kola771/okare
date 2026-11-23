@@ -5,8 +5,8 @@ import { getMe } from '@/lib/api';
 import { readViewer } from '@/lib/viewer-server';
 import './globals.css';
 
-const bricolage = Bricolage_Grotesque({ subsets: ['latin'], weight: ['600', '800'], variable: '--font-bricolage' });
-const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], display: 'swap', variable: '--font-inter' });
+const bricolage = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-bricolage' });
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: { default: 'OKARE — Où manger près de toi, à ton budget', template: '%s · OKARE' },
