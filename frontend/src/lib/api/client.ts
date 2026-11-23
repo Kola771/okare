@@ -21,6 +21,9 @@ function call<K extends keyof Registry>(name: K): Fn<K> {
   }) as Fn<K>;
 }
 
+export const createUser = call('createUser');
+export const updateUser = call('updateUser');
+export const deleteUser = call('deleteUser');
 export const addFavorite = call('addFavorite');
 export const addPosPhoto = call('addPosPhoto');
 export const answerFollowUp = call('answerFollowUp');

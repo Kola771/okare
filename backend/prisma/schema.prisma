@@ -870,6 +870,20 @@ model ResponseTest {
 // 6. Statistiques (cumuls de la nuit)
 // =====================================================================
 
+/// Statistiques globales de la plateforme (cumul quotidien, job de nuit)
+model PlatformDailyStat {
+  businessDate    DateTime @id @db.Date /// Jour
+  uniqueVisitors  Int      @default(0) /// Visiteurs uniques
+  sessions        Int      @default(0) /// Sessions
+  pageViews       Int      @default(0) /// Pages vues
+  newSignups      Int      @default(0) /// Nouveaux inscrits
+  activeVendors   Int      @default(0) /// Vendeurs actifs (au moins un plat du jour)
+  totalContacts   Int      @default(0) /// Contacts (WhatsApp + appels)
+  totalOrders     Int      @default(0) /// Commandes confirmées
+
+  @@map("platform_daily_stats")
+}
+
 /// Statistiques du jour d'un point de vente
 model PosDailyStat {
   posId               String   @db.Uuid /// Point de vente

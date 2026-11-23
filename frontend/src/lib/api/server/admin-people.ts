@@ -19,14 +19,18 @@ export function listUsers(): Promise<AdminUserRow[]> {
     const superAdmin = me.roles.includes('SUPER_ADMIN');
     return db.users.filter((u) => !u.deletedAt).map((u) => {
       const team = u.roles.some((r) => r === 'FIELD_AGENT' || r === 'ADMIN' || r === 'SUPER_ADMIN');
-      const zones = db.agentZones.filter((a) => a.userId === u.id).map((a) => db.zones.find((z) => z.id === a.zoneId)?.name).join(', ');
-      const points = db.pointsOfSale.filter((p) => db.vendors.find((v) => v.id === p.vendorId)?.userId === u.id).length;
+      const role = u.roles[0] ?? 'CLIENT';
+      const zones = role === 'FIELD_AGENT' ? db.agentZones.filter((a) => a.userId === u.id).map((a) => db.zones.find((z) => z.id === a.zoneId)?.name).join(', ') : '';
+      const points = role === 'VENDOR' ? db.pointsOfSale.filter((p) => db.vendors.find((v) => v.id === p.vendorId)?.userId === u.id).length : 0;
+      let scope = '—';
+      if (role === 'ADMIN' || role === 'SUPER_ADMIN') scope = 'Toutes';
+      else if (role === 'FIELD_AGENT' && zones) scope = zones;
+      else if (role === 'VENDOR' && points) scope = `${points} point${points > 1 ? 's' : ''} de vente`;
       return {
         id: u.id, name: u.fullName ?? 'Client', roles: u.roles, blocked: u.isBlocked, lastSeen: u.lastSeenAt ?? u.updatedAt,
-        // Numéros des clients masqués pour tous sauf le super-admin (5.3).
-        contact: u.email ?? (team || u.roles.includes('VENDOR') || superAdmin ? u.phone ?? '' : maskPhone(u.phone)),
+        contact: u.email ?? (team || role === 'VENDOR' || superAdmin ? u.phone ?? '' : maskPhone(u.phone)),
         login: u.googleSub ? 'Google' : 'Téléphone', totp: team ? (u.totpEnabledAt ? 'Activée' : 'À activer') : '—',
-        scope: u.roles.includes('ADMIN') || u.roles.includes('SUPER_ADMIN') ? 'Toutes' : zones || (points ? `${points} point${points > 1 ? 's' : ''} de vente` : '—'),
+        scope,
       };
     });
   });
@@ -53,6 +57,71 @@ export function setUserRoles(userId: string, roles: Role[]): Promise<{ ok: true 
     const before = u.roles;
     u.roles = roles.length ? roles : ['CLIENT'];
     audit(user, 'role.assign', 'User', u.id, { roles: before }, { roles: u.roles });
+    persist();
+    return { ok: true as const };
+  });
+}
+
+export interface CreateUserInput { fullName: string; phone?: string; email?: string; roles: Role[] }
+
+export function createUser(input: CreateUserInput): Promise<{ id: string }> {
+  return simulate(() => {
+    const { user } = requireTeam('user.manage');
+    if (input.phone && db.users.some((u) => u.phone === input.phone && !u.deletedAt)) {
+      throw new ApiError(ERR.CONFLICT, 'Ce numéro de téléphone est déjà utilisé.', 409);
+    }
+    if (input.email && db.users.some((u) => u.email === input.email && !u.deletedAt)) {
+      throw new ApiError(ERR.CONFLICT, 'Cet e-mail est déjà utilisé.', 409);
+    }
+    const id = crypto.randomUUID();
+    const now = new Date().toISOString();
+    db.users.push({
+      id, phone: input.phone ?? null, email: input.email ?? null, googleSub: null, passwordHash: null,
+      fullName: input.fullName, avatarMediaId: null, roles: input.roles.length ? input.roles : ['CLIENT'],
+      homeZoneId: null, budgetMaxXof: null, notifyFavorites: true, askFollowUp: true, notifyNews: false,
+      phoneVerifiedAt: null, totpSecret: null, totpEnabledAt: null,
+      isBlocked: false, blockedReason: null, lastSeenAt: null,
+      createdAt: now, updatedAt: now, deletedAt: null,
+    });
+    audit(user, 'user.create', 'User', id, null, { fullName: input.fullName, roles: input.roles });
+    persist();
+    return { id };
+  });
+}
+
+export interface UpdateUserInput { fullName?: string; phone?: string; email?: string; roles?: Role[] }
+
+export function updateUser(userId: string, input: UpdateUserInput): Promise<{ ok: true }> {
+  return simulate(() => {
+    const { user } = requireTeam('user.manage');
+    const u = db.users.find((x) => x.id === userId);
+    if (!u) throw new ApiError(ERR.NOT_FOUND, 'Utilisateur introuvable.', 404);
+    if (input.phone && input.phone !== u.phone && db.users.some((x) => x.phone === input.phone && !x.deletedAt && x.id !== userId)) {
+      throw new ApiError(ERR.CONFLICT, 'Ce numéro de téléphone est déjà utilisé.', 409);
+    }
+    if (input.email && input.email !== u.email && db.users.some((x) => x.email === input.email && !x.deletedAt && x.id !== userId)) {
+      throw new ApiError(ERR.CONFLICT, 'Cet e-mail est déjà utilisé.', 409);
+    }
+    const before = { fullName: u.fullName, phone: u.phone, email: u.email, roles: u.roles };
+    if (input.fullName !== undefined) u.fullName = input.fullName;
+    if (input.phone !== undefined) u.phone = input.phone || null;
+    if (input.email !== undefined) u.email = input.email || null;
+    if (input.roles) u.roles = input.roles.length ? input.roles : ['CLIENT'];
+    u.updatedAt = new Date().toISOString();
+    audit(user, 'user.update', 'User', u.id, before, { fullName: u.fullName, phone: u.phone, email: u.email, roles: u.roles });
+    persist();
+    return { ok: true as const };
+  });
+}
+
+export function deleteUser(userId: string): Promise<{ ok: true }> {
+  return simulate(() => {
+    const { user } = requireTeam('user.manage');
+    const u = db.users.find((x) => x.id === userId);
+    if (!u) throw new ApiError(ERR.NOT_FOUND, 'Utilisateur introuvable.', 404);
+    if (u.id === user.id) throw new ApiError(ERR.FORBIDDEN, 'Tu ne peux pas supprimer ton propre compte.', 403);
+    u.deletedAt = new Date().toISOString();
+    audit(user, 'user.delete', 'User', u.id, null, null);
     persist();
     return { ok: true as const };
   });

@@ -40,9 +40,12 @@ export function FiltersBar({ geo: initialGeo, dateHint, dates = true }: { geo?: 
   const zones = (geo?.zones ?? []).filter((z) => (f.cityId ? z.cityId === f.cityId : countryZones(f.countryId).includes(z.cityId)));
   const nbs = (geo?.neighborhoods ?? []).filter((n) => (f.zoneId ? n.zoneId === f.zoneId : zones.some((z) => z.id === n.zoneId)));
 
+  const defaultFrom = () => { const d = new Date(); d.setDate(d.getDate() - 30); return d.toISOString().slice(0, 10); };
+  const defaultTo = () => new Date().toISOString().slice(0, 10);
+
   return (
     <section aria-label="Filtres" className="flex flex-col gap-3 rounded-2xl border border-[#E7E5E4] bg-white p-4">
-      <div className={`grid grid-cols-2 gap-3 ${dates ? 'sm:grid-cols-3 xl:grid-cols-6' : 'sm:grid-cols-4'}`}>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Pick label="Pays" all="Tous les pays" value={f.countryId ?? ''} options={geo?.countries ?? []}
           onChange={(v) => set({ countryId: v || undefined, cityId: undefined, zoneId: undefined, neighborhoodId: undefined })} />
         <Pick label="Ville" all="Toutes les villes" value={f.cityId ?? ''} options={cities}
@@ -51,13 +54,13 @@ export function FiltersBar({ geo: initialGeo, dateHint, dates = true }: { geo?: 
           onChange={(v) => set(v ? { ...zoneUp(v), neighborhoodId: undefined } : { zoneId: undefined, neighborhoodId: undefined })} />
         <Pick label="Quartier" all="Tous les quartiers" value={f.neighborhoodId ?? ''} options={nbs}
           onChange={(v) => set(v ? { neighborhoodId: v, ...zoneUp(geo?.neighborhoods.find((n) => n.id === v)?.zoneId) } : { neighborhoodId: undefined })} />
-        {dates && <>
-        <label className="flex min-w-0 flex-col gap-1 text-xs font-bold text-ardoise">Date de début
-          <input type="date" className={ctl} value={f.from ?? ''} max={f.to} onChange={(e) => set({ from: e.target.value || undefined })} /></label>
-        <label className="flex min-w-0 flex-col gap-1 text-xs font-bold text-ardoise">Date de fin
-          <input type="date" className={ctl} value={f.to ?? ''} min={f.from} onChange={(e) => set({ to: e.target.value || undefined })} /></label>
-        </>}
       </div>
+      {dates && <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label className="flex min-w-0 flex-col gap-1 text-xs font-bold text-ardoise">Date de début
+          <input type="date" className={ctl} value={f.from ?? defaultFrom()} max={f.to ?? defaultTo()} onChange={(e) => set({ from: e.target.value || undefined })} /></label>
+        <label className="flex min-w-0 flex-col gap-1 text-xs font-bold text-ardoise">Date de fin
+          <input type="date" className={ctl} value={f.to ?? defaultTo()} min={f.from ?? defaultFrom()} onChange={(e) => set({ to: e.target.value || undefined })} /></label>
+      </div>}
       <div className="flex flex-wrap items-center justify-between gap-2 text-[13px] text-ardoise">
         <span>{dateHint ?? ''}</span>
         {hasFilter(f) && <button type="button" className="font-semibold text-piment underline" onClick={() => router.replace(path, { scroll: false })}>Effacer les filtres</button>}

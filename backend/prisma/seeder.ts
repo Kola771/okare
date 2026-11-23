@@ -33,8 +33,8 @@ const PHONE_RE = /^\+2290[1-9]\d{8}$/;
 // Outils
 // ---------------------------------------------------------------------------
 
-/** UUID v7 (horodaté), pour les lignes insérées en SQL brut. */
-function uuidv7(): string {
+/** UUID v7 (horodaté), préfixé du nom de la table. Format : "table-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" */
+function uuidv7(table: string): string {
   const b = randomBytes(16);
   const ts = BigInt(Date.now());
   b[0] = Number((ts >> 40n) & 0xffn);
@@ -46,7 +46,7 @@ function uuidv7(): string {
   b[6] = (b[6] & 0x0f) | 0x70;
   b[8] = (b[8] & 0x3f) | 0x80;
   const h = b.toString('hex');
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+  return `${table}-${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
 }
 
 /** Jour métier (Africa/Porto-Novo) sous forme 'YYYY-MM-DD', décalé de `offsetDays`. */
@@ -389,8 +389,7 @@ async function seedSuperAdmin() {
 
   const existing = await prisma.user.findUnique({ where: { phone } });
   if (existing) {
-    const roles = Array.from(new Set<Role>([...existing.roles, 'SUPER_ADMIN']));
-    await prisma.user.update({ where: { id: existing.id }, data: { roles, ...(email && !existing.email ? { email } : {}) } });
+    await prisma.user.update({ where: { id: existing.id }, data: { roles: ['SUPER_ADMIN'], ...(email && !existing.email ? { email } : {}) } });
     console.log(`✓ Super-admin existant (${phone}) : rôle vérifié, mot de passe inchangé`);
     return existing.id;
   }
@@ -473,7 +472,7 @@ async function insertPos(p: DemoPos, vendorId: string, zoneId: string, actorId: 
   const slug = slugify(p.name);
   const found = await prisma.pointOfSale.findUnique({ where: { slug }, select: { id: true } });
   if (found) return found.id;
-  const id = uuidv7();
+  const id = uuidv7('points_of_sale');
   const now = new Date();
   const hasPublicPlace = p.hasPublicPlace ?? true;
   // Particulier sans lieu public : point décalé d'environ 300 m, calculé une fois (12.5).
@@ -571,7 +570,7 @@ async function seedDemo(superAdminId: string, zones: Record<string, { id: string
     // Règle : un vendeur Particulier a exactement un point de vente (OKARE_SPEC.md 12.5).
     if (v.pos.some((p) => p.type === 'PARTICULIER') && v.pos.length !== 1) throw new Error(`${v.displayName} : un Particulier n'a qu'un seul point de vente`);
     // Le premier vendeur a un compte (il gère et paie lui-même) ; les autres sont gérés par l'agent.
-    const owner = v === DEMO_VENDORS[0] ? await mkUser(v.phone, v.contactName, ['VENDOR', 'CLIENT']) : null;
+    const owner = v === DEMO_VENDORS[0] ? await mkUser(v.phone, v.contactName, ['VENDOR']) : null;
     const vendor = await prisma.vendor.create({
       data: {
         displayName: v.displayName, contactName: v.contactName, contactPhone: v.phone,
