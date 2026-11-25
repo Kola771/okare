@@ -18,7 +18,7 @@ const where = (f: FavoriteToday) => [f.pos.neighborhoodName ?? f.pos.zoneName, f
 export function FavoriteRow({ fav }: { fav: FavoriteToday }) {
   const closed = !isOpenNow(fav.pos.openStatus.state) && fav.pos.openStatus.state !== 'OPENS_LATER_TODAY';
   return (
-    <Link href={hrefOf(fav)} className={`flex gap-3 rounded-card border border-trait bg-white p-3 text-charbon no-underline ${closed ? 'opacity-75' : ''}`}>
+    <Link href={hrefOf(fav)} className={`flex gap-3 rounded-card border border-trait bg-surface p-3 text-charbon no-underline ${closed ? 'opacity-75' : ''}`}>
       <span className="block h-[76px] w-[76px] shrink-0 overflow-hidden rounded-[14px]">
         <DishImage illustrationKey={fav.special?.illustrationKey} imageUrl={fav.special?.imageUrl} closed={!fav.special} alt="" />
       </span>
@@ -44,14 +44,14 @@ export function FavoriteCard({ fav }: { fav: FavoriteToday }) {
     channel, source: 'FAVORITES' as const,
   });
   return (
-    <article className="flex flex-col overflow-hidden rounded-card border border-trait bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+    <article className="flex flex-col overflow-hidden rounded-card border border-trait bg-surface shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
       <div className="relative h-[150px]">
         <Link href={hrefOf(fav)} tabIndex={-1} aria-hidden className="block h-full">
           <DishImage illustrationKey={fav.special?.illustrationKey} imageUrl={fav.special?.imageUrl} closed={!fav.special} alt="" />
         </Link>
         <span className="absolute bottom-3 left-3"><OpenBadge status={fav.pos.openStatus} short /></span>
         <button type="button" aria-label="Retirer des favoris" onClick={() => toggle(fav.pos.id, fav.pos.name)}
-          className="absolute right-2.5 top-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-white text-piment shadow">
+          className="absolute right-2.5 top-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-surface text-piment shadow">
           <Heart size={18} className="fill-piment" />
         </button>
       </div>

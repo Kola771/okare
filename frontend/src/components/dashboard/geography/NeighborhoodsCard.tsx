@@ -54,12 +54,12 @@ export function NeighborhoodsCard({ city, geo, zones, neighborhoods }: {
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] border-collapse text-left text-sm">
-          <thead><tr className="bg-[#FAFAF9] text-xs text-ardoise">
+          <thead><tr className="bg-surface-inset text-xs text-ardoise">
             <th className="px-4 py-3 font-semibold">Quartier</th><th className="px-4 py-3 font-semibold">Autres orthographes</th>
             <th className="px-4 py-3 font-semibold">Zone</th><th className="px-4 py-3 font-semibold">Points</th><th className="px-4 py-3" />
           </tr></thead>
           <tbody>{items.length ? items.map((n) => (
-            <tr key={n.id} className="border-t border-[#E7E5E4]">
+            <tr key={n.id} className="border-t border-trait">
               <td className="px-4 py-3 font-bold">{n.name}</td>
               <td className="px-4 py-3 text-ardoise">{n.aliases.join(', ') || '—'}</td>
               <td className="px-4 py-3">{n.zoneName}</td>

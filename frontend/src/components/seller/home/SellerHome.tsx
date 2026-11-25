@@ -36,7 +36,7 @@ export function SellerHome({ home, stats, period, years, posName }: { home: Vend
       </div>
       <div className="grid grid-cols-2 gap-2.5 lg:hidden">
         {mini.map(([v, l]) => (
-          <div key={l} className="rounded-2xl border border-trait bg-white p-3"><div className="font-display text-xl font-extrabold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
+          <div key={l} className="rounded-2xl border border-trait bg-surface p-3"><div className="font-display text-xl font-extrabold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
         ))}
       </div>
 

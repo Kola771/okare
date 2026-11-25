@@ -11,7 +11,7 @@ import { useToast } from '@/components/providers/ToastProvider';
 import { Sheet } from '@/components/ui/Sheet';
 import { PlacePicker, type Place } from './PlacePicker';
 
-const rowCls = (on: boolean) => `flex w-full items-center justify-between gap-3 border-t border-[#E7E5E4] px-5 py-3 text-left ${on ? 'bg-piment-soft' : 'hover:bg-[#FAFAF9]'}`;
+const rowCls = (on: boolean) => `flex w-full items-center justify-between gap-3 border-t border-trait px-5 py-3 text-left ${on ? 'bg-piment-soft' : 'hover:bg-surface-inset'}`;
 
 function useSave() {
   const router = useRouter();
@@ -63,7 +63,7 @@ export function CitiesCard({ countryId, countries, cities, selected, onSelect }:
   const openSheet = () => { setPlace({ countryId, cityId: '', zoneId: '' }); setOpen(true); };
   return (
     <Card title="Villes" flush right={<button type="button" className={btn.secondary} onClick={openSheet}>+ Ajouter une ville</button>}>
-      {!cities.length && <p className="m-0 border-t border-[#E7E5E4] px-5 py-4 text-sm text-ardoise">Aucune ville dans ce pays.</p>}
+      {!cities.length && <p className="m-0 border-t border-trait px-5 py-4 text-sm text-ardoise">Aucune ville dans ce pays.</p>}
       {cities.map((c) => (
         <div key={c.id} className={rowCls(c.id === selected)}>
           <button type="button" className="min-w-0 flex-1 text-left" onClick={() => onSelect(c.id)} aria-pressed={c.id === selected}>

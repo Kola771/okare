@@ -22,7 +22,7 @@ interface EmptyProps {
 
 export function EmptyState({ title, text, action, illustration = '/plats/ferme.svg' }: EmptyProps) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-card border border-trait bg-white px-5 py-8 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-card border border-trait bg-surface px-5 py-8 text-center">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={illustration} alt="" className="h-24 w-32 rounded-2xl object-cover" />
       <div className="text-base font-bold">{title}</div>
@@ -35,7 +35,7 @@ export function EmptyState({ title, text, action, illustration = '/plats/ferme.s
 export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
   const offline = /connexion/i.test(message);
   return (
-    <div role="alert" className="flex flex-col items-center gap-3 rounded-card border border-trait bg-white px-5 py-8 text-center">
+    <div role="alert" className="flex flex-col items-center gap-3 rounded-card border border-trait bg-surface px-5 py-8 text-center">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-piment-soft text-piment">
         {offline ? <WifiOff size={22} /> : <RefreshCw size={22} />}
       </span>

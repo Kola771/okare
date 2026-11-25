@@ -29,10 +29,10 @@ export function ManageOverview({ pos, base }: { pos: ManagedPos; base: string })
       </div>
       <div className="grid grid-cols-3 gap-2 lg:max-w-[640px]">
         {numbers.map(([v, l]) => (
-          <div key={l} className="rounded-[14px] border border-trait bg-white p-3"><div className="font-display text-[22px] font-extrabold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
+          <div key={l} className="rounded-[14px] border border-trait bg-surface p-3"><div className="font-display text-[22px] font-extrabold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
         ))}
       </div>
-      <div className="flex flex-col rounded-2xl border border-trait bg-white px-3.5 lg:grid lg:grid-cols-2 lg:gap-x-6">
+      <div className="flex flex-col rounded-2xl border border-trait bg-surface px-3.5 lg:grid lg:grid-cols-2 lg:gap-x-6">
         {entries.map(([k, title, sub]) => (
           <Link key={k} href={`${base}/${k}`} className="flex min-h-14 items-center justify-between gap-2.5 border-t border-trait py-2 text-charbon no-underline first:border-0 lg:[&:nth-child(2)]:border-0">
             <span><b className="block text-[15px]">{title}</b><span className="text-xs text-ardoise">{sub}</span></span>

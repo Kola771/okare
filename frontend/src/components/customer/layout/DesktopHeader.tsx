@@ -10,6 +10,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSession } from '@/components/providers/SessionProvider';
 import { Logo } from '@/components/ui/Logo';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { ZoneButton } from './ZonePicker';
 
 function initials(name: string | null): string {
@@ -34,10 +35,10 @@ export function DesktopHeader() {
   );
 
   return (
-    <header className="relative z-[600] hidden flex-wrap items-center gap-3.5 border-b border-trait bg-white/95 px-8 py-3 lg:flex">
+    <header className="relative z-[600] hidden flex-wrap items-center gap-3.5 border-b border-trait bg-surface/95 px-8 py-3 lg:flex">
       <span className="mr-1.5"><Logo size={30} pin /></span>
       <ZoneButton variant="desktop" />
-      <form role="search" className="flex min-h-[46px] max-w-[520px] flex-[1_1_300px] items-center gap-2.5 rounded-[14px] border border-bordure-douce bg-white pl-3.5 pr-1.5"
+      <form role="search" className="flex min-h-[46px] max-w-[520px] flex-[1_1_300px] items-center gap-2.5 rounded-[14px] border border-bordure-douce bg-surface pl-3.5 pr-1.5"
         onSubmit={(e) => { e.preventDefault(); router.push(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : '/'); }}>
         <Search size={18} className="text-ardoise" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Un plat, un maquis, un quartier…" aria-label="Rechercher"
@@ -49,6 +50,7 @@ export function DesktopHeader() {
         {link('/favorites', 'Favoris', path.startsWith('/favorites'))}
         {link('/seller', 'Tu vends à manger ?', false, true)}
       </nav>
+      <ThemeToggle />
       {me ? (
         <Link href="/account" aria-label="Mon compte"
           className="flex h-11 w-11 items-center justify-center rounded-full bg-piment-pale text-sm font-extrabold text-piment-ink no-underline">

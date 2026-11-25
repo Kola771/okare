@@ -166,7 +166,7 @@ export function RolesScreen() {
       </div>
       <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.75fr)]">
         {/* ---- Liste des rôles ---- */}
-        <section className="overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white">
+        <section className="overflow-hidden rounded-2xl border border-trait bg-surface">
           <h2 className="m-0 px-5 pb-3.5 pt-5 text-[17px] font-bold">Rôles</h2>
           {/* Rôles système */}
           {(Object.keys(ROLE_INFO) as Role[]).map((r) => {
@@ -174,7 +174,7 @@ export function RolesScreen() {
             const isSel = selected.kind === 'system' && selected.role === r;
             return (
               <div key={r}
-                className={`flex items-center gap-2 border-t border-[#E7E5E4] px-4 py-3 ${isSel ? 'bg-piment-soft' : 'hover:bg-[#FAFAF9]'}`}>
+                className={`flex items-center gap-2 border-t border-trait px-4 py-3 ${isSel ? 'bg-piment-soft' : 'hover:bg-surface-inset'}`}>
                 <button type="button" onClick={() => setSelected({ kind: 'system', role: r })} className="flex min-w-0 flex-1 flex-col text-left">
                   <b className="text-[15px]">{ROLE_FR[r]}</b>
                   <span className="text-xs text-ardoise">{ri.desc}</span>
@@ -204,7 +204,7 @@ export function RolesScreen() {
             const isSel = selected.kind === 'custom' && selected.id === c.id;
             return (
               <div key={c.id}
-                className={`flex items-center gap-2 border-t border-[#E7E5E4] px-4 py-3 ${isSel ? 'bg-piment-soft' : 'hover:bg-[#FAFAF9]'}`}>
+                className={`flex items-center gap-2 border-t border-trait px-4 py-3 ${isSel ? 'bg-piment-soft' : 'hover:bg-surface-inset'}`}>
                 <button type="button" onClick={() => setSelected({ kind: 'custom', id: c.id })} className="flex min-w-0 flex-1 flex-col text-left">
                   <b className="text-[15px]">{c.name}</b>
                   <span className="text-xs text-ardoise">{c.desc}</span>
@@ -228,8 +228,8 @@ export function RolesScreen() {
         </section>
 
         {/* ---- Panneau permissions ---- */}
-        <section className="overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#E7E5E4] px-5 py-4">
+        <section className="overflow-hidden rounded-2xl border border-trait bg-surface">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-trait px-5 py-4">
             <div className="flex items-center gap-3">
               <h2 className="m-0 text-[17px] font-bold">{displayName}{count ? ` · ${count} personne${count > 1 ? 's' : ''}` : ''}</h2>
               <Pill tone={STATUS_TONE[displayStatus]}>{STATUS_LABEL[displayStatus]}</Pill>
@@ -238,14 +238,14 @@ export function RolesScreen() {
               <span className="rounded-full bg-piment-soft px-2.5 py-1 text-xs font-bold text-piment-dark">périmètre : {displayScope}</span>
               {isCustom && selectedCustom && (
                 <button type="button" onClick={() => openEditCustom(selectedCustom)}
-                  className="flex h-9 items-center gap-1.5 rounded-xl border border-[#E7E5E4] px-3 text-[13px] font-semibold text-charbon transition-colors hover:bg-argile">
+                  className="flex h-9 items-center gap-1.5 rounded-xl border border-trait px-3 text-[13px] font-semibold text-charbon transition-colors hover:bg-argile">
                   <Pencil size={13} /> Modifier
                 </button>
               )}
             </div>
           </div>
           {mergedGroups.map((g) => (
-            <div key={g.title} className="border-b border-[#E7E5E4] px-5 py-4">
+            <div key={g.title} className="border-b border-trait px-5 py-4">
               <div className="mb-1 text-xs font-bold tracking-[1px] text-ardoise">{g.title}</div>
               {g.items.map((item) => (
                 <div key={item.key} className="flex min-h-[42px] items-center gap-3">

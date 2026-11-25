@@ -37,7 +37,7 @@ export function ScreensIndex() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div><Logo size={34} /><h1 className="m-0 mt-2 font-display text-[28px] font-extrabold">Tous les écrans</h1>
             <p className="m-0 text-sm text-ardoise">Données fictives (phase 1). Un écran marqué d’un rôle te connecte avec un compte de démonstration.</p></div>
-          <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-trait bg-white p-1.5">
+          <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-trait bg-surface p-1.5">
             {(Object.keys(ROLE_LABEL) as DemoRole[]).map((r) => (
               <button key={r} type="button" disabled={busy} onClick={async () => { setBusy(true); await demoLoginAs(r); await refresh(); setBusy(false); }}
                 className={`min-h-9 rounded-xl px-3 text-[13px] font-semibold ${current === r ? 'bg-charbon text-white' : 'text-charbon'}`}>
@@ -50,7 +50,7 @@ export function ScreensIndex() {
           <section key={g.title} className="flex flex-col gap-2">
             <h2 className="m-0 text-lg font-extrabold">{g.title}
               <span className="ml-2 text-sm font-semibold text-ardoise">{g.screens.filter((s) => s.ready).length} / {g.screens.length}</span></h2>
-            <div className="overflow-hidden rounded-card border border-trait bg-white">
+            <div className="overflow-hidden rounded-card border border-trait bg-surface">
               {g.screens.map((s) => (
                 <button key={s.href} type="button" disabled={busy} onClick={() => open(s)}
                   className="flex min-h-12 w-full items-center gap-3 border-t border-trait px-4 py-2 text-left first:border-0 hover:bg-sable">

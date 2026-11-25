@@ -14,7 +14,7 @@ export function PointsList({ home, filters }: { home: VendorHome; filters?: Reac
         sub={`${n} point${n > 1 ? 's' : ''} de vente · chacun a sa page, son menu, ses horaires et ses statistiques.`}
         actions={<span className="hidden lg:block">{add}</span>} />
       {filters}
-      {!n && <p className="m-0 rounded-2xl border lg:hidden border-[#E7E5E4] bg-white p-5 text-sm text-ardoise">Aucun point de vente pour ce lieu.</p>}
+      {!n && <p className="m-0 rounded-2xl border lg:hidden border-trait bg-surface p-5 text-sm text-ardoise">Aucun point de vente pour ce lieu.</p>}
       <div className="flex flex-col gap-3 lg:hidden">
         {home.points.map((p) => <PosSummary key={p.id} pos={p} withZone />)}
         {!home.isParticulier && (

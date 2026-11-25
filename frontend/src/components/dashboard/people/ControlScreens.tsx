@@ -21,7 +21,7 @@ export function AuditScreen() {
         {/* Mobile : cartes */}
         <div className="flex flex-col gap-2 md:hidden">
           {list.data.map((r) => (
-            <div key={r.id} className="rounded-xl border border-[#E7E5E4] bg-white p-4">
+            <div key={r.id} className="rounded-xl border border-trait bg-surface p-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <p className="text-sm font-semibold text-charbon">{r.who}</p>
@@ -30,7 +30,7 @@ export function AuditScreen() {
                 <span className="shrink-0 text-xs text-pierre">{fmtDate(r.at)}</span>
               </div>
               <div className="mt-2 flex items-center gap-2">
-                <code className="rounded bg-[#F5F5F4] px-1.5 py-0.5 text-xs text-charbon">{r.action}</code>
+                <code className="rounded bg-surface-inset px-1.5 py-0.5 text-xs text-charbon">{r.action}</code>
                 <span className="text-xs font-medium text-ardoise">{r.object}</span>
               </div>
               {r.detail && <p className="mt-2 line-clamp-2 text-xs text-ardoise">{r.detail}</p>}

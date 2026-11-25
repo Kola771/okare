@@ -56,11 +56,11 @@ function Form({ posId, back, dish, categories }: { posId: string; back: string; 
           <TextField label="Nom du plat" value={name} onChange={(e) => setName(e.target.value)} error={errors.name} maxLength={60} />
           <TextField label="Prix (FCFA)" inputMode="numeric" value={price} onChange={(e) => setPrice(e.target.value)} error={errors.priceXof} />
           <label className="flex flex-col gap-1.5 text-[13px] font-semibold text-encre">Catégorie
-            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="min-h-[52px] rounded-[14px] border border-bordure-douce bg-white px-3 text-base font-normal">
+            <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="min-h-[52px] rounded-[14px] border border-bordure-douce bg-surface px-3 text-base font-normal">
               <option value="">Autre</option>{categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select></label>
           <label className="flex flex-col gap-1.5 text-[13px] font-semibold text-encre">Moment
-            <select value={moment} onChange={(e) => setMoment(e.target.value as MealMoment)} className="min-h-[52px] rounded-[14px] border border-bordure-douce bg-white px-3 text-base font-normal">
+            <select value={moment} onChange={(e) => setMoment(e.target.value as MealMoment)} className="min-h-[52px] rounded-[14px] border border-bordure-douce bg-surface px-3 text-base font-normal">
               {MEAL_MOMENTS.map((m) => <option key={m} value={m}>{MEAL_MOMENT_LABEL[m]}</option>)}
             </select></label>
         </div>

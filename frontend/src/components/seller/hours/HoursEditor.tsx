@@ -61,7 +61,7 @@ export function HoursEditor({ pos, onSaved }: { pos: ManagedPos; onSaved?: () =>
       <Panel title="Chaque semaine">
         <WeekHoursField value={hours} onChange={setHours} />
         <label className="flex flex-wrap items-center justify-between gap-3 text-[15px]"><span><b>Jours fériés</b><span className="block text-[13px] text-ardoise">Prochain : Noël, 25 décembre</span></span>
-          <select value={holiday} onChange={(e) => setHoliday(e.target.value as HolidayPolicy)} className="min-h-11 rounded-xl border border-bordure-douce bg-white px-3 text-sm">
+          <select value={holiday} onChange={(e) => setHoliday(e.target.value as HolidayPolicy)} className="min-h-11 rounded-xl border border-bordure-douce bg-surface px-3 text-sm">
             <option value="CLOSED">Fermé</option><option value="OPEN">Ouvert</option><option value="UNKNOWN">Je préviens</option>
           </select></label>
         <button type="button" disabled={busy} className={`${btn.primary} self-end`} onClick={() => run(() => saveOpeningHours(pos.id, hours, holiday), 'Horaires enregistrés')}>Enregistrer</button>

@@ -27,7 +27,7 @@ export function ZonesScreen({ zones, grid, geo, canEdit }: { zones: AdminZoneRow
       </div>
       <div className="grid gap-5 items-start xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
         <Card title={`Carte des zones · ${city?.name ?? ''}`} right={canEdit ? <DrawZoneButton /> : undefined}>
-          <div className="relative z-0 h-[306px] overflow-hidden rounded-xl bg-[#EDE9E3]">
+          <div className="relative z-0 h-[306px] overflow-hidden rounded-xl bg-argile">
             <ZonesMapLazy zones={mapZones} center={mapZones[0]?.center} />
           </div>
         </Card>

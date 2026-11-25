@@ -20,7 +20,7 @@ export const dishHref = (it: FeedItem) => `/p/${it.pos.slug}/dish/${it.dish.slug
 
 export function FeedCardFeatured({ item, priority = false }: { item: FeedItem; priority?: boolean }) {
   return (
-    <Link href={dishHref(item)} className="flex flex-col overflow-hidden rounded-card border border-trait bg-white text-charbon no-underline">
+    <Link href={dishHref(item)} className="flex flex-col overflow-hidden rounded-card border border-trait bg-surface text-charbon no-underline">
       <span className="relative block h-[120px]">
         <DishImage imageUrl={item.dish.imageUrl} illustrationKey={item.dish.illustrationKey} alt={item.dish.name} priority={priority} />
       </span>
@@ -41,7 +41,7 @@ export function FeedCardFeatured({ item, priority = false }: { item: FeedItem; p
 
 export function FeedRow({ item }: { item: FeedItem }) {
   return (
-    <Link href={dishHref(item)} className="flex overflow-hidden rounded-card border border-trait bg-white text-charbon no-underline">
+    <Link href={dishHref(item)} className="flex overflow-hidden rounded-card border border-trait bg-surface text-charbon no-underline">
       <span className="relative block w-[104px] shrink-0">
         <DishImage imageUrl={item.dish.imageUrl} illustrationKey={item.dish.illustrationKey} alt={item.dish.name} />
       </span>
@@ -75,7 +75,7 @@ export function FeedCard({ item, selected = false, onHover, priority = false, so
   });
   return (
     <article onMouseEnter={() => onHover?.(item.pos.id)} onMouseLeave={() => onHover?.(null)}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-white transition-all duration-300 ${selected
+      className={`group relative flex flex-col overflow-hidden rounded-2xl bg-surface transition-all duration-300 ${selected
         ? 'ring-2 ring-piment shadow-[0_10px_28px_rgba(194,65,12,0.16)]' : 'shadow-[0_2px_12px_rgba(28,25,23,0.07)] hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(28,25,23,0.13)]'}`}>
       {/* Image avec overlay gradient */}
       <Link href={dishHref(item)} className="relative block h-[190px] overflow-hidden" tabIndex={-1} aria-hidden>
@@ -84,7 +84,7 @@ export function FeedCard({ item, selected = false, onHover, priority = false, so
         </span>
         <span className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         {/* Prix sur l'image */}
-        <span className="absolute bottom-3 right-3.5 rounded-lg bg-white/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
+        <span className="absolute bottom-3 right-3.5 rounded-lg bg-surface/95 px-2.5 py-1 shadow-sm backdrop-blur-sm">
           <Price xof={item.dish.priceXof} className="text-[17px]" />
         </span>
         {/* Badge ouvert sur l'image */}
@@ -93,7 +93,7 @@ export function FeedCard({ item, selected = false, onHover, priority = false, so
       {/* Coeur */}
       <button type="button" onClick={() => toggle(item.pos.id, item.pos.name)} aria-pressed={fav}
         aria-label={fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-        className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-110 ${fav ? 'bg-piment text-white' : 'bg-white/80 text-piment'}`}>
+        className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-110 ${fav ? 'bg-piment text-white' : 'bg-surface/80 text-piment'}`}>
         <Heart size={16} className={fav ? 'fill-white' : ''} />
       </button>
       {/* Contenu */}

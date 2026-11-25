@@ -27,7 +27,7 @@ export function DishScreen({ initial, nowIso }: { initial: DishPage; nowIso: str
           overlay={<div className="absolute inset-x-4 top-4 flex justify-between"><BackButton />
             <div className="flex gap-2"><ShareButton title={dish.name} path={path} />
               <FavoriteButton posId={pos.id} posName={short} label="Ajouter le point de vente aux favoris" /></div></div>} />
-        <div className="relative -mt-[18px] flex flex-1 flex-col gap-3.5 rounded-t-[22px] bg-white px-5 pb-4 pt-[18px]">
+        <div className="relative -mt-[18px] flex flex-1 flex-col gap-3.5 rounded-t-[22px] bg-surface px-5 pb-4 pt-[18px]">
           <DishTags data={data} now={clock} />
           <div className="flex items-start justify-between gap-3">
             <h1 className="m-0 font-display text-[25px] font-extrabold leading-tight">{dish.name}</h1>
@@ -56,7 +56,7 @@ export function DishScreen({ initial, nowIso }: { initial: DishPage; nowIso: str
           <DishGallery photos={dish.photos} illustrationKey={dish.illustrationKey} name={dish.name} variant="desktop"
             overlay={<div className="absolute right-4 top-4"><FavoriteButton posId={pos.id} posName={short} label="Ajouter le point de vente aux favoris" /></div>} />
           <aside className="flex w-[420px] shrink-0 flex-col gap-4">
-            <section className="flex flex-col gap-3.5 rounded-[22px] border border-trait bg-white p-6 shadow-[0_12px_30px_rgba(28,25,23,0.06)]">
+            <section className="flex flex-col gap-3.5 rounded-[22px] border border-trait bg-surface p-6 shadow-[0_12px_30px_rgba(28,25,23,0.06)]">
               <DishTags data={data} now={clock} />
               <h1 className="m-0 font-display text-[32px] font-extrabold leading-tight">{dish.name}</h1>
               <Price xof={dish.priceXof} className="text-[32px]" />

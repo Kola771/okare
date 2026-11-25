@@ -33,7 +33,7 @@ function Sidebar({ me }: { me: Me }) {
   );
   return (
     <aside className="flex w-[280px] shrink-0 flex-col gap-4">
-      <div className="flex flex-col gap-3.5 rounded-[20px] border border-trait bg-white p-5">
+      <div className="flex flex-col gap-3.5 rounded-[20px] border border-trait bg-surface p-5">
         <div className="flex items-center gap-3.5">
           <span className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-piment-pale text-xl font-extrabold text-piment-ink">{initials(me.fullName)}</span>
           <div className="min-w-0">
@@ -46,7 +46,7 @@ function Sidebar({ me }: { me: Me }) {
           {stat(me.stats.contacts, 'commandes')}{stat(me.stats.favorites, 'favoris')}{stat(me.stats.reviews, 'avis donnés')}
         </div>
       </div>
-      <nav aria-label="Mon compte" className="flex flex-col gap-0.5 rounded-[20px] border border-trait bg-white p-2">
+      <nav aria-label="Mon compte" className="flex flex-col gap-0.5 rounded-[20px] border border-trait bg-surface p-2">
         {items.map(({ href, label, Icon, count, active }) => (
           <Link key={href} href={href} className={`flex min-h-[46px] items-center gap-3 rounded-xl px-3.5 text-sm no-underline ${
             active ? 'bg-piment-soft font-bold text-piment' : 'font-medium text-charbon'}`}>

@@ -48,7 +48,7 @@ export function InfoForm({ posId, initial, canBeParticulier }: { posId: string; 
         <div className="flex flex-col gap-1.5"><span className="text-[13px] font-semibold text-encre">Type</span>
           <div className="grid grid-cols-3 gap-2">{POS_TYPES.map((t) => (
             <button key={t} type="button" aria-pressed={v.type === t} disabled={t === 'PARTICULIER' && !canBeParticulier} onClick={() => set({ type: t as PosType })}
-              className={`min-h-12 rounded-xl border text-sm font-bold disabled:opacity-40 ${v.type === t ? 'border-piment bg-piment-soft text-piment' : 'border-bordure-douce bg-white'}`}>{POS_TYPE_LABEL[t]}</button>))}</div>
+              className={`min-h-12 rounded-xl border text-sm font-bold disabled:opacity-40 ${v.type === t ? 'border-piment bg-piment-soft text-piment' : 'border-bordure-douce bg-surface'}`}>{POS_TYPE_LABEL[t]}</button>))}</div>
         </div>
         <TextField label="Repère" value={v.landmark ?? ''} onChange={(e) => set({ landmark: e.target.value })} placeholder="ex. face à la station" />
         <label className="flex flex-col gap-1.5 text-[13px] font-semibold text-encre">Présentation

@@ -16,7 +16,7 @@ function Completion({ done }: { done: number }) {
         <b className="text-[15px] text-piment-ink">Profil complété à {done} %</b>
         <div className="text-[13px] text-piment-ink/80">Ajoute ton nom : les vendeurs répondent plus vite quand ils savent qui leur écrit.</div>
       </div>
-      <div className="h-2 w-40 overflow-hidden rounded-full bg-white"><div className="h-full bg-piment" style={{ width: `${done}%` }} /></div>
+      <div className="h-2 w-40 overflow-hidden rounded-full bg-surface"><div className="h-full bg-piment" style={{ width: `${done}%` }} /></div>
     </div>
   );
 }

@@ -22,7 +22,7 @@ export function DishOrder({ data, variant }: { data: DishPage; variant: 'bar' | 
 
   if (dish.isSoldOut) {
     const box = variant === 'bar'
-      ? 'sticky bottom-0 z-[400] border-t border-trait bg-white px-5 pb-[max(18px,env(safe-area-inset-bottom))] pt-2.5 lg:hidden'
+      ? 'sticky bottom-0 z-[400] border-t border-trait bg-surface px-5 pb-[max(18px,env(safe-area-inset-bottom))] pt-2.5 lg:hidden'
       : '';
     return (
       <div className={box}>
@@ -50,7 +50,7 @@ export function DishOrder({ data, variant }: { data: DishPage; variant: 'bar' | 
     );
   }
   return (
-    <div className="sticky bottom-0 z-[400] flex flex-col gap-2 border-t border-trait bg-white px-5 pb-[max(18px,env(safe-area-inset-bottom))] pt-2.5 lg:hidden">
+    <div className="sticky bottom-0 z-[400] flex flex-col gap-2 border-t border-trait bg-surface px-5 pb-[max(18px,env(safe-area-inset-bottom))] pt-2.5 lg:hidden">
       <div className="flex gap-2.5">
         <button type="button" disabled={busy} onClick={() => go('CALL')} aria-label="Appeler pour ce plat"
           className="flex min-h-[54px] w-[54px] items-center justify-center rounded-btn border border-bordure">

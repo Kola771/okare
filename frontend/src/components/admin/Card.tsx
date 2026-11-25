@@ -7,7 +7,7 @@ export function Card({ title, right, children, flush = false, className = '', id
   title?: React.ReactNode; right?: React.ReactNode; children: React.ReactNode; flush?: boolean; className?: string; id?: string;
 }) {
   return (
-    <section id={id} className={`min-w-0 overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white ${className}`}>
+    <section id={id} className={`min-w-0 overflow-hidden rounded-2xl border border-trait bg-surface ${className}`}>
       {(title || right) && (
         <div className="flex flex-wrap items-center justify-between gap-3 px-5 pb-3.5 pt-5">
           {title && <h2 className="m-0 text-[17px] font-bold">{title}</h2>}{right}

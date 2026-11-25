@@ -41,7 +41,7 @@ const MOMENTS: [Exclude<MealMoment, 'ALL_DAY'>, string][] = [['BREAKFAST', 'Peti
 
 export function MomentTabs({ value, onChange }: { value: MealMoment; onChange: (m: MealMoment) => void }) {
   return (
-    <div role="tablist" aria-label="Moment du repas" className="flex rounded-[14px] border border-bordure-douce bg-white p-1">
+    <div role="tablist" aria-label="Moment du repas" className="flex rounded-[14px] border border-bordure-douce bg-surface p-1">
       {MOMENTS.map(([m, label]) => (
         <button key={m} role="tab" aria-selected={value === m} type="button" onClick={() => onChange(m)}
           className={`min-h-[38px] rounded-[10px] px-3.5 text-[13px] font-semibold ${value === m ? 'bg-piment text-white' : 'text-charbon'}`}>

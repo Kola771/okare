@@ -62,7 +62,7 @@ export function ClaimsScreen() {
         {/* Mobile : cartes */}
         <div className="flex flex-col gap-3 px-4 md:hidden">
           {rows.length ? rows.map((c) => (
-            <div key={c.id} className="flex flex-col gap-2 rounded-2xl border border-[#E7E5E4] p-4">
+            <div key={c.id} className="flex flex-col gap-2 rounded-2xl border border-trait p-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <Link href={`/dashboard/vendors/${c.vendor.id}`} className="block font-bold text-charbon">{c.vendor.contactName ?? c.vendor.name}</Link>
@@ -88,7 +88,7 @@ export function ClaimsScreen() {
         <div className="hidden md:block">
           <DataTable bare columns={cols} rows={rows} empty="Aucune demande." />
         </div>
-        <p className="m-0 border-t border-[#E7E5E4] px-5 py-4 text-[13px] text-ardoise">
+        <p className="m-0 border-t border-trait px-5 py-4 text-[13px] text-ardoise">
           Accepte si le numéro du compte est celui de la fiche. Sinon, appelle le numéro de la fiche avant d’accepter, ou envoie plutôt un code depuis la fiche du vendeur.
         </p>
       </Card>

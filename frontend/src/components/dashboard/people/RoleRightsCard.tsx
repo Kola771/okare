@@ -18,11 +18,11 @@ export function RoleRightsCard() {
     <Card title="Ce que peut faire chaque rôle" flush>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] border-collapse text-left text-sm">
-          <thead><tr className="bg-[#FAFAF9] text-xs text-ardoise">
+          <thead><tr className="bg-surface-inset text-xs text-ardoise">
             <th className="px-4 py-3 font-semibold">Action</th>{HEAD.map((h) => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}
           </tr></thead>
           <tbody>{ROWS.map(([label, cells]) => (
-            <tr key={label} className="border-t border-[#E7E5E4]">
+            <tr key={label} className="border-t border-trait">
               <td className="px-4 py-3 font-bold">{label}</td>
               {cells.map((c, i) => <td key={i} className="px-4 py-3"><Mark v={c} /></td>)}
             </tr>))}</tbody>

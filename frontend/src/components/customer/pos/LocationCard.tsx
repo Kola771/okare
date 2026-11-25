@@ -20,9 +20,9 @@ export function LocationCard({ pos, variant }: { pos: PosPage['pos']; variant: '
   const mapHeight = variant === 'desktop' ? 'h-[190px]' : 'h-[120px]';
 
   return (
-    <section className={`flex flex-col gap-2.5 border border-trait bg-white ${variant === 'desktop' ? 'overflow-hidden rounded-[20px]' : 'rounded-card p-3'}`}>
+    <section className={`flex flex-col gap-2.5 border border-trait bg-surface ${variant === 'desktop' ? 'overflow-hidden rounded-[20px]' : 'rounded-card p-3'}`}>
       <div className={variant === 'desktop' ? 'px-3 pt-3' : ''}>
-        <div className={`relative z-0 overflow-hidden rounded-[14px] bg-[#ECE7DE] ${mapHeight}`}>
+        <div className={`relative z-0 overflow-hidden rounded-[14px] bg-argile ${mapHeight}`}>
           <MiniMap lat={pos.point.lat} lng={pos.point.lng} approximate={pos.isApproximate} />
         </div>
       </div>

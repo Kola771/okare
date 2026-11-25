@@ -20,17 +20,17 @@ export function DataTable<T extends { id: string }>({ columns, rows, empty = 'Au
   const { items, pager } = usePaged(rows);
   const shown = paged ? items : rows;
   return (
-    <div className={bare ? '' : 'overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white'}>
+    <div className={bare ? '' : 'overflow-hidden rounded-2xl border border-trait bg-surface'}>
       <div className="overflow-x-auto">
         <table className="w-full min-w-max border-collapse text-left text-sm">
           <thead>
-            <tr className="bg-[#FAFAF9] text-xs text-ardoise">
+            <tr className="bg-surface-inset text-xs text-ardoise">
               {columns.map((c) => <th key={c.key} className={`px-4 py-3 font-semibold ${c.className ?? ''}`}>{c.label}</th>)}
             </tr>
           </thead>
           <tbody>
             {shown.length ? shown.map((r) => (
-              <tr key={r.id} onClick={onRow ? () => onRow(r) : undefined} className={`border-t border-[#E7E5E4] ${onRow ? 'cursor-pointer hover:bg-[#FAFAF9]' : ''}`}>
+              <tr key={r.id} onClick={onRow ? () => onRow(r) : undefined} className={`border-t border-trait ${onRow ? 'cursor-pointer hover:bg-surface-inset' : ''}`}>
                 {columns.map((c) => <td key={c.key} className={`whitespace-nowrap px-4 py-3 align-middle ${c.className ?? ''}`}>{c.render(r)}</td>)}
               </tr>
             )) : (
@@ -50,7 +50,7 @@ export function FilterChips<T extends string>({ value, onChange, options }: { va
     <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
       {options.map(([k, label]) => (
         <button key={k} type="button" aria-pressed={value === k} onClick={() => onChange(k)}
-          className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${value === k ? 'bg-charbon text-white' : 'border border-[#E7E5E4] bg-white text-charbon'}`}>{label}</button>
+          className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${value === k ? 'bg-charbon text-white' : 'border border-trait bg-surface text-charbon'}`}>{label}</button>
       ))}
     </div>
   );

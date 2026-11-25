@@ -39,15 +39,15 @@ export function PhotoField({ label, hint, value, onChange, pending }: {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={value} alt={label} className="h-40 w-full rounded-xl object-cover sm:w-64" />
           <div className="flex gap-2">
-            <button type="button" onClick={() => input.current?.click()} className="flex min-h-10 items-center gap-1.5 rounded-xl border border-[#E7E5E4] bg-white px-3 text-[13px] font-bold">
+            <button type="button" onClick={() => input.current?.click()} className="flex min-h-10 items-center gap-1.5 rounded-xl border border-trait bg-surface px-3 text-[13px] font-bold">
               <Camera size={16} />Changer</button>
-            <button type="button" onClick={() => onChange(null)} className="flex min-h-10 items-center gap-1.5 rounded-xl border border-[#FECACA] bg-white px-3 text-[13px] font-bold text-erreur">
+            <button type="button" onClick={() => onChange(null)} className="flex min-h-10 items-center gap-1.5 rounded-xl border border-[#FECACA] bg-surface px-3 text-[13px] font-bold text-erreur">
               <Trash2 size={16} />Retirer</button>
           </div>
         </div>
       ) : (
         <button type="button" disabled={busy} onClick={() => input.current?.click()}
-          className="flex min-h-[120px] flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-bordure bg-[#FAFAF9] px-4 text-center text-sm text-ardoise hover:border-piment hover:text-piment">
+          className="flex min-h-[120px] flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-bordure bg-surface-inset px-4 text-center text-sm text-ardoise hover:border-piment hover:text-piment">
           <ImagePlus size={26} />
           <b className="text-charbon">{busy ? 'Préparation de la photo…' : 'Prendre ou choisir une photo'}</b>
           {hint && <span className="text-xs">{hint}</span>}
