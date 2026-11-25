@@ -38,7 +38,7 @@ interface PickerProps {
 export function DishPicker({ menu, picked, other, onToggle, onOther, onSubmit }: PickerProps) {
   const chip = (on: boolean) =>
     `inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-sm font-semibold ${
-      on ? 'bg-charbon text-white' : 'border border-bordure-douce bg-surface text-charbon'}`;
+      on ? 'bg-inverse text-on-inverse' : 'border border-bordure-douce bg-surface text-charbon'}`;
   return (
     <>
       <div className="text-sm font-bold">

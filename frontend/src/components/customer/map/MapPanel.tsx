@@ -81,7 +81,7 @@ export function MapPanel({ filters, selectedId, onSelect, variant, summaryBottom
         <>
           {!searchOnMove && bbox && (
             <button type="button" onClick={() => setSearchOnMove(true)}
-              className="absolute left-1/2 top-[124px] z-[400] min-h-10 -translate-x-1/2 rounded-full bg-charbon px-4 text-[13px] font-bold text-white shadow">
+              className="absolute left-1/2 top-[124px] z-[400] min-h-10 -translate-x-1/2 rounded-full bg-inverse px-4 text-[13px] font-bold text-on-inverse shadow">
               Rechercher dans cette zone
             </button>
           )}

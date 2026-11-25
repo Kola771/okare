@@ -29,7 +29,7 @@ export function SellerHome({ home, stats, period, years, posName }: { home: Vend
         actions={<Link href="/" className="text-[13px] font-semibold lg:hidden">Vue client</Link>} />
       <PeriodFilter period={period} years={years} />
 
-      <div className="flex flex-col gap-1 rounded-[20px] bg-charbon p-4 text-white lg:hidden">
+      <div className="flex flex-col gap-1 rounded-[20px] bg-inverse p-4 text-on-inverse lg:hidden">
         <div className="text-[13px] text-[#E7E5E4]">Aujourd’hui, OKARE t’a envoyé</div>
         <div className="font-display text-4xl font-extrabold leading-none">{home.contactsToday} clients</div>
         <div className="text-[13px] text-[#E7E5E4]">sur tes {home.points.length} point{home.points.length > 1 ? 's' : ''} de vente</div>

@@ -28,7 +28,7 @@ export function PosSummary({ pos, withZone = false }: { pos: ManagedPos; withZon
         <div className="rounded-xl bg-argile px-3 py-2.5 text-[13px] text-ardoise">Pas encore de plat du jour publié{withZone && ` · ${pos.contacts30} contacts ce mois`}</div>
       )}
       <Link href={`/seller/points/${pos.id}`}
-        className="flex min-h-11 items-center justify-center rounded-xl bg-charbon text-sm font-bold text-white no-underline hover:text-white">Gestion</Link>
+        className="flex min-h-11 items-center justify-center rounded-xl bg-inverse text-sm font-bold text-on-inverse no-underline hover:text-on-inverse">Gestion</Link>
     </article>
   );
 }

@@ -17,7 +17,7 @@ export function CategoryPicker({ value, onChange }: { value: 'A' | 'B' | 'C'; on
   return (
     <div className="flex gap-2">{CATS.map((c) => (
       <button key={c} type="button" aria-pressed={value === c} onClick={() => onChange(c)}
-        className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${value === c ? 'bg-charbon text-white' : 'border border-trait bg-surface'}`}>Catégorie {c}</button>))}
+        className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${value === c ? 'bg-inverse text-on-inverse' : 'border border-trait bg-surface'}`}>Catégorie {c}</button>))}
     </div>
   );
 }

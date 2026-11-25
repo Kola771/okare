@@ -30,7 +30,7 @@ export function FeedList({ feed, hoveredId, onHover, withFavorites = false, sour
         text={emptyText ?? (openNow ? 'Les points ouverts près de toi n’ont pas de plat dans ce budget. Essaie sans « ouvert maintenant » ou avec un budget plus large.' : 'Essaie un budget plus large ou une autre zone.')}
         action={
           <div className="flex flex-wrap justify-center gap-2">
-            {openNow && <button onClick={() => setOpenNow(false)} className="min-h-11 rounded-btn bg-charbon px-4 text-sm font-bold text-white">Voir aussi les points fermés</button>}
+            {openNow && <button onClick={() => setOpenNow(false)} className="min-h-11 rounded-btn bg-inverse px-4 text-sm font-bold text-on-inverse">Voir aussi les points fermés</button>}
             {(budgetMax != null || budgetMin != null) && <button onClick={() => { setBudget(null); }} className="min-h-11 rounded-btn border border-bordure px-4 text-sm font-bold">Tous les budgets</button>}
           </div>
         }

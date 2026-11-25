@@ -49,7 +49,7 @@ export function UploadPhotos({ points, onDone }: { points: AdminPosRow[]; onDone
         </Field>
         <div className="flex gap-2">{(['FACADE', 'OTHER'] as const).map((k) => (
           <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}
-            className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-charbon text-white' : 'border border-trait bg-surface'}`}>{k === 'FACADE' ? 'Photo de l’entrée' : 'Autres photos'}</button>))}
+            className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-inverse text-on-inverse' : 'border border-trait bg-surface'}`}>{k === 'FACADE' ? "Photo de l’entrée" : 'Autres photos'}</button>))}
         </div>
         <input ref={input} type="file" accept="image/*" multiple={kind === 'OTHER'} className="hidden" onChange={(e) => send(e.target.files)} />
         <button type="button" className={btn.primary} disabled={!posId || !!busy} onClick={() => input.current?.click()}>
