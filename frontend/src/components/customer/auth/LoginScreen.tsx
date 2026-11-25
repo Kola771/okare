@@ -21,7 +21,7 @@ const SAMPLE = [
 
 function VendorLink() {
   return (
-    <Link href="/seller" className="flex w-full max-w-[440px] items-center gap-3 rounded-2xl border border-trait bg-white px-4 py-3 text-charbon no-underline">
+    <Link href="/seller" className="flex w-full max-w-[440px] items-center gap-3 rounded-2xl border border-trait bg-surface px-4 py-3 text-charbon no-underline">
       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-feuille-soft text-feuille-ink"><Store size={20} /></span>
       <span className="flex-1"><b className="block text-sm">Tu vends à manger ?</b>
         <span className="text-[13px] text-ardoise">Inscris ton point de vente, c’est gratuit.</span></span>
@@ -40,12 +40,12 @@ export function LoginScreen() {
     <>
       {/* Mobile : écran 12 */}
       <div className="bg-motif flex min-h-dvh flex-col gap-[18px] px-[22px] py-7 lg:hidden">
-        <Link href="/" aria-label="Fermer" className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-white text-charbon">
+        <Link href="/" aria-label="Fermer" className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-surface text-charbon">
           <X size={20} />
         </Link>
         <div className="mt-3"><Logo size={40} href={null} /></div>
         <LoginPanel mode={mode} setMode={setMode} variant="mobile" next={next} />
-        <div className="mt-auto rounded-[14px] border border-trait bg-white px-3.5 py-3 text-[13px] leading-normal text-encre">
+        <div className="mt-auto rounded-[14px] border border-trait bg-surface px-3.5 py-3 text-[13px] leading-normal text-encre">
           Tu tiens un maquis ou une cuisine ? <Link href="/seller" className="font-bold">Rejoindre OKARE en tant que vendeur</Link>
         </div>
       </div>
@@ -62,7 +62,7 @@ export function LoginScreen() {
           </div>
           <div className="mt-2 pl-2.5">
             {SAMPLE.map((s) => (
-              <div key={s.name} className={`flex w-[300px] items-center gap-3 rounded-card bg-white p-2.5 shadow-[0_18px_40px_rgba(60,20,5,0.28)] ${s.tilt} ${s.offset}`}>
+              <div key={s.name} className={`flex w-[300px] items-center gap-3 rounded-card bg-surface p-2.5 shadow-[0_18px_40px_rgba(60,20,5,0.28)] ${s.tilt} ${s.offset}`}>
                 <span className="block h-16 w-16 shrink-0 overflow-hidden rounded-xl"><DishImage illustrationKey={s.key} alt="" /></span>
                 <div className="min-w-0 flex-1"><div className="text-[15px] font-bold text-charbon">{s.name}</div><div className="text-xs text-ardoise">{s.where}</div></div>
                 <Price xof={s.price} className="text-base" />
@@ -76,7 +76,7 @@ export function LoginScreen() {
           </div>
         </section>
         <section className="flex flex-[1_1_520px] flex-col items-center justify-center gap-[18px] px-14 py-10">
-          <div className="flex w-full max-w-[440px] flex-col gap-4 rounded-3xl border border-trait bg-white p-[30px] shadow-[0_20px_50px_rgba(28,25,23,0.08)]">
+          <div className="flex w-full max-w-[440px] flex-col gap-4 rounded-3xl border border-trait bg-surface p-[30px] shadow-[0_20px_50px_rgba(28,25,23,0.08)]">
             <LoginPanel mode={mode} setMode={setMode} variant="desktop" next={next} />
           </div>
           <VendorLink />

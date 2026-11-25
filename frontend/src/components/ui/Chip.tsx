@@ -7,7 +7,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Chip({ active = false, variant = 'piment', size = 'md', className = '', children, ...rest }: Props) {
   const on = variant === 'dark' ? 'bg-charbon text-white border-charbon' : 'bg-piment text-white border-piment';
-  const off = 'bg-white text-charbon border-bordure-douce hover:border-ardoise';
+  const off = 'bg-surface text-charbon border-bordure-douce hover:border-ardoise';
   const h = size === 'sm' ? 'min-h-[38px] text-[13px]' : 'min-h-[40px] text-sm';
   return (
     <button

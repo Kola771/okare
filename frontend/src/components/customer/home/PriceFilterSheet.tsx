@@ -68,7 +68,7 @@ export function PriceFilterSheet({ open, onClose }: { open: boolean; onClose: ()
             onKeyDown={(e) => { if (e.key === 'Enter' && valid) apply(); }}
             placeholder="Ex : 5 000"
             aria-label="Montant en francs CFA"
-            className="h-14 w-full rounded-field border border-bordure-douce bg-white pl-4 pr-16 text-lg font-semibold text-charbon placeholder:text-pierre"
+            className="h-14 w-full rounded-field border border-bordure-douce bg-surface pl-4 pr-16 text-lg font-semibold text-charbon placeholder:text-pierre"
           />
           <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-ardoise">F CFA</span>
         </div>
@@ -113,7 +113,7 @@ export function PriceFilterChip() {
       <button type="button" onClick={() => setOpen(true)}
         className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 font-semibold transition-colors min-h-[40px] text-sm ${isRange
           ? 'bg-piment text-white border-piment'
-          : 'bg-white text-charbon border-bordure-douce hover:border-ardoise'}`}>
+          : 'bg-surface text-charbon border-bordure-douce hover:border-ardoise'}`}>
         <SlidersHorizontal size={15} />
         {isRange ? `${fmt(budgetMin!)} – ${fmt(budgetMax!)} F` : 'Budget précis'}
       </button>
@@ -132,7 +132,7 @@ export function PriceFilterChipCompact() {
       <button type="button" onClick={() => setOpen(true)}
         className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 font-semibold transition-colors min-h-[38px] text-[13px] ${isRange
           ? 'bg-piment text-white border-piment'
-          : 'bg-white text-charbon border-bordure-douce hover:border-ardoise'}`}>
+          : 'bg-surface text-charbon border-bordure-douce hover:border-ardoise'}`}>
         <SlidersHorizontal size={14} />
         {isRange ? `${fmt(budgetMin!)} – ${fmt(budgetMax!)}` : 'Précis'}
       </button>

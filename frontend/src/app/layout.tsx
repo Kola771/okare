@@ -56,7 +56,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   // Session lue côté serveur (cookie) : l'interface connaît le compte dès le premier affichage.
   const [me, viewer] = await Promise.all([getMe().catch(() => null), readViewer()]);
   return (
-    <html lang="fr" className={`${bricolage.variable} ${inter.variable}`}>
+    <html lang="fr" suppressHydrationWarning className={`${bricolage.variable} ${inter.variable}`}>
       <body className="min-h-dvh antialiased">
         <Providers initialMe={me} viewer={viewer.prefs} zones={viewer.zones}>{children}</Providers>
         <ServiceWorkerRegister />

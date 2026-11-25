@@ -12,7 +12,7 @@ export function PasswordChecklist({ value }: { value: string }) {
         return (
           <li key={r.key} title={r.label} aria-label={`${r.label} : ${ok ? 'oui' : 'pas encore'}`}
             className={`flex items-center justify-center gap-1 whitespace-nowrap rounded-lg py-1.5 text-[11px] font-semibold transition-colors sm:text-xs ${
-              ok ? 'bg-ok-soft text-ok' : 'bg-[#F5F5F4] text-ardoise'}`}>
+              ok ? 'bg-ok-soft text-ok' : 'bg-surface-inset text-ardoise'}`}>
             {ok && <Check size={12} strokeWidth={3} className="shrink-0" />}{r.short}
           </li>
         );

@@ -44,7 +44,7 @@ export function ReportsScreen() {
         <div className="flex flex-col gap-3 md:hidden">
           {rows.length ? rows.map((r) => (
             <button key={r.id} type="button" onClick={() => setSel(r)}
-              className={`flex flex-col gap-2 rounded-2xl border p-4 text-left ${sel?.id === r.id ? 'border-piment bg-[#FFF8F5]' : 'border-[#E7E5E4] bg-white'}`}>
+              className={`flex flex-col gap-2 rounded-2xl border p-4 text-left ${sel?.id === r.id ? 'border-piment bg-[#FFF8F5]' : 'border-trait bg-surface'}`}>
               <div className="flex items-start justify-between gap-2">
                 <div><b className="block text-sm">{r.posName}</b><span className="text-xs text-ardoise">{POS_TYPE_LABEL[r.posType as PosType] ?? ''} · {r.zone}</span></div>
                 <Pill tone={urgent(r) ? 'bad' : 'warn'}>{REPORT_REASON_LABEL[r.reason]}</Pill>
@@ -63,9 +63,9 @@ export function ReportsScreen() {
         </div>
         {sel ? (
           <Panel title={`${REPORT_REASON_LABEL[sel.reason]} · ${sel.posName}`} sub={`Signalé par un client · ${new Date(sel.at).toLocaleString('fr-FR')}`}>
-            {sel.comment && <p className="m-0 rounded-xl bg-[#F7F6F3] p-3 text-sm">« {sel.comment} »</p>}
+            {sel.comment && <p className="m-0 rounded-xl bg-argile p-3 text-sm">« {sel.comment} »</p>}
             {urgent(sel) && <p className="m-0 text-sm font-semibold text-erreur">Action automatique : point de vente masqué. Règle : appel de l’agent sous 24 h.</p>}
-            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Note de traitement" aria-label="Note de traitement" className="rounded-xl border border-[#E7E5E4] p-3 text-sm" />
+            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Note de traitement" aria-label="Note de traitement" className="rounded-xl border border-trait p-3 text-sm" />
             <div className="flex flex-wrap gap-2"><button type="button" className={btn.primary} onClick={() => close('RESOLVED')}>Résolu</button>
               <button type="button" className={btn.secondary} onClick={() => close('REJECTED')}>Rejeter</button></div>
           </Panel>

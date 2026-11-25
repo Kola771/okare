@@ -19,7 +19,7 @@ export function MediaSheet({ m, points, onClose, onDone }: { m: MediaRow | null;
     const reason = window.prompt('Motif du refus (envoyé au vendeur) :', 'Photo floue');
     if (reason) void run(reviewMedia(m.id, 'reject', reason), 'Photo refusée');
   };
-  const line = (k: string, v: React.ReactNode) => <div className="flex justify-between gap-3 border-t border-[#E7E5E4] py-2 text-sm first:border-0"><span className="text-ardoise">{k}</span><b className="text-right">{v}</b></div>;
+  const line = (k: string, v: React.ReactNode) => <div className="flex justify-between gap-3 border-t border-trait py-2 text-sm first:border-0"><span className="text-ardoise">{k}</span><b className="text-right">{v}</b></div>;
 
   return (
     <Sheet open onClose={onClose} labelledBy="media-title" maxWidth="lg:max-w-[560px]">
@@ -34,7 +34,7 @@ export function MediaSheet({ m, points, onClose, onDone }: { m: MediaRow | null;
         {m.rejectionReason && line('Motif du refus', m.rejectionReason)}
       </div>
       {m.unassigned ? (
-        <div className="flex flex-col gap-3 rounded-2xl bg-[#FAFAF9] p-4">
+        <div className="flex flex-col gap-3 rounded-2xl bg-surface-inset p-4">
           <b className="text-sm">Associer à un point de vente</b>
           <Field label="Point de vente">
             <select className={inputCls} value={posId} onChange={(e) => setPosId(e.target.value)}>
@@ -43,7 +43,7 @@ export function MediaSheet({ m, points, onClose, onDone }: { m: MediaRow | null;
           </Field>
           <div className="flex gap-2">{(['FACADE', 'OTHER'] as const).map((k) => (
             <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}
-              className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-charbon text-white' : 'border border-[#E7E5E4] bg-white'}`}>{k === 'FACADE' ? 'Photo de l’entrée' : 'Autre photo'}</button>))}
+              className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-charbon text-white' : 'border border-trait bg-surface'}`}>{k === 'FACADE' ? 'Photo de l’entrée' : 'Autre photo'}</button>))}
           </div>
           <button type="button" className={btn.primary} disabled={!posId} onClick={() => run(assignMedia(m.id, posId, kind), 'Photo associée au point de vente')}>Associer</button>
         </div>

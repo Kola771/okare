@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useFavorites } from '@/components/providers/FavoritesProvider';
 import { useToast } from '@/components/providers/ToastProvider';
 
-const round = 'flex h-11 w-11 items-center justify-center rounded-full bg-white text-charbon shadow-[0_1px_4px_rgba(28,25,23,0.18)]';
+const round = 'flex h-11 w-11 items-center justify-center rounded-full bg-surface text-charbon shadow-[0_1px_4px_rgba(28,25,23,0.18)]';
 
 export function BackButton({ className = '' }: { className?: string }) {
   const router = useRouter();

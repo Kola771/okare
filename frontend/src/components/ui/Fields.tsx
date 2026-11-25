@@ -29,7 +29,7 @@ function Frame({ id, label, error, hint, aside, children }: Omit<FieldProps, 'id
 }
 
 const box = (error?: string) =>
-  `flex min-h-[52px] items-center gap-2.5 rounded-[14px] border bg-white px-3.5 ${error ? 'border-erreur' : 'border-bordure-douce'}`;
+  `flex min-h-[52px] items-center gap-2.5 rounded-[14px] border bg-surface px-3.5 ${error ? 'border-erreur' : 'border-bordure-douce'}`;
 const input = 'min-w-0 flex-1 border-0 bg-transparent text-base text-charbon outline-none';
 
 export function PhoneField({ label, error, hint, aside, ...rest }: FieldProps) {
@@ -78,7 +78,7 @@ export function Switch({ checked, onChange, label }: { checked: boolean; onChang
   return (
     <button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}
       className={`relative h-[26px] w-11 shrink-0 rounded-full transition-colors ${checked ? 'bg-feuille' : 'bg-bordure'}`}>
-      <span className={`absolute top-[3px] h-5 w-5 rounded-full bg-white shadow transition-all ${checked ? 'right-[3px]' : 'left-[3px]'}`} />
+      <span className={`absolute top-[3px] h-5 w-5 rounded-full bg-surface shadow transition-all ${checked ? 'right-[3px]' : 'left-[3px]'}`} />
     </button>
   );
 }

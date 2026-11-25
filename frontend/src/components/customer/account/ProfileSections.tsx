@@ -13,7 +13,7 @@ import { useProfileSave } from './useProfile';
 
 export function Card({ id, title, sub, children }: { id?: string; title: string; sub?: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="flex flex-col gap-4 rounded-[20px] border border-trait bg-white p-6">
+    <section id={id} className="flex flex-col gap-4 rounded-[20px] border border-trait bg-surface p-6">
       <div><h2 className="m-0 text-lg font-extrabold">{title}</h2>{sub && <div className="mt-0.5 text-[13px] text-ardoise">{sub}</div>}</div>
       {children}
     </section>

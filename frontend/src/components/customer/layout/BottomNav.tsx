@@ -16,7 +16,7 @@ export function BottomNav() {
   const path = usePathname();
   return (
     <nav aria-label="Navigation principale"
-      className="fixed inset-x-0 bottom-0 z-[500] flex justify-around border-t border-trait bg-white pb-[max(14px,env(safe-area-inset-bottom))] pt-2 lg:hidden">
+      className="fixed inset-x-0 bottom-0 z-[500] flex justify-around border-t border-trait bg-surface pb-[max(14px,env(safe-area-inset-bottom))] pt-2 lg:hidden">
       {TABS.map(({ href, label, Icon }) => {
         const active = href === '/' ? path === '/' : path.startsWith(href);
         return (

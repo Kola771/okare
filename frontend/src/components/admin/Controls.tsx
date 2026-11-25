@@ -6,7 +6,7 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
   return (
     <button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)}
       className={`relative inline-flex h-[30px] w-[52px] shrink-0 items-center rounded-full transition-colors ${checked ? 'bg-piment' : 'bg-bordure'}`}>
-      <span className={`absolute h-6 w-6 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-[25px]' : 'translate-x-[3px]'}`} />
+      <span className={`absolute h-6 w-6 rounded-full bg-surface shadow transition-transform ${checked ? 'translate-x-[25px]' : 'translate-x-[3px]'}`} />
     </button>
   );
 }
@@ -17,7 +17,7 @@ export function Select<T extends string | number>({ value, onChange, options, la
   return (
     <select aria-label={label} value={String(value)}
       onChange={(e) => onChange((typeof value === 'number' ? Number(e.target.value) : e.target.value) as T)}
-      className="min-h-11 rounded-xl border border-[#E7E5E4] bg-white px-3 text-sm font-semibold text-charbon">
+      className="min-h-11 rounded-xl border border-trait bg-surface px-3 text-sm font-semibold text-charbon">
       {options.map(([v, l]) => <option key={String(v)} value={String(v)}>{l}</option>)}
     </select>
   );
@@ -26,7 +26,7 @@ export function Select<T extends string | number>({ value, onChange, options, la
 /** Ligne de réglage : titre en gras, explication grise, contrôle à droite (passe dessous sur mobile). */
 export function SettingRow({ title, sub, children }: { title: string; sub?: React.ReactNode; children?: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-3 border-t border-[#E7E5E4] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+    <div className="flex flex-col gap-3 border-t border-trait px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
       <div className="min-w-0">
         <div className="text-sm font-bold">{title}</div>
         {sub && <div className="mt-0.5 text-[13px] leading-snug text-ardoise">{sub}</div>}
@@ -46,4 +46,4 @@ export function Field({ label, children, error }: { label: string; children: Rea
   );
 }
 
-export const inputCls = 'min-h-12 w-full rounded-xl border border-[#E7E5E4] bg-white px-3.5 text-[15px] font-normal text-charbon';
+export const inputCls = 'min-h-12 w-full rounded-xl border border-trait bg-surface px-3.5 text-[15px] font-normal text-charbon';

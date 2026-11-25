@@ -53,12 +53,12 @@ export function PointsList({ initialRows, geo, f }: { initialRows: AdminPosRow[]
         <>
           <div className="hidden lg:block"><DataTable paged={false} columns={COLUMNS} rows={items} onRow={(r) => router.push(`/dashboard/points/${r.id}`)} empty="Aucun point de vente pour ce filtre." /></div>
           <div className="flex flex-col gap-2.5 lg:hidden">{items.map((r) => (
-            <Link key={r.id} href={`/dashboard/points/${r.id}`} className="flex flex-col gap-1.5 rounded-2xl border border-[#E7E5E4] bg-white p-3.5 text-charbon no-underline">
+            <Link key={r.id} href={`/dashboard/points/${r.id}`} className="flex flex-col gap-1.5 rounded-2xl border border-trait bg-surface p-3.5 text-charbon no-underline">
               <div className="flex items-start justify-between gap-2"><b>{r.name}</b><Pill tone={STATUS_PILL[r.status][0]}>{STATUS_PILL[r.status][1]}</Pill></div>
               <div className="text-xs text-ardoise">{POS_TYPE_LABEL[r.type]} · {r.zoneName} · {openStatusLabel(r.openStatus).short}</div>
               <div className="flex flex-wrap gap-3 text-xs"><span>Contacts 7 j : <b>{r.contacts7d}</b></span><span>Réponse : <b>{pct(r.responseRate)}</b></span><span>Prix : {checked(r.pricesStaleDays)}</span></div>
             </Link>))}{!list.data.length && <p className="text-sm text-ardoise">Aucun point de vente pour ce filtre.</p>}</div>
-          <div className="rounded-2xl border border-[#E7E5E4] bg-white"><Pager {...pager} bordered={false} /></div>
+          <div className="rounded-2xl border border-trait bg-surface"><Pager {...pager} bordered={false} /></div>
         </>
       )}
     </>

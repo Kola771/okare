@@ -23,7 +23,7 @@ export function ReviewsBlock({ slug, rating, initial }: Props) {
   const [all, setAll] = useState<ReviewView[] | null>(null);
   const list = all ?? initial;
   return (
-    <section className="flex flex-col gap-3 rounded-[20px] border border-trait bg-white px-5 py-4" aria-labelledby="reviews-title">
+    <section className="flex flex-col gap-3 rounded-[20px] border border-trait bg-surface px-5 py-4" aria-labelledby="reviews-title">
       <div className="flex items-baseline justify-between">
         <b id="reviews-title" className="text-[17px]">Avis des clients</b>
         {rating && (

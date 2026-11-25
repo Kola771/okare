@@ -15,7 +15,7 @@ export function CreateStepper({ steps, step, onStep }: { steps: string[]; step: 
             <button type="button" disabled={i > step} onClick={() => onStep(i)} aria-current={on ? 'step' : undefined}
               className="flex items-center gap-2 disabled:cursor-default">
               <span className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-extrabold ${
-                done || on ? 'bg-piment text-white' : 'bg-white text-ardoise ring-1 ring-bordure'}`}>
+                done || on ? 'bg-piment text-white' : 'bg-surface text-ardoise ring-1 ring-bordure'}`}>
                 {done ? <Check size={16} strokeWidth={3} /> : i + 1}
               </span>
               <span className={`whitespace-nowrap text-sm ${on ? 'font-bold text-charbon' : done ? 'font-semibold text-charbon' : 'text-ardoise'} ${on ? '' : 'hidden sm:inline'}`}>{label}</span>

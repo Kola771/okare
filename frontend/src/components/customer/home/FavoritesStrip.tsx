@@ -36,7 +36,7 @@ export function FavoritesStrip() {
       <div className="flex gap-2">
         {items.slice(0, 2).map((f) => (
           <Link key={f.pos.id} href={`/p/${f.pos.slug}/dish/${f.special!.slug}`}
-            className="flex min-w-0 flex-1 flex-col gap-0.5 rounded-xl bg-white px-2.5 py-2 text-charbon no-underline">
+            className="flex min-w-0 flex-1 flex-col gap-0.5 rounded-xl bg-surface px-2.5 py-2 text-charbon no-underline">
             <b className="truncate text-[13px]">{f.pos.name}</b>
             <span className="truncate text-xs text-ardoise">{f.special!.name}</span>
             <Price xof={f.special!.priceXof} className="text-[13px]" />

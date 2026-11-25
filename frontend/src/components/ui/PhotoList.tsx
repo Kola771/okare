@@ -44,7 +44,7 @@ export function PhotoList({ label, hint, value, onChange, max = 5 }: {
         ))}
         {value.length < max && (
           <button type="button" disabled={busy} onClick={() => input.current?.click()}
-            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-bordure bg-[#FAFAF9] text-xs font-bold text-ardoise hover:border-piment hover:text-piment">
+            className="flex aspect-square flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-bordure bg-surface-inset text-xs font-bold text-ardoise hover:border-piment hover:text-piment">
             <ImagePlus size={22} />{busy ? 'Préparation…' : 'Ajouter'}</button>
         )}
       </div>

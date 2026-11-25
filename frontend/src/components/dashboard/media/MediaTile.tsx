@@ -25,7 +25,7 @@ export function MediaThumb({ m, className = '' }: { m: MediaRow; className?: str
 
 export function MediaTile({ m, onOpen }: { m: MediaRow; onOpen: () => void }) {
   return (
-    <button type="button" onClick={onOpen} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white text-left hover:shadow-[0_8px_24px_-12px_rgba(28,25,23,0.35)]">
+    <button type="button" onClick={onOpen} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-trait bg-surface text-left hover:shadow-[0_8px_24px_-12px_rgba(28,25,23,0.35)]">
       <span className="block aspect-[4/3] w-full overflow-hidden"><MediaThumb m={m} /></span>
       <span className="flex min-w-0 flex-col gap-0.5 p-2.5">
         <b className="truncate text-[13px]">{m.fileName}</b>

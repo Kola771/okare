@@ -17,7 +17,7 @@ export function CategoryPicker({ value, onChange }: { value: 'A' | 'B' | 'C'; on
   return (
     <div className="flex gap-2">{CATS.map((c) => (
       <button key={c} type="button" aria-pressed={value === c} onClick={() => onChange(c)}
-        className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${value === c ? 'bg-charbon text-white' : 'border border-[#E7E5E4] bg-white'}`}>Catégorie {c}</button>))}
+        className={`min-h-11 flex-1 rounded-xl text-sm font-bold ${value === c ? 'bg-charbon text-white' : 'border border-trait bg-surface'}`}>Catégorie {c}</button>))}
     </div>
   );
 }
@@ -37,12 +37,12 @@ export function ZonesTable({ zones, canEdit }: { zones: AdminZoneRow[]; canEdit:
     <>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[440px] border-collapse text-left text-sm">
-          <thead><tr className="bg-[#FAFAF9] text-xs text-ardoise">
+          <thead><tr className="bg-surface-inset text-xs text-ardoise">
             <th className="px-4 py-3 font-semibold">Zone</th><th className="px-2 py-3 font-semibold">Cat.</th><th className="px-2 py-3 font-semibold">Places / jour</th>
             <th className="px-2 py-3 font-semibold">Points</th><th className="px-4 py-3 font-semibold">Statut</th>
           </tr></thead>
           <tbody>{items.map((z) => (
-            <tr key={z.id} className="border-t border-[#E7E5E4]">
+            <tr key={z.id} className="border-t border-trait">
               <td className="px-4 py-3">
                 {canEdit ? <button type="button" onClick={() => open(z)} className="text-left font-bold hover:text-piment">{z.name}</button> : <b>{z.name}</b>}
                 <span className="block text-xs text-ardoise">{z.neighborhoods.join(', ')}</span>

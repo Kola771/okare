@@ -32,7 +32,7 @@ export function GoogleButton({ onDone, onError }: { onDone: () => void; onError:
           setBusy(false);
         }
       }}
-      className="flex min-h-[52px] items-center justify-center gap-2.5 rounded-[14px] border border-bordure-douce bg-white text-[15px] font-semibold text-charbon disabled:opacity-60"
+      className="flex min-h-[52px] items-center justify-center gap-2.5 rounded-[14px] border border-bordure-douce bg-surface text-[15px] font-semibold text-charbon disabled:opacity-60"
     >
       <GoogleMark />
       {busy ? 'Connexion…' : 'Continuer avec Google'}

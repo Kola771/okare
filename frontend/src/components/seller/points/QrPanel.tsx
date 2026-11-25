@@ -26,7 +26,7 @@ export function QrPanel({ pos }: { pos: ManagedPos }) {
   const short = `${qrBase()}${pos.qrCode}`;
   const url = qrUrl(pos.qrCode);
   return (
-    <section className="grid overflow-hidden rounded-[24px] border border-[#E7E5E4] bg-white lg:grid-cols-[400px_minmax(0,1fr)]">
+    <section className="grid overflow-hidden rounded-[24px] border border-trait bg-surface lg:grid-cols-[400px_minmax(0,1fr)]">
       <div className="relative flex items-center justify-center overflow-hidden bg-charbon px-6 py-10 lg:py-12">
         <div aria-hidden className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-piment/40 blur-3xl" />
         <div aria-hidden className="absolute -bottom-28 -right-16 h-64 w-64 rounded-full bg-mais/25 blur-3xl" />
@@ -42,7 +42,7 @@ export function QrPanel({ pos }: { pos: ManagedPos }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 divide-x divide-[#E7E5E4] rounded-2xl border border-[#E7E5E4]">
+        <div className="grid grid-cols-2 divide-x divide-[#E7E5E4] rounded-2xl border border-trait">
           {([[pos.qrScans7d, 'scans', 'un par téléphone et par heure'], [pos.qrOrders7d, 'commandes après un scan', 'contacts venus du QR']] as const).map(([v, l, hint]) => (
             <div key={l} className="flex flex-col gap-0.5 p-4 lg:p-5">
               <span className="font-display text-[34px] font-extrabold leading-none">{v}</span>

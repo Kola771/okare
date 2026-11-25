@@ -15,11 +15,11 @@ export function AnswerButtons({ value, onChoose, disabled }: {
         Oui
       </button>
       <button type="button" disabled={disabled} aria-pressed={value === 'NOT_YET'} onClick={() => onChoose('NOT_YET')}
-        className={`${base} border font-semibold ${value === 'NOT_YET' ? 'border-charbon bg-argile' : 'border-bordure bg-white'}`}>
+        className={`${base} border font-semibold ${value === 'NOT_YET' ? 'border-charbon bg-argile' : 'border-bordure bg-surface'}`}>
         Pas encore
       </button>
       <button type="button" disabled={disabled} aria-pressed={value === 'NO'} onClick={() => onChoose('NO')}
-        className={`${base} border font-semibold text-red-700 ${value === 'NO' ? 'border-red-700 bg-red-50' : 'border-red-300 bg-white'}`}>
+        className={`${base} border font-semibold text-red-700 ${value === 'NO' ? 'border-red-700 bg-red-50' : 'border-red-300 bg-surface'}`}>
         Non
       </button>
     </div>
@@ -38,7 +38,7 @@ interface PickerProps {
 export function DishPicker({ menu, picked, other, onToggle, onOther, onSubmit }: PickerProps) {
   const chip = (on: boolean) =>
     `inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-sm font-semibold ${
-      on ? 'bg-charbon text-white' : 'border border-bordure-douce bg-white text-charbon'}`;
+      on ? 'bg-charbon text-white' : 'border border-bordure-douce bg-surface text-charbon'}`;
   return (
     <>
       <div className="text-sm font-bold">
@@ -51,7 +51,7 @@ export function DishPicker({ menu, picked, other, onToggle, onOther, onSubmit }:
           </button>
         ))}
         <button type="button" aria-pressed={other} onClick={onOther}
-          className={other ? chip(true) : 'min-h-10 rounded-full border border-dashed border-[#A8A29E] bg-white px-3.5 text-sm font-semibold'}>
+          className={other ? chip(true) : 'min-h-10 rounded-full border border-dashed border-[#A8A29E] bg-surface px-3.5 text-sm font-semibold'}>
           Autre chose
         </button>
       </div>

@@ -22,8 +22,8 @@ export function SearchScreen({ q, initial }: { q: string; initial: FeedPage | un
     <div className="mx-auto flex w-full max-w-[1240px] flex-col gap-4 px-5 py-5 md:px-8 lg:py-7">
       <form role="search" className="flex items-center gap-2 lg:hidden"
         onSubmit={(e) => { e.preventDefault(); router.replace(`/search?q=${encodeURIComponent(input.trim())}`); }}>
-        <Link href="/" aria-label="Retour" className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-white text-charbon"><ArrowLeft size={20} /></Link>
-        <label className="flex min-h-12 flex-1 items-center gap-2.5 rounded-[14px] border border-trait bg-white px-3.5">
+        <Link href="/" aria-label="Retour" className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-surface text-charbon"><ArrowLeft size={20} /></Link>
+        <label className="flex min-h-12 flex-1 items-center gap-2.5 rounded-[14px] border border-trait bg-surface px-3.5">
           <Search size={18} className="text-ardoise" />
           <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Plat, maquis, quartier…" aria-label="Rechercher" autoFocus={!q}
             className="min-w-0 flex-1 border-0 bg-transparent text-[15px] outline-none" />

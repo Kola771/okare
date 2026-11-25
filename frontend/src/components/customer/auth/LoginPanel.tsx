@@ -33,7 +33,7 @@ export function LoginPanel({ mode, setMode, variant, next }: {
         <div role="tablist" className="flex rounded-[14px] bg-argile p-1">
           {(['login', 'register'] as const).map((m) => (
             <button key={m} role="tab" type="button" aria-selected={mode === m} onClick={() => setMode(m)}
-              className={`min-h-[42px] flex-1 rounded-[11px] text-sm ${mode === m ? 'bg-white font-bold shadow-[0_1px_3px_rgba(28,25,23,0.12)]' : 'font-semibold text-ardoise'}`}>
+              className={`min-h-[42px] flex-1 rounded-[11px] text-sm ${mode === m ? 'bg-surface font-bold shadow-[0_1px_3px_rgba(28,25,23,0.12)]' : 'font-semibold text-ardoise'}`}>
               {m === 'login' ? 'Se connecter' : 'Créer un compte'}
             </button>
           ))}

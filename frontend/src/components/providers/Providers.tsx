@@ -5,6 +5,7 @@
  * pour ne pas alourdir le JavaScript initial de chaque page (spec 0ter).
  */
 import dynamic from 'next/dynamic';
+import { ThemeProvider } from 'next-themes';
 import { useEffect, useState } from 'react';
 import type { Me, ZoneOption } from '@/lib/api';
 import type { ViewerPrefs } from '@/lib/viewer';
@@ -44,15 +45,17 @@ export function Providers({ children, initialMe, viewer, zones }: {
   children: React.ReactNode; initialMe: Me | null; viewer: ViewerPrefs; zones: ZoneOption[];
 }) {
   return (
-    <ToastProvider>
-      <SessionProvider initialMe={initialMe}>
-        <ViewerProvider initialPrefs={viewer} zones={zones}>
-          <FavoritesProvider>
-            {children}
-            <Overlays />
-          </FavoritesProvider>
-        </ViewerProvider>
-      </SessionProvider>
-    </ToastProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+      <ToastProvider>
+        <SessionProvider initialMe={initialMe}>
+          <ViewerProvider initialPrefs={viewer} zones={zones}>
+            <FavoritesProvider>
+              {children}
+              <Overlays />
+            </FavoritesProvider>
+          </ViewerProvider>
+        </SessionProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

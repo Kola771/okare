@@ -40,7 +40,7 @@ export function ReviewForm({ contactId, onDone }: { contactId: string; onDone: (
       </div>
       <textarea value={comment} onChange={(e) => setComment(e.target.value.slice(0, 500))} rows={2}
         placeholder="Un mot sur le plat ou l'accueil (facultatif)" aria-label="Commentaire"
-        className="rounded-xl border border-bordure-douce bg-white p-3 text-[15px] outline-none" />
+        className="rounded-xl border border-bordure-douce bg-surface p-3 text-[15px] outline-none" />
       {error && <div role="alert" className="text-[13px] font-semibold text-erreur">{error}</div>}
       <button type="button" onClick={submit} disabled={busy} className="min-h-12 rounded-[14px] bg-charbon font-bold text-white disabled:opacity-60">
         {busy ? 'Envoi…' : 'Publier mon avis'}

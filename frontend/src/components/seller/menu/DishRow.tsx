@@ -13,7 +13,7 @@ export function DishRow({ dish, editHref, onAction, busy }: {
 }) {
   const hidden = dish.status === 'PENDING';
   return (
-    <div className={`flex flex-col gap-3 rounded-2xl border bg-white p-3 sm:flex-row sm:items-center ${dish.isSpecial ? 'border-piment-pale' : 'border-[#E7E5E4]'} ${hidden ? 'opacity-70' : ''}`}>
+    <div className={`flex flex-col gap-3 rounded-2xl border bg-surface p-3 sm:flex-row sm:items-center ${dish.isSpecial ? 'border-piment-pale' : 'border-trait'} ${hidden ? 'opacity-70' : ''}`}>
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <span className="block h-14 w-14 shrink-0 overflow-hidden rounded-xl"><DishImage illustrationKey={dish.illustrationKey} alt="" /></span>
         <div className="min-w-0 flex-1">
@@ -44,7 +44,7 @@ export function DishRow({ dish, editHref, onAction, busy }: {
           <EyeOff size={14} /> {hidden ? 'Publier' : 'Masquer'}
         </button>
         <Link href={editHref} aria-label={`Modifier ${dish.name}`}
-          className="flex min-h-10 items-center gap-1.5 rounded-xl border border-[#E7E5E4] px-3 text-[13px] font-semibold text-charbon no-underline">
+          className="flex min-h-10 items-center gap-1.5 rounded-xl border border-trait px-3 text-[13px] font-semibold text-charbon no-underline">
           <Pencil size={14} /> Modifier
         </Link>
       </div>

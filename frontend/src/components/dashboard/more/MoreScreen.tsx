@@ -23,11 +23,11 @@ export function MoreScreen() {
       {sections.map((s) => (
         <section key={s.title} className="flex flex-col gap-2">
           <h2 className="m-0 px-1 text-[11px] font-bold tracking-[1px] text-pierre">{s.title}</h2>
-          <div className="overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white">
+          <div className="overflow-hidden rounded-2xl border border-trait bg-surface">
             {s.items.map((i) => (
               <Link key={i.href} href={i.href}
-                className="flex min-h-[56px] items-center gap-3.5 border-t border-[#E7E5E4] px-4 text-[15px] font-semibold text-charbon no-underline first:border-0 active:bg-[#FAFAF9]">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F5F5F4] text-ardoise"><i.icon size={18} /></span>
+                className="flex min-h-[56px] items-center gap-3.5 border-t border-trait px-4 text-[15px] font-semibold text-charbon no-underline first:border-0 active:bg-surface-inset">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-inset text-ardoise"><i.icon size={18} /></span>
                 <span className="flex-1">{i.label}</span>
                 {i.badge ? <span className="rounded-full bg-piment px-2 py-0.5 text-[11px] font-bold text-white">{i.badge}</span> : null}
                 <ChevronRight size={18} className="text-pierre" />

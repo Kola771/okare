@@ -25,7 +25,7 @@ export function ManageNav({ pos, base }: { pos: ManageHeader; base: string }) {
     <>
       {section && (
         <Link href={base} className="flex items-center gap-2 text-sm font-semibold text-charbon no-underline lg:hidden">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-white"><ArrowLeft size={18} /></span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-trait bg-surface"><ArrowLeft size={18} /></span>
           <span className="min-w-0"><span className="block truncate">{pos.name}</span><span className="block text-xs font-normal text-ardoise">{section[1]}</span></span>
         </Link>
       )}
@@ -43,12 +43,12 @@ export function ManageNav({ pos, base }: { pos: ManageHeader; base: string }) {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href={`/p/${pos.slug}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#E7E5E4] bg-white px-4 text-sm font-semibold text-charbon no-underline">
+            <Link href={`/p/${pos.slug}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-trait bg-surface px-4 text-sm font-semibold text-charbon no-underline">
               <ExternalLink size={16} /> Voir ma page</Link>
             <PosActions posId={pos.id} status={pos.status} compact />
           </div>
         </div>
-        <nav aria-label="Gestion du point" className="no-scrollbar flex gap-1 overflow-x-auto border-b border-[#E7E5E4]">
+        <nav aria-label="Gestion du point" className="no-scrollbar flex gap-1 overflow-x-auto border-b border-trait">
           {SECTIONS.map(([k, label]) => {
             const on = section?.[0] === k;
             return (
