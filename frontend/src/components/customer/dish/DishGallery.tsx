@@ -30,7 +30,7 @@ export function DishGallery({ photos, illustrationKey, name, variant, overlay }:
                   className={`h-[7px] rounded-full ${i === index ? 'w-[18px] bg-surface' : 'w-[7px] bg-surface/60'}`} />
               ))}
             </div>
-            <span className="absolute bottom-3 right-3.5 rounded-full bg-charbon/60 px-2 py-1 text-xs font-semibold text-white">
+            <span className="absolute bottom-3 right-3.5 rounded-full bg-black/60 px-2 py-1 text-xs font-semibold text-white">
               {index + 1} / {images.length}
             </span>
           </>

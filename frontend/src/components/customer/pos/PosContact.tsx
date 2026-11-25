@@ -21,7 +21,7 @@ export function PosContact({ pos, variant, source = 'POS_PAGE' }: { pos: PosPage
         <b className="text-[17px]">Contacter le vendeur</b>
         <p className="m-0 text-[13px] leading-normal text-ardoise">Pour une question ou plusieurs plats. Pour un seul plat, utilise son bouton dans le menu.</p>
         <button type="button" disabled={busy} onClick={() => go('WHATSAPP')}
-          className="flex min-h-[52px] items-center justify-center gap-2.5 rounded-[14px] bg-charbon text-[15px] font-bold text-white">
+          className="flex min-h-[52px] items-center justify-center gap-2.5 rounded-[14px] bg-inverse text-[15px] font-bold text-on-inverse">
           <WhatsAppIcon /> Écrire au vendeur
         </button>
         <button type="button" disabled={busy} onClick={() => go('CALL')}
@@ -41,7 +41,7 @@ export function PosContact({ pos, variant, source = 'POS_PAGE' }: { pos: PosPage
           <Phone size={18} /> Appeler
         </button>
         <button type="button" disabled={busy} onClick={() => go('WHATSAPP')}
-          className="flex min-h-[50px] flex-[1.4] items-center justify-center gap-2 rounded-[14px] bg-charbon text-[15px] font-bold text-white">
+          className="flex min-h-[50px] flex-[1.4] items-center justify-center gap-2 rounded-[14px] bg-inverse text-[15px] font-bold text-on-inverse">
           <WhatsAppIcon /> Écrire au vendeur
         </button>
       </div>

@@ -42,7 +42,7 @@ export function ErrorState({ message, onRetry }: { message: string; onRetry?: ()
       <div className="text-base font-bold">{offline ? 'Tu es hors connexion' : 'Ça n’a pas marché'}</div>
       <p className="m-0 max-w-sm text-sm text-ardoise">{message}</p>
       {onRetry && (
-        <button onClick={onRetry} className="min-h-11 rounded-btn bg-charbon px-5 text-sm font-bold text-white">
+        <button onClick={onRetry} className="min-h-11 rounded-btn bg-inverse px-5 text-sm font-bold text-on-inverse">
           Réessayer
         </button>
       )}

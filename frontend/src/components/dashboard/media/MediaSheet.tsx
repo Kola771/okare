@@ -43,7 +43,7 @@ export function MediaSheet({ m, points, onClose, onDone }: { m: MediaRow | null;
           </Field>
           <div className="flex gap-2">{(['FACADE', 'OTHER'] as const).map((k) => (
             <button key={k} type="button" aria-pressed={kind === k} onClick={() => setKind(k)}
-              className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-charbon text-white' : 'border border-trait bg-surface'}`}>{k === 'FACADE' ? 'Photo de l’entrée' : 'Autre photo'}</button>))}
+              className={`min-h-10 flex-1 rounded-xl text-sm font-bold ${kind === k ? 'bg-inverse text-on-inverse' : 'border border-trait bg-surface'}`}>{k === 'FACADE' ? "Photo de l’entrée" : 'Autre photo'}</button>))}
           </div>
           <button type="button" className={btn.primary} disabled={!posId} onClick={() => run(assignMedia(m.id, posId, kind), 'Photo associée au point de vente')}>Associer</button>
         </div>

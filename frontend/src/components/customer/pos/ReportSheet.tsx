@@ -43,7 +43,7 @@ export function ReportLink({ posId, posName, dishId }: { posId: string; posName:
         <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Motif">
           {REASONS.map((r) => (
             <button key={r} type="button" role="radio" aria-checked={reason === r} onClick={() => setReason(r)}
-              className={`min-h-10 rounded-full px-3.5 text-sm font-semibold ${reason === r ? 'bg-charbon text-white' : 'border border-bordure-douce bg-surface'}`}>
+              className={`min-h-10 rounded-full px-3.5 text-sm font-semibold ${reason === r ? 'bg-inverse text-on-inverse' : 'border border-bordure-douce bg-surface'}`}>
               {REPORT_REASON_LABEL[r]}
             </button>
           ))}

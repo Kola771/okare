@@ -59,7 +59,7 @@ export function DesktopHeader() {
       ) : (
         <div className="flex items-center gap-2">
           <Link href="/login" className="flex min-h-11 items-center px-3.5 text-sm font-semibold text-charbon no-underline">Se connecter</Link>
-          <Link href="/login?signup=1" className="flex min-h-11 items-center rounded-[14px] bg-charbon px-[18px] text-sm font-bold text-white no-underline hover:text-white">
+          <Link href="/login?signup=1" className="flex min-h-11 items-center rounded-[14px] bg-inverse px-[18px] text-sm font-bold text-on-inverse no-underline hover:text-on-inverse">
             Créer un compte
           </Link>
         </div>

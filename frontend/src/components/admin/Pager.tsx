@@ -54,7 +54,7 @@ export function Pager({ page, pages, total, size, onPage, onSize, bordered = tru
           {numbers(page, pages).map((n, i) => (n === '…'
             ? <span key={`e${i}`} className="px-1">…</span>
             : <button key={n} type="button" aria-current={n === page ? 'page' : undefined} onClick={() => onPage(n)}
-                className={`${nav} ${n === page ? 'bg-charbon text-white' : 'text-charbon hover:bg-surface-inset'}`}>{n}</button>))}
+                className={`${nav} ${n === page ? 'bg-inverse text-on-inverse' : 'text-charbon hover:bg-surface-inset'}`}>{n}</button>))}
         </span>
         <span className="px-2 font-semibold text-charbon sm:hidden">{page} / {pages}</span>
         <button type="button" className={`${nav} gap-1 border border-trait bg-surface pl-3 pr-1.5 text-charbon hover:bg-surface-inset`} disabled={page === pages} onClick={() => onPage(page + 1)}>

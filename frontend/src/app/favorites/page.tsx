@@ -4,7 +4,7 @@ import { ClientShell } from '@/components/customer/layout/ClientShell';
 import { getFavoritesToday, getMe, getMyContacts } from '@/lib/api';
 import { readViewer } from '@/lib/viewer-server';
 
-export const metadata: Metadata = { title: 'Mes favoris' };
+export const metadata: Metadata = { title: 'Mes favoris', robots: { index: false } };
 
 /** Écran 14 (mobile) et D3 (desktop) — favoris et derniers contacts lus côté serveur. */
 export default async function FavoritesPage() {

@@ -30,7 +30,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             key={t.id}
             role={t.tone === 'error' ? 'alert' : 'status'}
             className={`pointer-events-auto max-w-md rounded-2xl px-4 py-3 text-sm font-semibold shadow-lg ${
-              t.tone === 'error' ? 'bg-erreur text-white' : t.tone === 'success' ? 'bg-feuille text-white' : 'bg-charbon text-white'
+              t.tone === 'error' ? 'bg-erreur text-white' : t.tone === 'success' ? 'bg-feuille text-white' : 'bg-black text-white'
             }`}
           >
             {t.text}

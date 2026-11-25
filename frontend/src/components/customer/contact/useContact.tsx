@@ -65,7 +65,7 @@ export function useContact() {
         <button onClick={() => setWarning(null)} className="min-h-[50px] flex-1 rounded-[14px] border border-bordure font-bold">Annuler</button>
         <button
           onClick={() => { const t = warning; setWarning(null); if (t) void send(t); }}
-          className="min-h-[50px] flex-1 rounded-[14px] bg-charbon font-bold text-white"
+          className="min-h-[50px] flex-1 rounded-[14px] bg-inverse font-bold text-on-inverse"
         >
           Écrire quand même
         </button>

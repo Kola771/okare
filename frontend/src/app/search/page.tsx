@@ -4,7 +4,10 @@ import { ClientShell } from '@/components/customer/layout/ClientShell';
 import { search } from '@/lib/api';
 import { readViewer } from '@/lib/viewer-server';
 
-export const metadata: Metadata = { title: 'Recherche' };
+export const metadata: Metadata = {
+  title: 'Recherche',
+  description: 'Cherche un plat, un maquis ou un vendeur sur OKARE.',
+};
 
 /** Recherche : premiers résultats calculés sur le serveur. */
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
