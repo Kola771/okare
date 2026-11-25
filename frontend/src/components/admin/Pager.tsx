@@ -37,27 +37,27 @@ export function Pager({ page, pages, total, size, onPage, onSize, bordered = tru
   const from = (page - 1) * size + 1;
   const to = Math.min(total, page * size);
   return (
-    <nav aria-label="Pagination" className={`flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-ardoise ${bordered ? 'border-t border-[#E7E5E4]' : ''}`}>
+    <nav aria-label="Pagination" className={`flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-[13px] text-ardoise ${bordered ? 'border-t border-trait' : ''}`}>
       <div className="flex items-center gap-3">
         <span><b className="text-charbon">{from}–{to}</b> sur {total}</span>
         <label className="hidden items-center gap-2 sm:flex">Lignes par page
           <select value={size} onChange={(e) => onSize(Number(e.target.value))}
-            className="h-9 rounded-lg border border-[#E7E5E4] bg-white px-2 text-[13px] font-semibold text-charbon">
+            className="h-9 rounded-lg border border-trait bg-surface px-2 text-[13px] font-semibold text-charbon">
             {PAGE_SIZES.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         </label>
       </div>
       <div className="flex items-center gap-1">
-        <button type="button" className={`${nav} gap-1 border border-[#E7E5E4] bg-white pl-1.5 pr-3 text-charbon hover:bg-[#F5F5F4]`} disabled={page === 1} onClick={() => onPage(page - 1)}>
+        <button type="button" className={`${nav} gap-1 border border-trait bg-surface pl-1.5 pr-3 text-charbon hover:bg-surface-inset`} disabled={page === 1} onClick={() => onPage(page - 1)}>
           <ChevronLeft size={18} />Précédent</button>
         <span className="hidden items-center gap-1 sm:flex">
           {numbers(page, pages).map((n, i) => (n === '…'
             ? <span key={`e${i}`} className="px-1">…</span>
             : <button key={n} type="button" aria-current={n === page ? 'page' : undefined} onClick={() => onPage(n)}
-                className={`${nav} ${n === page ? 'bg-charbon text-white' : 'text-charbon hover:bg-[#F5F5F4]'}`}>{n}</button>))}
+                className={`${nav} ${n === page ? 'bg-charbon text-white' : 'text-charbon hover:bg-surface-inset'}`}>{n}</button>))}
         </span>
         <span className="px-2 font-semibold text-charbon sm:hidden">{page} / {pages}</span>
-        <button type="button" className={`${nav} gap-1 border border-[#E7E5E4] bg-white pl-3 pr-1.5 text-charbon hover:bg-[#F5F5F4]`} disabled={page === pages} onClick={() => onPage(page + 1)}>
+        <button type="button" className={`${nav} gap-1 border border-trait bg-surface pl-3 pr-1.5 text-charbon hover:bg-surface-inset`} disabled={page === pages} onClick={() => onPage(page + 1)}>
           Suivant<ChevronRight size={18} /></button>
       </div>
     </nav>

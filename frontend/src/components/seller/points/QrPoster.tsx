@@ -7,7 +7,7 @@ import { Logo } from '@/components/ui/Logo';
 
 export function QrPoster({ name, url, short }: { name: string; url: string; short: string }) {
   return (
-    <div id="qr-poster" className="mx-auto flex w-full max-w-[300px] flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_18px_40px_-18px_rgba(28,25,23,0.45)] ring-1 ring-[#E7E5E4]">
+    <div id="qr-poster" className="mx-auto flex w-full max-w-[300px] flex-col overflow-hidden rounded-[22px] bg-white shadow-[0_18px_40px_-18px_rgba(28,25,23,0.45)] ring-1 ring-trait">
       <div className="bg-motif-piment flex flex-col items-center gap-1 px-5 pb-5 pt-4 text-center">
         <Logo size={30} light pin href={null} />
         <span className="text-[12px] font-semibold uppercase tracking-[1.5px] text-white/85">Le menu et les prix du jour</span>
@@ -17,7 +17,7 @@ export function QrPoster({ name, url, short }: { name: string; url: string; shor
         <div className="rounded-2xl border-2 border-charbon p-3">
           <QRCodeSVG value={url} size={176} level="M" marginSize={0} />
         </div>
-        <span className="rounded-full bg-[#F5F5F4] px-3 py-1 font-mono text-[13px] font-bold">{short}</span>
+        <span className="rounded-full bg-surface-inset px-3 py-1 font-mono text-[13px] font-bold">{short}</span>
         <span className="text-[12px] leading-snug text-ardoise">Scanne avec l’appareil photo de ton téléphone.<br />Rien à installer.</span>
       </div>
     </div>

@@ -11,7 +11,7 @@ import type { OpeningHours, TimeRange } from '@/shared/types';
 const DAYS = ['1', '2', '3', '4', '5', '6', '7'] as const;
 type Day = (typeof DAYS)[number];
 const MAX_RANGES = 3;
-const time = 'min-h-10 w-[100px] rounded-[10px] border border-[#E7E5E4] bg-white px-2 text-center text-[15px] font-medium';
+const time = 'min-h-10 w-[100px] rounded-[10px] border border-trait bg-surface px-2 text-center text-[15px] font-medium';
 
 /** Ranges proposées quand on ouvre un jour ou qu'on ajoute une plage. */
 const firstRange = (h: OpeningHours): TimeRange => DAYS.map((d) => h[d]?.[0]).find(Boolean) ?? ['07:00', '15:00'];
@@ -21,7 +21,7 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) =
   return (
     <button type="button" role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)}
       className={`relative h-[30px] w-[52px] shrink-0 rounded-full transition-colors ${on ? 'bg-feuille' : 'bg-bordure'}`}>
-      <span className={`absolute top-[3px] h-6 w-6 rounded-full bg-white shadow transition-all ${on ? 'left-[25px]' : 'left-[3px]'}`} />
+      <span className={`absolute top-[3px] h-6 w-6 rounded-full bg-surface shadow transition-all ${on ? 'left-[25px]' : 'left-[3px]'}`} />
     </button>
   );
 }
@@ -32,16 +32,16 @@ export function WeekHoursField({ value, onChange }: { value: OpeningHours; onCha
   const copyMondayAll = () => onChange(Object.fromEntries(DAYS.map((x) => [x, x === '7' && !value['7']?.length ? [] : [...(value['1'] ?? [])]])) as OpeningHours);
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-[#E7E5E4]">
-      <div className="flex flex-wrap items-center justify-between gap-2 bg-[#FAFAF9] px-4 py-2.5">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-trait">
+      <div className="flex flex-wrap items-center justify-between gap-2 bg-surface-inset px-4 py-2.5">
         <span className="text-[13px] text-ardoise">Plusieurs plages par jour possibles (midi et soir)</span>
-        <button type="button" onClick={copyMondayAll} className="min-h-9 rounded-[10px] border border-[#E7E5E4] bg-white px-3 text-xs font-bold">Copier lundi partout</button>
+        <button type="button" onClick={copyMondayAll} className="min-h-9 rounded-[10px] border border-trait bg-surface px-3 text-xs font-bold">Copier lundi partout</button>
       </div>
       {DAYS.map((d, i) => {
         const ranges = value[d] ?? [];
         const day = WEEKDAY_LONG[i + 1];
         return (
-          <div key={d} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 border-t border-[#E7E5E4] px-4 py-3">
+          <div key={d} className="flex flex-wrap items-center gap-x-4 gap-y-2.5 border-t border-trait px-4 py-3">
             <div className="flex w-[136px] shrink-0 items-center gap-3">
               <Toggle on={ranges.length > 0} label={`Ouvert le ${day}`} onChange={(on) => set(d, on ? [firstRange(value)] : [])} />
               <b className="text-[15px]">{day}</b>
@@ -56,7 +56,7 @@ export function WeekHoursField({ value, onChange }: { value: OpeningHours; onCha
                   <input type="time" value={r[1]} aria-label={`${day} fin plage ${j + 1}`} className={time}
                     onChange={(e) => set(d, ranges.map((x, k) => (k === j ? [x[0], e.target.value] : x)))} />
                   <button type="button" aria-label={`Retirer la plage ${j + 1} du ${day}`} onClick={() => set(d, ranges.filter((_, k) => k !== j))}
-                    className="h-8 w-8 shrink-0 rounded-full bg-[#F5F5F4] text-base text-ardoise">×</button>
+                    className="h-8 w-8 shrink-0 rounded-full bg-surface-inset text-base text-ardoise">×</button>
                 </div>
               ))}
               {ranges.length > 0 && ranges.length < MAX_RANGES && (
@@ -66,13 +66,13 @@ export function WeekHoursField({ value, onChange }: { value: OpeningHours; onCha
             </div>
             {ranges.length > 0 && (
               <button type="button" onClick={() => copyFrom(d)} title="Copier sur les autres jours" aria-label={`Copier les horaires du ${day} sur les autres jours`}
-                className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ardoise hover:bg-[#F5F5F4] hover:text-charbon sm:flex">
+                className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ardoise hover:bg-surface-inset hover:text-charbon sm:flex">
                 <Copy size={16} /></button>
             )}
           </div>
         );
       })}
-      <p className="m-0 border-t border-[#E7E5E4] px-4 py-2.5 text-xs text-ardoise">Une plage peut passer minuit (ex. 18:00 → 02:00).</p>
+      <p className="m-0 border-t border-trait px-4 py-2.5 text-xs text-ardoise">Une plage peut passer minuit (ex. 18:00 → 02:00).</p>
     </div>
   );
 }

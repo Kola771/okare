@@ -17,7 +17,7 @@ import { momentOfDay } from '@/shared/time';
 import { MapPanel } from './MapPanel';
 
 const pill = (on: boolean) =>
-  `min-h-[38px] shrink-0 rounded-full px-3.5 text-[13px] font-semibold ${on ? 'bg-piment text-white' : 'bg-white text-charbon shadow-[0_1px_3px_rgba(28,25,23,0.15)]'}`;
+  `min-h-[38px] shrink-0 rounded-full px-3.5 text-[13px] font-semibold ${on ? 'bg-piment text-white' : 'bg-surface text-charbon shadow-[0_1px_3px_rgba(28,25,23,0.15)]'}`;
 
 export function MapScreen() {
   const router = useRouter();
@@ -35,17 +35,17 @@ export function MapScreen() {
   }, [isDesktop, router]);
 
   return (
-    <div className="relative h-[calc(100dvh-76px)] w-full overflow-hidden bg-[#EEE9E0]">
+    <div className="relative h-[calc(100dvh-76px)] w-full overflow-hidden bg-argile">
       <MapPanel filters={filters} selectedId={selected} onSelect={setSelected} variant="mobile" />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-[500] flex flex-col gap-2.5 px-4 pt-[18px]">
         <div className="pointer-events-auto flex gap-2">
           <form role="search" onSubmit={(e) => { e.preventDefault(); if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`); }}
-            className="flex min-h-12 flex-1 items-center gap-2 rounded-[14px] bg-white px-3 shadow-[0_1px_3px_rgba(28,25,23,0.15)]">
+            className="flex min-h-12 flex-1 items-center gap-2 rounded-[14px] bg-surface px-3 shadow-[0_1px_3px_rgba(28,25,23,0.15)]">
             <Search size={18} className="text-ardoise" />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={zone ? `${zone.name}, Cotonou` : 'Rechercher'}
               aria-label="Rechercher un lieu ou un plat" className="min-w-0 flex-1 border-0 bg-transparent text-[15px] font-medium outline-none" />
           </form>
-          <Link href="/" className="flex min-h-12 items-center gap-1.5 rounded-[14px] bg-white px-3.5 text-sm font-bold text-charbon no-underline shadow-[0_1px_3px_rgba(28,25,23,0.15)]">
+          <Link href="/" className="flex min-h-12 items-center gap-1.5 rounded-[14px] bg-surface px-3.5 text-sm font-bold text-charbon no-underline shadow-[0_1px_3px_rgba(28,25,23,0.15)]">
             <List size={18} /> Liste
           </Link>
         </div>

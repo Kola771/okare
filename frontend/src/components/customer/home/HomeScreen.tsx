@@ -54,7 +54,7 @@ export function HomeScreen({ initialFeed, initialMoment, weekday, categories }: 
             <MomentTabs value={moment} onChange={setMoment} />
           </div>
           <div className="hidden md:block"><CategoryChips value={categoryId} onChange={setCategoryId} categories={categories} /></div>
-          <div className="hidden flex-wrap items-center gap-2 rounded-2xl border border-trait bg-white/85 px-3 py-2.5 md:flex">
+          <div className="hidden flex-wrap items-center gap-2 rounded-2xl border border-trait bg-surface/85 px-3 py-2.5 md:flex">
             <span className="mx-1 text-[13px] font-bold text-ardoise">Budget</span>
             <BudgetChips variant="dark" />
             <PriceFilterChip />

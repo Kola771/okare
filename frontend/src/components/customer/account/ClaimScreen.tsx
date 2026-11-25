@@ -11,7 +11,7 @@ import { useApi } from '@/components/admin/useApi';
 import { useToast } from '@/components/providers/ToastProvider';
 import { PhoneField } from '@/components/ui/Fields';
 
-const box = 'flex flex-col gap-3.5 rounded-[20px] border border-trait bg-white p-5 lg:p-6';
+const box = 'flex flex-col gap-3.5 rounded-[20px] border border-trait bg-surface p-5 lg:p-6';
 const primary = 'flex min-h-12 items-center justify-center rounded-btn bg-piment px-5 text-[15px] font-bold text-white no-underline hover:text-white disabled:opacity-60';
 const STATUS = { PENDING: ['En attente d’un admin', 'bg-attention-soft text-attention'], APPROVED: ['Acceptée', 'bg-ok-soft text-ok'],
   REJECTED: ['Refusée', 'bg-erreur-soft text-erreur'], EXPIRED: ['Expirée', 'bg-argile text-encre'] } as const;
@@ -51,7 +51,7 @@ export function ClaimScreen() {
               <p className="m-0 mt-0.5 text-[13px] text-ardoise">6 chiffres envoyés par ton agent sur WhatsApp, valables 72 h.</p></div>
             <input aria-label="Code à 6 chiffres" inputMode="numeric" maxLength={7} placeholder="000000" value={code}
               onChange={(e) => setCode(e.target.value.replace(/[^\d]/g, '').slice(0, 6))}
-              className={`min-h-[60px] rounded-[14px] border bg-white text-center font-mono text-[30px] font-extrabold tracking-[12px] ${errors.code ? 'border-erreur' : 'border-bordure-douce'}`} />
+              className={`min-h-[60px] rounded-[14px] border bg-surface text-center font-mono text-[30px] font-extrabold tracking-[12px] ${errors.code ? 'border-erreur' : 'border-bordure-douce'}`} />
             {errors.code && <span className="text-[13px] font-semibold text-erreur">{errors.code}</span>}
             <button type="button" className={primary} disabled={code.length !== 6} onClick={() => run(claimWithCode(code), (n) => setLinked(n))}>Relier ma fiche</button>
           </section>

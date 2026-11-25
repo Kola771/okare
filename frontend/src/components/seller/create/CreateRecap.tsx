@@ -5,14 +5,14 @@ import type { Draft } from './CreateSteps';
 const DAYS = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'];
 
 function Line({ k, v }: { k: string; v: React.ReactNode }) {
-  return <div className="flex justify-between gap-3 border-t border-[#E7E5E4] py-2.5 text-sm first:border-0 first:pt-0"><span className="text-ardoise">{k}</span><b className="text-right">{v || '—'}</b></div>;
+  return <div className="flex justify-between gap-3 border-t border-trait py-2.5 text-sm first:border-0 first:pt-0"><span className="text-ardoise">{k}</span><b className="text-right">{v || '—'}</b></div>;
 }
 
 export function CreateRecap({ d, actions }: { d: Draft; actions: React.ReactNode }) {
   const open = DAYS.filter((_, i) => (d.openingHours[String(i + 1) as keyof typeof d.openingHours] ?? []).length);
   const services = [d.servesOnSite && 'sur place', d.servesTakeaway && 'à emporter', d.delivers && 'livraison', d.acceptsMomo && 'Mobile Money'].filter(Boolean).join(', ');
   return (
-    <aside className="flex flex-col gap-4 rounded-2xl border border-[#E7E5E4] bg-white p-5 lg:sticky lg:top-6">
+    <aside className="flex flex-col gap-4 rounded-2xl border border-trait bg-surface p-5 lg:sticky lg:top-6">
       <h2 className="m-0 text-[17px] font-bold">Récapitulatif</h2>
       <div>
         <Line k="Type" v={POS_TYPE_LABEL[d.type]} />

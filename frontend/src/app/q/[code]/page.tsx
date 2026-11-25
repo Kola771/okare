@@ -13,7 +13,7 @@ export default async function QrPage({ params }: Params) {
   return (
     <div className="bg-motif flex min-h-dvh flex-col items-center justify-center gap-5 px-6 text-center">
       <Logo size={40} />
-      <div className="max-w-sm rounded-card border border-trait bg-white p-6">
+      <div className="max-w-sm rounded-card border border-trait bg-surface p-6">
         <h1 className="m-0 font-display text-2xl font-extrabold">
           {unavailable ? 'Momentanément indisponible' : 'Ce code n’est plus valide'}
         </h1>

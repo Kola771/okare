@@ -18,7 +18,7 @@ export function Panel({ title, sub, actions, children, className = '', id }: {
   title?: string; sub?: React.ReactNode; actions?: React.ReactNode; children: React.ReactNode; className?: string; id?: string;
 }) {
   return (
-    <section id={id} className={`flex min-w-0 flex-col gap-4 rounded-2xl border border-[#E7E5E4] bg-white p-5 ${className}`}>
+    <section id={id} className={`flex min-w-0 flex-col gap-4 rounded-2xl border border-trait bg-surface p-5 ${className}`}>
       {(title || actions) && (
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>{title && <h2 className="m-0 text-[17px] font-bold">{title}</h2>}{sub && <div className="mt-0.5 text-[13px] text-ardoise">{sub}</div>}</div>
@@ -35,8 +35,8 @@ export function StatCard({ icon: Icon, label, value, delta, tone = 'ok' }: {
 }) {
   const t = tone === 'ok' ? 'bg-ok-soft text-ok' : tone === 'bad' ? 'bg-erreur-soft text-erreur' : 'bg-argile text-encre';
   return (
-    <div className="flex flex-col gap-3.5 rounded-2xl border border-[#E7E5E4] bg-white p-5">
-      <span className="flex h-[46px] w-[46px] items-center justify-center rounded-xl bg-[#F5F5F4]"><Icon size={20} /></span>
+    <div className="flex flex-col gap-3.5 rounded-2xl border border-trait bg-surface p-5">
+      <span className="flex h-[46px] w-[46px] items-center justify-center rounded-xl bg-surface-inset"><Icon size={20} /></span>
       <div className="flex items-end justify-between gap-2">
         <div><div className="text-[13px] text-ardoise">{label}</div><div className="mt-1 text-[26px] font-bold">{value}</div></div>
         {delta && <span className={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-semibold ${t}`}>{delta}</span>}
@@ -56,7 +56,7 @@ export function Pill({ tone = 'neutral', children }: { tone?: keyof typeof PILL;
 
 export function Tabs<T extends string>({ value, onChange, tabs }: { value: T; onChange: (v: T) => void; tabs: [T, string][] }) {
   return (
-    <div role="tablist" className="no-scrollbar flex gap-1 overflow-x-auto border-b border-[#E7E5E4]">
+    <div role="tablist" className="no-scrollbar flex gap-1 overflow-x-auto border-b border-trait">
       {tabs.map(([k, label]) => (
         <button key={k} type="button" role="tab" aria-selected={value === k} onClick={() => onChange(k)}
           className={`min-h-11 shrink-0 px-3.5 text-sm ${value === k ? 'font-bold text-piment shadow-[inset_0_-2px_0_var(--color-piment)]' : 'font-semibold text-ardoise'}`}>
@@ -101,6 +101,6 @@ export function HBars({ rows, unit }: { rows: { label: string; value: number; mu
 
 export const btn = {
   primary: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-piment px-4 text-sm font-bold text-white no-underline hover:text-white disabled:opacity-60',
-  secondary: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-[#E7E5E4] bg-white px-4 text-sm font-semibold text-charbon no-underline disabled:opacity-60',
+  secondary: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-trait bg-surface px-4 text-sm font-semibold text-charbon no-underline disabled:opacity-60',
   dark: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-charbon px-4 text-sm font-bold text-white no-underline hover:text-white disabled:opacity-60',
 };

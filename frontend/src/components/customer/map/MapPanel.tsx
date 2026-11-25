@@ -69,7 +69,7 @@ export function MapPanel({ filters, selectedId, onSelect, variant, summaryBottom
       <LazyMap markers={markers} selectedId={selectedId} onSelect={onSelect} center={center} viewer={position} onMoved={onMoved} focus={focus} showZoom={variant === 'desktop'} />
       {variant === 'desktop' ? (
         <>
-          <label className="absolute left-4 top-4 z-[400] flex min-h-11 items-center gap-2 rounded-xl bg-white px-3.5 text-[13px] font-semibold shadow-[0_1px_4px_rgba(28,25,23,0.25)]">
+          <label className="absolute left-4 top-4 z-[400] flex min-h-11 items-center gap-2 rounded-xl bg-surface px-3.5 text-[13px] font-semibold shadow-[0_1px_4px_rgba(28,25,23,0.25)]">
             <input type="checkbox" checked={searchOnMove} onChange={(e) => setSearchOnMove(e.target.checked)} className="h-[18px] w-[18px] accent-piment" />
             Rechercher quand je déplace la carte
           </label>

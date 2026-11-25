@@ -33,10 +33,10 @@ export function PosActions({ posId, status, compact = false }: { posId: string; 
   return (
     <>
       <div className={compact ? 'flex flex-wrap gap-2' : 'flex flex-col gap-2'}>
-        <button type="button" disabled={busy} className={`${base} border border-[#E7E5E4] bg-white text-charbon`}
+        <button type="button" disabled={busy} className={`${base} border border-trait bg-surface text-charbon`}
           onClick={() => run(() => moderatePos(posId, pending ? 'publish' : 'hold'), pending ? 'Point remis en ligne' : 'Point mis en attente : masqué aux clients')}>
           {pending ? <PlayCircle size={16} /> : <PauseCircle size={16} />}{pending ? 'Remettre en ligne' : 'Mettre en attente'}</button>
-        <button type="button" disabled={busy} onClick={() => setConfirm(true)} className={`${base} border border-[#FECACA] bg-white font-bold text-erreur hover:bg-erreur-soft`}>
+        <button type="button" disabled={busy} onClick={() => setConfirm(true)} className={`${base} border border-[#FECACA] bg-surface font-bold text-erreur hover:bg-erreur-soft`}>
           <Trash2 size={16} />{compact ? 'Supprimer' : 'Supprimer ce point de vente'}</button>
       </div>
       <Sheet open={confirm} onClose={() => setConfirm(false)} labelledBy="delete-pos-title" maxWidth="lg:max-w-[420px]">

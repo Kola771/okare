@@ -35,7 +35,7 @@ export function DishPosLink({ pos, variant }: { pos: DishPage['pos']; variant: '
   const dist = formatDistance(pos.distanceM);
   return (
     <Link href={`/p/${pos.slug}`}
-      className={`flex items-center gap-3 border border-trait bg-white text-charbon no-underline ${variant === 'desktop' ? 'rounded-card px-4 py-3.5' : 'rounded-2xl p-3'}`}>
+      className={`flex items-center gap-3 border border-trait bg-surface text-charbon no-underline ${variant === 'desktop' ? 'rounded-card px-4 py-3.5' : 'rounded-2xl p-3'}`}>
       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-piment-soft text-piment"><Store size={20} /></span>
       <span className="min-w-0 flex-1">
         <b className="block text-[15px]">{pos.name}</b>
@@ -56,7 +56,7 @@ export function OtherDishes({ posSlug, dishes, variant }: { posSlug: string; dis
       <div className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5">
         {dishes.map((d) => (
           <Link key={d.id} href={`/p/${posSlug}/dish/${d.slug}`}
-            className={`w-[150px] shrink-0 overflow-hidden rounded-2xl border border-trait bg-white text-charbon no-underline ${d.isSoldOut ? 'opacity-60' : ''}`}>
+            className={`w-[150px] shrink-0 overflow-hidden rounded-2xl border border-trait bg-surface text-charbon no-underline ${d.isSoldOut ? 'opacity-60' : ''}`}>
             <span className="block h-[90px]"><DishImage imageUrl={d.imageUrl} illustrationKey={d.illustrationKey} alt="" /></span>
             <span className="flex flex-col gap-0.5 px-2.5 py-2">
               <b className="text-[13px] leading-snug">{d.name}</b>
@@ -72,7 +72,7 @@ export function OtherDishes({ posSlug, dishes, variant }: { posSlug: string; dis
     <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-4">
       {dishes.map((d) => (
         <Link key={d.id} href={`/p/${posSlug}/dish/${d.slug}`}
-          className={`overflow-hidden rounded-2xl border border-trait bg-white text-charbon no-underline ${d.isSoldOut ? 'opacity-60' : ''}`}>
+          className={`overflow-hidden rounded-2xl border border-trait bg-surface text-charbon no-underline ${d.isSoldOut ? 'opacity-60' : ''}`}>
           <span className="block h-[120px]"><DishImage imageUrl={d.imageUrl} illustrationKey={d.illustrationKey} alt="" /></span>
           <span className="flex items-baseline justify-between gap-2 px-3.5 py-3"><b className="text-sm">{d.name}</b><Price xof={d.priceXof} /></span>
           {d.isSoldOut && <span className="block px-3.5 pb-3 text-xs font-semibold text-erreur">Épuisé aujourd’hui</span>}

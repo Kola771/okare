@@ -22,7 +22,7 @@ export function StatsView({ report, periodLabel }: { report: StatsReport; period
       </div>
       <div className="grid grid-cols-3 gap-2.5 lg:hidden">
         {[[report.views, 'vues de ta fiche'], [report.whatsapp, 'messages WhatsApp'], [report.calls, 'appels']].map(([v, l]) => (
-          <div key={l} className="rounded-2xl border border-[#E7E5E4] bg-white p-3"><div className="text-xl font-bold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
+          <div key={l} className="rounded-2xl border border-trait bg-surface p-3"><div className="text-xl font-bold">{v}</div><div className="text-xs text-ardoise">{l}</div></div>
         ))}
       </div>
       <div className="hidden gap-4 lg:grid lg:grid-cols-4">

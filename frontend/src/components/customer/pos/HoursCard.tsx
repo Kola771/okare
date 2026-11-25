@@ -6,7 +6,7 @@ export function HoursCard({ hours, today }: { hours: OpeningHours; today: number
   const rows = weekRows(hours);
   const empty = rows.every((r) => r.closed);
   return (
-    <section className="rounded-[20px] border border-trait bg-white px-5 py-4" aria-labelledby="hours-title">
+    <section className="rounded-[20px] border border-trait bg-surface px-5 py-4" aria-labelledby="hours-title">
       <b id="hours-title" className="text-[17px]">Horaires</b>
       {empty ? (
         <p className="m-0 mt-2 text-sm text-ardoise">Horaires non confirmés.</p>

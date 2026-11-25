@@ -21,12 +21,12 @@ function Item({ posId, review }: { posId: string; review: ManagedReview }) {
         <span className="text-xs text-pierre">{new Date(review.createdAt).toLocaleDateString('fr-FR')}</span></div>
       {review.comment && <p className="m-0 text-sm text-encre">{review.comment}</p>}
       {saved && !editing ? (
-        <div className="rounded-xl bg-[#F7F6F3] px-3 py-2 text-[13px]"><b>Ta réponse :</b> {saved}
+        <div className="rounded-xl bg-argile px-3 py-2 text-[13px]"><b>Ta réponse :</b> {saved}
           <button type="button" onClick={() => setEditing(true)} className="ml-2 font-semibold text-piment">Modifier</button></div>
       ) : (
         <div className="flex flex-col gap-2">
           <textarea value={reply} onChange={(e) => setReply(e.target.value.slice(0, 500))} rows={2} placeholder="Répondre publiquement (merci, précision…)"
-            aria-label={`Répondre à ${review.author}`} className="rounded-xl border border-[#E7E5E4] p-3 text-sm" />
+            aria-label={`Répondre à ${review.author}`} className="rounded-xl border border-trait p-3 text-sm" />
           <button type="button" disabled={!reply.trim()} className={`${btn.secondary} self-start`}
             onClick={() => replyReview(posId, review.id, reply).then(() => { setSaved(reply.trim()); setEditing(false); toast('Réponse publiée', 'success'); })
               .catch((e) => toast(errorMessage(e), 'error'))}>Publier la réponse</button>

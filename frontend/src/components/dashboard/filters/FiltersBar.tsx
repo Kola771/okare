@@ -9,7 +9,7 @@ import { getGeography, type Geography } from '@/lib/api';
 import { useApi } from '@/components/admin/useApi';
 import { filterFromParams, filterToQuery, hasFilter, type TeamFilter } from '@/shared/team-filter';
 
-const ctl = 'min-h-11 w-full min-w-0 rounded-xl border border-[#E7E5E4] bg-white px-3 text-sm font-semibold text-charbon disabled:bg-[#FAFAF9] disabled:text-pierre';
+const ctl = 'min-h-11 w-full min-w-0 rounded-xl border border-trait bg-surface px-3 text-sm font-semibold text-charbon disabled:bg-surface-inset disabled:text-pierre';
 
 function Pick({ label, value, onChange, options, all, disabled }: {
   label: string; value: string; onChange: (v: string) => void; options: { id: string; name: string }[]; all: string; disabled?: boolean;
@@ -44,7 +44,7 @@ export function FiltersBar({ geo: initialGeo, dateHint, dates = true }: { geo?: 
   const defaultTo = () => new Date().toISOString().slice(0, 10);
 
   return (
-    <section aria-label="Filtres" className="@container flex flex-col gap-3 rounded-2xl border border-[#E7E5E4] bg-white p-4">
+    <section aria-label="Filtres" className="@container flex flex-col gap-3 rounded-2xl border border-trait bg-surface p-4">
       <div className={`grid gap-3 ${dates ? 'grid-cols-1 @min-[650px]:grid-cols-6' : 'grid-cols-1 @min-[500px]:grid-cols-4'}`}>
         <Pick label="Pays" all="Tous les pays" value={f.countryId ?? ''} options={geo?.countries ?? []}
           onChange={(v) => set({ countryId: v || undefined, cityId: undefined, zoneId: undefined, neighborhoodId: undefined })} />

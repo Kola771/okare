@@ -82,7 +82,7 @@ export function FavoritesScreen({ initialFavorites, initialContacts }: { initial
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div><h1 className="m-0 font-display text-[32px] font-extrabold">Mes favoris</h1>
                 <div className="mt-1 text-[15px] text-ardoise">Ce qu’ils cuisinent aujourd’hui, {today}.</div></div>
-              <label className="flex items-center gap-2.5 rounded-[14px] border border-trait bg-white px-3.5 py-2.5 text-sm font-semibold">
+              <label className="flex items-center gap-2.5 rounded-[14px] border border-trait bg-surface px-3.5 py-2.5 text-sm font-semibold">
                 <DigestSwitch /> Recevoir leurs plats du jour vers 10h15
               </label>
             </div>

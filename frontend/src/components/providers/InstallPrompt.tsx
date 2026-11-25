@@ -116,7 +116,7 @@ export function InstallPrompt() {
 
   return (
     <div role="dialog" aria-labelledby="install-title"
-      className="fixed inset-x-3 bottom-[calc(84px+env(safe-area-inset-bottom))] z-[600] mx-auto flex max-w-[420px] items-start gap-3 rounded-[18px] border border-trait bg-white p-4 shadow-[0_18px_40px_-18px_rgba(28,25,23,0.45)] lg:inset-x-auto lg:bottom-6 lg:right-6">
+      className="fixed inset-x-3 bottom-[calc(84px+env(safe-area-inset-bottom))] z-[600] mx-auto flex max-w-[420px] items-start gap-3 rounded-[18px] border border-trait bg-surface p-4 shadow-[0_18px_40px_-18px_rgba(28,25,23,0.45)] lg:inset-x-auto lg:bottom-6 lg:right-6">
       <LogoPin height={40} />
       <div className="min-w-0 flex-1">
         <b id="install-title" className="block font-display text-[16px] leading-tight">

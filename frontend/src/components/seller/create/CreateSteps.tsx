@@ -41,7 +41,7 @@ export function StepWhere({ d, set, particulierLocked }: StepProps) {
           const disabled = t === 'PARTICULIER' && particulierLocked;
           return (
             <button key={t} type="button" disabled={disabled} aria-pressed={d.type === t} onClick={() => set({ type: t, hasPublicPlace: t !== 'PARTICULIER' })}
-              className={`flex min-h-14 flex-col items-center justify-center rounded-xl border px-2 text-sm font-bold disabled:opacity-40 ${d.type === t ? 'border-piment bg-piment-soft text-piment' : 'border-bordure-douce bg-white'}`}>
+              className={`flex min-h-14 flex-col items-center justify-center rounded-xl border px-2 text-sm font-bold disabled:opacity-40 ${d.type === t ? 'border-piment bg-piment-soft text-piment' : 'border-bordure-douce bg-surface'}`}>
               {POS_TYPE_LABEL[t]}{TYPE_SUB[t] && <span className="text-xs font-normal text-ardoise">{TYPE_SUB[t]}</span>}
             </button>);
         })}</div>
@@ -49,7 +49,7 @@ export function StepWhere({ d, set, particulierLocked }: StepProps) {
       </div>
       <div className="text-[13px] font-semibold text-encre">Déplace l’épingle sur ton entrée</div>
       <div className="relative z-0 h-[220px] overflow-hidden rounded-2xl border border-trait"><PinPicker lat={d.lat} lng={d.lng} onPick={(lat, lng) => set({ lat, lng })} /></div>
-      <button type="button" disabled={locating} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-bordure-douce bg-white text-sm font-semibold"
+      <button type="button" disabled={locating} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-bordure-douce bg-surface text-sm font-semibold"
         onClick={() => { setLocating(true); navigator.geolocation?.getCurrentPosition((p) => { set({ lat: p.coords.latitude, lng: p.coords.longitude, accuracyM: Math.round(p.coords.accuracy) }); setLocating(false); }, () => setLocating(false), { enableHighAccuracy: true }); }}>
         <LocateFixed size={16} /> {locating ? 'Recherche…' : 'Utiliser ma position actuelle'}
       </button>
@@ -65,7 +65,7 @@ export function StepWhere({ d, set, particulierLocked }: StepProps) {
 
 export function StepHours({ d, set }: StepProps) {
   const chip = (k: 'servesOnSite' | 'servesTakeaway' | 'delivers' | 'acceptsMomo', label: string) => (
-    <label className={`flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 text-[15px] font-semibold ${d[k] ? 'border-feuille bg-ok-soft text-ok' : 'border-[#E7E5E4] bg-white text-charbon'}`}>
+    <label className={`flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border px-3.5 text-[15px] font-semibold ${d[k] ? 'border-feuille bg-ok-soft text-ok' : 'border-trait bg-surface text-charbon'}`}>
       <input type="checkbox" checked={d[k]} onChange={(e) => set({ [k]: e.target.checked })} className="h-5 w-5 shrink-0 accent-feuille" />{label}
     </label>
   );

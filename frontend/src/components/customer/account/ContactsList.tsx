@@ -64,7 +64,7 @@ export function ContactsList({ variant, initial = null }: { variant: 'table' | '
     );
   }
   return (
-    <div className="overflow-x-auto rounded-card border border-trait bg-white">
+    <div className="overflow-x-auto rounded-card border border-trait bg-surface">
       <table className="w-full border-collapse text-left text-sm">
         <thead><tr className="text-xs text-ardoise">
           {['Quand', 'Point de vente', 'Plat commandé', 'Réponse du vendeur', ''].map((h) => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}

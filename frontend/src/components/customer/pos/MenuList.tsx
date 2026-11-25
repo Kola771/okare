@@ -14,7 +14,7 @@ import { DishImage } from '@/components/ui/DishImage';
 
 function MenuRow({ dish, pos, onOrder }: { dish: DishCard; pos: PosPage['pos']; onOrder: (d: DishCard) => void }) {
   return (
-    <div className={`flex items-center gap-3 rounded-2xl border border-trait bg-white p-2 ${dish.isSoldOut ? 'opacity-60' : ''}`}>
+    <div className={`flex items-center gap-3 rounded-2xl border border-trait bg-surface p-2 ${dish.isSoldOut ? 'opacity-60' : ''}`}>
       <Link href={`/p/${pos.slug}/dish/${dish.slug}`} className="flex min-w-0 flex-1 items-center gap-3 text-charbon no-underline">
         <span className="block h-14 w-14 shrink-0 overflow-hidden rounded-xl">
           <DishImage imageUrl={dish.imageUrl} illustrationKey={dish.illustrationKey} alt="" />
@@ -49,7 +49,7 @@ export function MenuList({ pos, menu, source = 'POS_PAGE' }: { pos: PosPage['pos
     channel: 'WHATSAPP', source,
   });
   if (!menu.length) {
-    return <div className="rounded-card border border-trait bg-white p-4 text-sm text-ardoise">Pas encore de plat publié aujourd’hui.</div>;
+    return <div className="rounded-card border border-trait bg-surface p-4 text-sm text-ardoise">Pas encore de plat publié aujourd’hui.</div>;
   }
   return (
     <div className="flex flex-col gap-2.5">

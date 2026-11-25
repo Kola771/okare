@@ -16,7 +16,7 @@ export function TemplateRow({ title, value, onChange, vars }: { title: string; v
       {open && (
         <div className="px-5 pb-4">
           <textarea aria-label={title} value={value} rows={4} onChange={(e) => onChange(e.target.value)}
-            className="w-full rounded-xl border border-[#E7E5E4] p-3 text-[15px]" />
+            className="w-full rounded-xl border border-trait p-3 text-[15px]" />
         </div>
       )}
     </>

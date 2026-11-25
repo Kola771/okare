@@ -24,7 +24,7 @@ export function ClaimCodeButton({ vendorId, vendorName }: { vendorId: string; ve
         <p className="m-0 text-sm text-ardoise">
           Avec ce code, {vendorName} relie sa fiche à son compte OKARE et gère lui-même ses points (gestion partagée avec les agents de la zone).
         </p>
-        <div className="rounded-2xl bg-[#F7F6F3] py-5 text-center">
+        <div className="rounded-2xl bg-argile py-5 text-center">
           <div className="font-mono text-[40px] font-extrabold tracking-[10px] text-charbon">{res?.code}</div>
           <div className="mt-1 text-[13px] text-ardoise">Valable 72 h, jusqu’au {until}</div>
         </div>

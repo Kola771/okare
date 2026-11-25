@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { ZoneButton } from '@/components/customer/layout/ZonePicker';
 import { Logo } from '@/components/ui/Logo';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import type { MealMoment } from '@/shared/enums';
 import { BudgetChips } from './Filters';
 import { PriceFilterChipCompact } from './PriceFilterSheet';
@@ -17,10 +18,13 @@ export function MobileHomeHeader({ moment }: { moment: MealMoment }) {
   const router = useRouter();
   const [q, setQ] = useState('');
   return (
-    <div className="flex flex-col gap-3.5 border-b border-trait bg-white px-5 pb-3 pt-5 lg:hidden">
+    <div className="flex flex-col gap-3.5 border-b border-trait bg-surface px-5 pb-3 pt-5 lg:hidden">
       <div className="flex items-center justify-between">
         <Logo size={28} pin />
-        <ZoneButton />
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <ZoneButton />
+        </div>
       </div>
       <h1 className="m-0 font-display text-2xl font-semibold leading-tight">{momentQuestion(moment)}</h1>
       <form role="search" onSubmit={(e) => { e.preventDefault(); if (q.trim()) router.push(`/search?q=${encodeURIComponent(q.trim())}`); }}

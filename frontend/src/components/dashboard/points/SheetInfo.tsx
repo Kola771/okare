@@ -56,7 +56,7 @@ export function SheetInfo({ pos, sheet, onChange }: { pos: ManagedPos; sheet: Po
               </select>
             </Field>
             <Field label="WhatsApp commandes" error={errors.whatsappPhone}>
-              <span className="flex"><span className="flex items-center rounded-l-xl border border-r-0 border-[#E7E5E4] bg-[#FAFAF9] px-3 text-[15px] font-normal">+229</span>
+              <span className="flex"><span className="flex items-center rounded-l-xl border border-r-0 border-trait bg-surface-inset px-3 text-[15px] font-normal">+229</span>
                 <input className={`${inputCls} rounded-l-none`} inputMode="tel" value={v.whatsappPhone} onChange={(e) => set({ whatsappPhone: e.target.value })} /></span>
             </Field>
             <Field label="Appels (si différent)" error={errors.callPhone}>
@@ -69,14 +69,14 @@ export function SheetInfo({ pos, sheet, onChange }: { pos: ManagedPos; sheet: Po
           </div>
         </Card>
         <Card title="Emplacement">
-          <div className="relative z-0 h-[180px] overflow-hidden rounded-xl bg-[#EDE9E3]">
+          <div className="relative z-0 h-[180px] overflow-hidden rounded-xl bg-argile">
             <MiniMap lat={sheet.location.lat} lng={sheet.location.lng} approximate={!v.hasPublicPlace} />
-            <span className="absolute bottom-2.5 right-2.5 z-[400] rounded-lg bg-white px-2.5 py-1 text-xs shadow">
+            <span className="absolute bottom-2.5 right-2.5 z-[400] rounded-lg bg-surface px-2.5 py-1 text-xs shadow">
               {sheet.accuracyM ? `précision ${sheet.accuracyM} m · ` : ''}zone {pos.zoneName} ({pos.zoneCategory})</span>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-[3fr_2fr]">
             <Field label="Repère"><input className={inputCls} value={v.landmark ?? ''} placeholder="Face à…" onChange={(e) => set({ landmark: e.target.value })} /></Field>
-            <Field label="Quartier"><input className={`${inputCls} bg-[#FAFAF9]`} value={sheet.info.neighborhood ?? '—'} readOnly /></Field>
+            <Field label="Quartier"><input className={`${inputCls} bg-surface-inset`} value={sheet.info.neighborhood ?? '—'} readOnly /></Field>
           </div>
           <label className="mt-4 flex items-center gap-3 text-[15px]">
             <input type="checkbox" className="h-5 w-5 accent-piment" checked={!v.hasPublicPlace} onChange={(e) => set({ hasPublicPlace: !e.target.checked })} />

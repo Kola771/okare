@@ -13,7 +13,7 @@ import { DeleteAccountSheet } from './DeleteAccount';
 import { ZonePickerSaving } from './ProfileSections';
 import { useProfileSave } from './useProfile';
 
-const box = 'flex flex-col rounded-2xl border border-trait bg-white px-3.5 py-1';
+const box = 'flex flex-col rounded-2xl border border-trait bg-surface px-3.5 py-1';
 const sep = <div className="h-px bg-trait" />;
 
 function Row({ label, value, onClick, href }: { label: string; value?: string; onClick?: () => void; href?: string }) {

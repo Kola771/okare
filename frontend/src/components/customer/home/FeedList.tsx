@@ -40,7 +40,7 @@ export function FeedList({ feed, hoveredId, onHover, withFavorites = false, sour
 
   const more = feed.hasMore && (
     <button type="button" onClick={feed.loadMore} disabled={feed.loadingMore}
-      className="min-h-12 justify-self-center rounded-[14px] border border-bordure-douce bg-white px-6 text-sm font-bold disabled:opacity-60">
+      className="min-h-12 justify-self-center rounded-[14px] border border-bordure-douce bg-surface px-6 text-sm font-bold disabled:opacity-60">
       {feed.loadingMore ? 'Chargement…' : `Voir ${feed.total - feed.items.length} autres points`}
     </button>
   );

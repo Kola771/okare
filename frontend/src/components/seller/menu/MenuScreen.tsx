@@ -55,7 +55,7 @@ export function MenuScreen({ posId, base = `/seller/points/${posId}/menu`, initi
           <Link href={`${base}/new`} className={btn.primary}><Plus size={16} /> Ajouter</Link>
         </>} />
       {p && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#E7E5E4] bg-white px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-trait bg-surface px-4 py-3">
           <div className="text-sm"><b>Aujourd’hui : {closed ? 'fermé' : openStatusLabel(p.openStatus).short.toLowerCase()}</b>
             <span className="text-ardoise"> · prix vérifiés {daysAgoLabel(p.pricesCheckedAt, new Date()) ?? 'jamais'}</span></div>
           <div className="flex flex-wrap gap-2">
