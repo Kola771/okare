@@ -22,7 +22,7 @@ export default function MiniMap({ lat, lng, approximate }: { lat: number; lng: n
   return (
     <MapContainer center={[lat, lng]} zoom={approximate ? 15 : 16} className="h-full w-full" zoomControl={false}
       dragging={false} scrollWheelZoom={false} doubleClickZoom={false} touchZoom={false} keyboard={false} attributionControl>
-      <TileLayer url={TILE_URL} attribution="© contributeurs OpenStreetMap" />
+      <TileLayer url={TILE_URL} attribution="© contributeurs OpenStreetMap" crossOrigin="" />
       {approximate
         ? <Circle center={[lat, lng]} radius={350} pathOptions={{ color: '#C2410C', weight: 2, fillOpacity: 0.12 }} />
         : <Marker position={[lat, lng]} icon={pin} interactive={false} />}

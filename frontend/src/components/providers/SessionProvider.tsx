@@ -7,6 +7,7 @@
 import { useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getMe, logout as apiLogout, type Me } from '@/lib/api';
+import { clearCachedPages } from './ServiceWorkerRegister';
 
 /** Contexte affiché en tête de la feuille d'inscription (plat ou point de vente visé). */
 export interface AuthIntent {
@@ -87,6 +88,7 @@ export function SessionProvider({ children, initialMe }: { children: React.React
 
   const logout = useCallback(async () => {
     await apiLogout();
+    clearCachedPages();
     loadRef.current = Promise.resolve(null);
     setMe(null);
   }, []);

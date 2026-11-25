@@ -16,6 +16,15 @@ import { ViewerProvider } from './ViewerProvider';
 const SignupSheet = dynamic(() => import('@/components/customer/auth/SignupSheet').then((m) => m.SignupSheet), { ssr: false });
 const FollowUpGate = dynamic(() => import('@/components/customer/followup/FollowUpGate').then((m) => m.FollowUpGate), { ssr: false });
 const DemoTrigger = dynamic(() => import('@/components/demo/DemoTrigger').then((m) => m.DemoTrigger), { ssr: false });
+// `beforeinstallprompt` n'est émis qu'une fois par chargement, souvent avant que InstallPrompt (chargé à la demande)
+// soit monté : on le garde dès le chargement du bundle principal pour pouvoir proposer l'installation plus tard.
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    (window as Window & { __okareInstallEvent?: Event }).__okareInstallEvent = e;
+  });
+}
+const InstallPrompt = dynamic(() => import('./InstallPrompt').then((m) => m.InstallPrompt), { ssr: false });
 
 function Overlays() {
   const { me, pendingIntent } = useSession();
@@ -26,6 +35,7 @@ function Overlays() {
       {pendingIntent && <SignupSheet />}
       {me && <FollowUpGate />}
       {demo && <DemoTrigger />}
+      <InstallPrompt />
     </>
   );
 }
