@@ -68,7 +68,8 @@ export default function MapView({ markers, selectedId, onSelect, center, viewer,
   const { single, groups } = useMemo(() => cluster(markers), [markers]);
   return (
     <MapContainer center={[center.lat, center.lng]} zoom={15} className="h-full w-full" zoomControl={false} attributionControl>
-      <TileLayer url={TILE_URL} attribution="© contributeurs OpenStreetMap" />
+      {/* crossOrigin : tuiles en CORS, donc réutilisables hors ligne par le service worker (sinon réponses opaques). */}
+      <TileLayer url={TILE_URL} attribution="© contributeurs OpenStreetMap" crossOrigin="" />
       {showZoom && <ZoomControl position="bottomright" />}
       <Events onSelect={onSelect} onMoved={onMoved} />
       <Focus focus={focus} />

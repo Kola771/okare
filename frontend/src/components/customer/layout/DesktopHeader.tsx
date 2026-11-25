@@ -35,7 +35,7 @@ export function DesktopHeader() {
 
   return (
     <header className="relative z-[600] hidden flex-wrap items-center gap-3.5 border-b border-trait bg-white/95 px-8 py-3 lg:flex">
-      <span className="mr-1.5"><Logo size={30} /></span>
+      <span className="mr-1.5"><Logo size={30} pin /></span>
       <ZoneButton variant="desktop" />
       <form role="search" className="flex min-h-[46px] max-w-[520px] flex-[1_1_300px] items-center gap-2.5 rounded-[14px] border border-bordure-douce bg-white pl-3.5 pr-1.5"
         onSubmit={(e) => { e.preventDefault(); router.push(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : '/'); }}>
