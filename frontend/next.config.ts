@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
     // Photos compressées sur le téléphone (1 600 px, JPEG 0,8) envoyées par l'action serveur en phase 1.
     serverActions: { bodySizeLimit: '8mb' },
   },
+  async headers() {
+    // Service worker PWA (public/sw.js) : le navigateur doit toujours revérifier le fichier pour prendre les mises à jour.
+    return [{
+      source: '/sw.js',
+      headers: [
+        { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+        { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
+      ],
+    }];
+  },
 };
 
 export default nextConfig;

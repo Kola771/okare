@@ -19,7 +19,7 @@ export function MobileHomeHeader({ moment }: { moment: MealMoment }) {
   return (
     <div className="flex flex-col gap-3.5 border-b border-trait bg-white px-5 pb-3 pt-5 lg:hidden">
       <div className="flex items-center justify-between">
-        <Logo size={28} />
+        <Logo size={28} pin />
         <ZoneButton />
       </div>
       <h1 className="m-0 font-display text-2xl font-semibold leading-tight">{momentQuestion(moment)}</h1>
