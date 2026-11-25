@@ -9,6 +9,7 @@ import { btn, PageHead, Panel, Pill, StatCard } from '@/components/admin/AdminPa
 import { Avatar, Card, Crumbs } from '@/components/admin/Card';
 import { FiltersBar } from '../filters/FiltersBar';
 import { ClaimCodeButton } from './ClaimCodeButton';
+import { ImportVendorsButton } from './ImportVendorsSheet';
 import { DataTable, FilterChips, type Column } from '@/components/admin/DataTable';
 import { useApi } from '@/components/admin/useApi';
 import { useToast } from '@/components/providers/ToastProvider';
@@ -42,7 +43,7 @@ export function VendorsScreen({ initial, geo }: { initial: AdminVendorRow[]; geo
         <PageHead title="Vendeurs" sub="Un vendeur peut avoir plusieurs points de vente. L’ancienneté décide s’il peut payer une mise en avant."
           actions={<>
             <button type="button" className={btn.secondary} onClick={() => toast('Export CSV : branché avec le backend.')}>Exporter</button>
-            <Link href="/dashboard/points/new" className={btn.primary}>+ Nouveau vendeur</Link>
+            <ImportVendorsButton />
           </>} />
       </div>
       <FiltersBar geo={geo} dateHint="Dates : vendeurs arrivés (premier point publié) entre ces deux jours." />
