@@ -2,7 +2,10 @@ import type { Metadata } from 'next';
 import { ClientShell } from '@/components/customer/layout/ClientShell';
 import { MapScreen } from '@/components/customer/map/MapScreen';
 
-export const metadata: Metadata = { title: 'Carte' };
+export const metadata: Metadata = {
+  title: 'Carte',
+  description: 'Trouve les maquis et restaurants ouverts près de toi sur la carte OKARE.',
+};
 
 /** Écran 11 (carte client). */
 export default function MapPage() {

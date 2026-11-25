@@ -39,7 +39,7 @@ export function PhotoList({ label, hint, value, onChange, max = 5 }: {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={src} alt={`${label} ${i + 1}`} className="h-full w-full object-cover" />
             <button type="button" aria-label={`Retirer la photo ${i + 1}`} onClick={() => onChange(value.filter((_, k) => k !== i))}
-              className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-charbon/70 text-white"><X size={15} /></button>
+              className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-black/70 text-white"><X size={15} /></button>
           </div>
         ))}
         {value.length < max && (

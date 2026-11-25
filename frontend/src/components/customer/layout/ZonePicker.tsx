@@ -31,7 +31,7 @@ export function ZonePicker({ open, onClose }: { open: boolean; onClose: () => vo
           if (msg) toast(msg);
           else onClose();
         }}
-        className="flex min-h-[52px] items-center justify-center gap-2 rounded-[14px] bg-charbon font-bold text-white disabled:opacity-60">
+        className="flex min-h-[52px] items-center justify-center gap-2 rounded-[14px] bg-inverse font-bold text-on-inverse disabled:opacity-60">
         <LocateFixed size={18} /> {locating ? 'Recherche de ta position…' : 'Utiliser ma position'}
       </button>
       <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Zone ou quartier (ex. Cadjèhoun, Tokpa)" aria-label="Chercher une zone"

@@ -50,7 +50,7 @@ export function FilterChips<T extends string>({ value, onChange, options }: { va
     <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
       {options.map(([k, label]) => (
         <button key={k} type="button" aria-pressed={value === k} onClick={() => onChange(k)}
-          className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${value === k ? 'bg-charbon text-white' : 'border border-trait bg-surface text-charbon'}`}>{label}</button>
+          className={`min-h-10 shrink-0 rounded-full px-4 text-sm font-bold ${value === k ? 'bg-inverse text-on-inverse' : 'border border-trait bg-surface text-charbon'}`}>{label}</button>
       ))}
     </div>
   );

@@ -32,6 +32,8 @@
   --color-surface: #FFFFFF;
   --color-surface-raised: #FFFFFF;
   --color-surface-inset: #F5F5F4;
+  --color-inverse: #1C1917;
+  --color-on-inverse: #FFFFFF;
 
   --font-display: var(--font-bricolage), "Bricolage Grotesque", sans-serif;
   --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
@@ -76,6 +78,8 @@
   --color-surface: #1C1917;
   --color-surface-raised: #292524;
   --color-surface-inset: #1A1816;
+  --color-inverse: #F5F5F4;
+  --color-on-inverse: #1C1917;
 }
 
 @layer base {

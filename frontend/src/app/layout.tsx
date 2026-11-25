@@ -15,13 +15,25 @@ const SITE_URL =
 
 const TITLE = 'OKARE — Où manger près de toi, à ton budget';
 const DESCRIPTION = 'Les plats du jour, les prix et les maquis ouverts près de toi à Cotonou. Commande directement au vendeur sur WhatsApp.';
-const OG_IMAGE = { url: '/logos/og-image-1200x630.png', width: 1200, height: 630, alt: 'OKARE' };
+const OG_IMAGE = {
+  url: '/logos/og-image-1200x630.png',
+  width: 1200,
+  height: 630,
+  alt: 'OKARE — Où manger près de toi, à ton budget',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: TITLE, template: '%s · OKARE' },
   description: DESCRIPTION,
   applicationName: 'OKARE',
+  keywords: [
+    'restaurant', 'maquis', 'Cotonou', 'Bénin', 'plat du jour', 'menu',
+    'prix', 'WhatsApp', 'commande', 'street food', 'où manger', 'OKARE',
+  ],
+  robots: { index: true, follow: true, 'max-image-preview': 'large' as const },
+  category: 'food',
+  creator: 'OKARE',
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
@@ -32,7 +44,6 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180' }],
   },
-  // iOS : ouverture plein écran depuis l'écran d'accueil (émet aussi mobile-web-app-capable).
   appleWebApp: { capable: true, title: 'OKARE', statusBarStyle: 'default' },
   formatDetection: { telephone: false },
   openGraph: {
@@ -42,8 +53,15 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     images: [OG_IMAGE],
+    url: '/',
   },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: [OG_IMAGE.url] },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [OG_IMAGE.url],
+    creator: '@okare_bj',
+  },
 };
 
 export const viewport: Viewport = {

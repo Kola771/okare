@@ -47,7 +47,7 @@ export function StatCard({ icon: Icon, label, value, delta, tone = 'ok' }: {
 
 const PILL = {
   ok: 'bg-ok-soft text-ok', warn: 'bg-attention-soft text-attention', bad: 'bg-erreur-soft text-erreur',
-  neutral: 'bg-argile text-encre', piment: 'bg-piment-soft text-piment-dark', mais: 'bg-mais text-charbon', dark: 'bg-charbon text-white',
+  neutral: 'bg-argile text-encre', piment: 'bg-piment-soft text-piment-dark', mais: 'bg-mais text-charbon', dark: 'bg-inverse text-on-inverse',
 };
 
 export function Pill({ tone = 'neutral', children }: { tone?: keyof typeof PILL; children: React.ReactNode }) {
@@ -102,5 +102,5 @@ export function HBars({ rows, unit }: { rows: { label: string; value: number; mu
 export const btn = {
   primary: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-piment px-4 text-sm font-bold text-white no-underline hover:text-white disabled:opacity-60',
   secondary: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-trait bg-surface px-4 text-sm font-semibold text-charbon no-underline disabled:opacity-60',
-  dark: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-charbon px-4 text-sm font-bold text-white no-underline hover:text-white disabled:opacity-60',
+  dark: 'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-inverse px-4 text-sm font-bold text-on-inverse no-underline hover:text-on-inverse disabled:opacity-60',
 };

@@ -40,7 +40,7 @@ export function ScreensIndex() {
           <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-trait bg-surface p-1.5">
             {(Object.keys(ROLE_LABEL) as DemoRole[]).map((r) => (
               <button key={r} type="button" disabled={busy} onClick={async () => { setBusy(true); await demoLoginAs(r); await refresh(); setBusy(false); }}
-                className={`min-h-9 rounded-xl px-3 text-[13px] font-semibold ${current === r ? 'bg-charbon text-white' : 'text-charbon'}`}>
+                className={`min-h-9 rounded-xl px-3 text-[13px] font-semibold ${current === r ? 'bg-inverse text-on-inverse' : 'text-charbon'}`}>
                 {ROLE_LABEL[r]}
               </button>
             ))}
