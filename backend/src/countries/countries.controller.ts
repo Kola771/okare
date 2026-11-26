@@ -7,7 +7,9 @@ import {
   Param,
   Body,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { CountriesService } from './countries.service';
 import { CreateCountryDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
@@ -29,14 +31,18 @@ import { Role } from '@/entities/user.entity';
 export class CountriesController {
   constructor(private readonly countriesService: CountriesService) {}
 
-  /** Liste tous les pays, triés par nom — accessible à tous, pas d'auth. */
+  /** Liste tous les pays, triés par nom — accessible à tous, pas d'auth. Cache 5 min. */
   @Get()
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(300000)
   findAll() {
     return this.countriesService.findAll();
   }
 
-  /** Récupère un pays par son UUID — accessible à tous, pas d'auth. */
+  /** Récupère un pays par son UUID — accessible à tous, pas d'auth. Cache 5 min. */
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(300000)
   findOne(@Param('id') id: string) {
     return this.countriesService.findOne(id);
   }
