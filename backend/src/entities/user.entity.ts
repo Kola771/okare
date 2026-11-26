@@ -11,26 +11,26 @@ export enum Role {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 30, nullable: true, unique: true })
-  phone: string | null;
+  phone!: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true, unique: true })
-  email: string | null;
+  email!: string | null;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  fullName: string | null;
+  fullName!: string | null;
 
   @Column({ type: 'text', nullable: true })
-  passwordHash: string | null;
+  passwordHash!: string | null;
 
   @Column({ type: 'simple-array' })
-  roles: Role[];
+  roles!: Role[];
 
   @Column({ type: 'boolean', default: false })
-  isBlocked: boolean;
+  isBlocked!: boolean;
 
   @Column({ type: 'text', nullable: true })
-  blockedReason: string | null;
+  blockedReason!: string | null;
 }

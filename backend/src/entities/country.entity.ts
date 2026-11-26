@@ -3,23 +3,23 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity('countries')
 export class Country {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ type: 'varchar', length: 2, unique: true })
-  code: string;
+  code!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name!: string;
 
   @Column({ type: 'varchar', length: 10, default: 'XOF' })
-  currency: string;
+  currency!: string;
 
   @Column({ type: 'varchar', length: 100, default: 'Africa/Porto-Novo' })
-  timezone: string;
+  timezone!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  phoneRegex: string;
+  phoneRegex!: string;
 
   @Column({ type: 'boolean', default: false })
-  isActive: boolean;
+  isActive!: boolean;
 }

@@ -4,11 +4,11 @@ import { Role } from './user.entity';
 @Entity('role_permissions')
 export class RolePermission {
   @PrimaryColumn({ type: 'varchar' })
-  role: Role;
+  role!: Role;
 
   @PrimaryColumn({ type: 'varchar', length: 255 })
-  permission: string;
+  permission!: string;
 
   @Column({ type: 'boolean', default: true })
-  granted: boolean;
+  granted!: boolean;
 }
