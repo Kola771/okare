@@ -52,6 +52,10 @@ DB_NAME=okare
 PORT=4001
 FRONTEND_URL=http://localhost:4000
 NODE_ENV=development
+
+# JWT — générer le secret avec : node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+JWT_SECRET=<valeur générée>
+JWT_EXPIRES_IN=90d
 ```
 
 ## Commandes
@@ -135,11 +139,35 @@ Ordre d'exécution (par timestamp) :
 backend/
 ├── src/
 │   ├── main.ts                  # Point d'entrée (Helmet, CORS, validation, filtre d'exceptions)
-│   ├── app.module.ts            # Module racine (ConfigModule, TypeOrmModule)
+│   ├── app.module.ts            # Module racine (ConfigModule, TypeOrmModule, AuthModule, CountriesModule)
 │   ├── datasource.ts            # Configuration TypeORM (PostgreSQL/MySQL)
+│   ├── types.d.ts               # Déclarations de types manquants (passport-jwt)
+│   ├── auth/
+│   │   ├── auth.module.ts       # Module auth (JWT, Passport, guards)
+│   │   ├── jwt.strategy.ts      # Stratégie Passport JWT (vérifie session + user)
+│   │   ├── guards/
+│   │   │   ├── jwt-auth.guard.ts      # Guard d'authentification JWT
+│   │   │   ├── roles.guard.ts         # Guard de rôles (@Roles)
+│   │   │   └── permissions.guard.ts   # Guard de permissions (table role_permissions)
+│   │   └── decorators/
+│   │       ├── current-user.decorator.ts  # @CurrentUser() — extrait l'utilisateur du request
+│   │       ├── roles.decorator.ts         # @Roles(Role.ADMIN, ...) — métadonnées de rôles
+│   │       └── permissions.decorator.ts   # @Permissions('country.create', ...) — métadonnées de permissions
+│   ├── entities/
+│   │   ├── country.entity.ts
+│   │   ├── user.entity.ts       # + enum Role
+│   │   ├── session.entity.ts
+│   │   └── role-permission.entity.ts
+│   ├── countries/
+│   │   ├── countries.module.ts
+│   │   ├── countries.controller.ts  # CRUD — GET public, POST/PATCH ADMIN+, DELETE SUPER_ADMIN
+│   │   ├── countries.service.ts     # Requêtes PostgreSQL et MySQL, try/catch systématique
+│   │   └── dto/
+│   │       ├── create-country.dto.ts
+│   │       └── update-country.dto.ts
 │   ├── common/
 │   │   └── filters/
-│   │       └── global-exception.filter.ts   # Erreurs HTTP en français { code, message, details? }
+│   │       └── global-exception.filter.ts
 │   └── migrations/
 │       └── 1732320000001..034-*.ts          # 34 fichiers de migration
 ├── prisma/

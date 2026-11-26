@@ -6,7 +6,9 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+// @types/express non installé sur Node 16 — typage inline
+interface Req { method: string; url: string }
+interface Res { status(code: number): Res; json(body: unknown): void }
 
 const STATUS_MESSAGES: Record<number, string> = {
   400: 'Requête invalide',
@@ -25,8 +27,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const res = ctx.getResponse<Response>();
-    const req = ctx.getRequest<Request>();
+    const res = ctx.getResponse<Res>();
+    const req = ctx.getRequest<Req>();
 
     let status: number;
     let body: { code: string; message: string | string[]; details?: unknown };
