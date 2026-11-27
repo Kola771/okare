@@ -13,6 +13,15 @@ export class Session {
   @Column({ type: 'varchar', length: 255, unique: true })
   tokenHash!: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  deviceId!: string | null;
+
+  @Column({ type: 'text', nullable: true })
+  userAgent!: string | null;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  ipHash!: string | null;
+
   @Column({ type: 'timestamp' })
   expiresAt!: Date;
 

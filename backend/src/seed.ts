@@ -268,7 +268,7 @@ async function seedGeography() {
       const exists = await nRepo.findOneBy({ zoneId: zone.id, name: name as string });
       if (!exists) {
         await nRepo.save(nRepo.create({
-          zoneId: zone.id, name: name as string, aliases: aliases.length ? [...aliases] : null,
+          zoneId: zone.id, name: name as string, aliases: aliases.length ? [...aliases] : [],
         }));
       }
     }
@@ -366,8 +366,6 @@ async function seedSuperAdmin() {
 async function main() {
   await dataSource.initialize();
   console.log(`Base connectée (${dataSource.options.type})`);
-
-  await dataSource.synchronize();
 
   await seedGeography();
   await seedDishCategories();

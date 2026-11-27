@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { Role } from './user.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('role_permissions')
 export class RolePermission {
@@ -11,4 +12,10 @@ export class RolePermission {
 
   @Column({ type: 'boolean', default: true })
   granted!: boolean;
+
+  @Column({ ...DB_UUID_COL, nullable: true })
+  updatedById!: string | null;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

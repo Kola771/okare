@@ -87,7 +87,8 @@ npm run test
 npm run test:e2e
 
 # Seed (données initiales)
-npm run seed
+## npm run seed
+# ou
 npx tsx src/seed.ts
 ```
 

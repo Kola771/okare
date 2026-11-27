@@ -14,8 +14,8 @@ export class Neighborhood {
   @Column({ type: 'varchar', length: 255 })
   name!: string;
 
-  @Column({ type: DB_JSON, nullable: true })
-  aliases!: string[] | null;
+  @Column({ type: DB_JSON })
+  aliases!: string[];
 
   @ManyToOne(() => Zone, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'zoneId' })

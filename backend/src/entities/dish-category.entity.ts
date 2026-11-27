@@ -12,7 +12,7 @@ export class DishCategory {
   @Column({ type: 'varchar', length: 255, unique: true })
   slug!: string;
 
-  @Column({ type: DB_JSON, nullable: true })
+  @Column({ type: DB_JSON })
   aliases!: string[];
 
   @Column({ type: 'varchar', length: 255, nullable: true })
