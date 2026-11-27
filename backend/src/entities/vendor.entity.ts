@@ -9,6 +9,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('vendors')
 export class Vendor {
@@ -27,16 +28,16 @@ export class Vendor {
   @Column({ type: 'varchar', length: 255, nullable: true })
   email!: string | null;
 
-  @Column({ type: 'uuid', nullable: true, unique: true })
+  @Column({ ...DB_UUID_COL, nullable: true, unique: true })
   userId!: string | null;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ ...DB_UUID_COL, nullable: true })
   followedById!: string | null;
 
   @Column({ type: 'text', nullable: true })
   notes!: string | null;
 
-  @Column({ type: 'uuid', nullable: true, unique: true })
+  @Column({ ...DB_UUID_COL, nullable: true, unique: true })
   mainPosId!: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
@@ -51,7 +52,7 @@ export class Vendor {
   @Column({ type: 'timestamp', nullable: true })
   subscriptionRequiredFrom!: Date | null;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   createdById!: string;
 
   @CreateDateColumn()

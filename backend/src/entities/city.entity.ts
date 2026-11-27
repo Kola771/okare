@@ -1,12 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Country } from './country.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('cities')
 export class City {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   countryId!: string;
 
   @Column({ type: 'varchar', length: 255 })

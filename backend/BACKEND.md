@@ -88,6 +88,7 @@ npm run test:e2e
 
 # Seed (données initiales)
 npm run seed
+npx tsx src/seed.ts
 ```
 
 ## Migrations

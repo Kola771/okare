@@ -1,29 +1,49 @@
 import { Module } from '@nestjs/common';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { redisStore } from 'cache-manager-ioredis-yet';
+import Redis from 'ioredis';
 
-/**
- * Module de cache Redis global.
- *
- * - Utilise cache-manager + ioredis pour stocker en mémoire Redis.
- * - TTL par défaut configurable via REDIS_TTL (en secondes, défaut 300 = 5 min).
- * - Si Redis n'est pas disponible, le cache échoue silencieusement (pas de crash).
- */
+function canReachRedis(host: string, port: number, timeoutMs = 2000): Promise<boolean> {
+  return new Promise((resolve) => {
+    const client = new Redis({ host, port, lazyConnect: true, maxRetriesPerRequest: 0, retryStrategy: () => null });
+    client.on('error', () => {});
+    const timer = setTimeout(() => { client.disconnect(); resolve(false); }, timeoutMs);
+    client.connect()
+      .then(() => { clearTimeout(timer); client.disconnect(); resolve(true); })
+      .catch(() => { clearTimeout(timer); client.disconnect(); resolve(false); });
+  });
+}
+
 @Module({
   imports: [
     CacheModule.registerAsync({
       isGlobal: true,
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (config: ConfigService) => ({
-        store: await redisStore({
-          host: config.get<string>('REDIS_HOST', 'localhost'),
-          port: config.get<number>('REDIS_PORT', 6379),
-          password: config.get<string>('REDIS_PASSWORD', '') || undefined,
-          ttl: config.get<number>('REDIS_TTL', 300) * 1000,
-        }),
-      }),
+      useFactory: async (config: ConfigService) => {
+        const redisHost = config.get<string>('REDIS_HOST', 'localhost');
+        const redisPort = config.get<number>('REDIS_PORT', 6379);
+        const ttl = config.get<number>('REDIS_TTL', 300) * 1000;
+
+        if (await canReachRedis(redisHost, redisPort)) {
+          try {
+            const { redisStore } = await import('cache-manager-ioredis-yet');
+            const store = await redisStore({
+              host: redisHost,
+              port: redisPort,
+              password: config.get<string>('REDIS_PASSWORD', '') || undefined,
+              ttl,
+            });
+            console.log(`Cache Redis connecté (${redisHost}:${redisPort})`);
+            return { store };
+          } catch {
+            // fall through
+          }
+        }
+
+        console.warn(`⚠ Redis indisponible (${redisHost}:${redisPort}) — cache en mémoire`);
+        return { ttl };
+      },
     }),
   ],
 })

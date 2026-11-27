@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { Country } from './country.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('public_holidays')
 @Unique(['countryId', 'date'])
@@ -7,7 +8,7 @@ export class PublicHoliday {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   countryId!: string;
 
   @Column({ type: 'date' })

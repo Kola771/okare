@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { City } from './city.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('zone_categories')
 @Unique(['cityId', 'code'])
@@ -7,7 +8,7 @@ export class ZoneCategory {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   cityId!: string;
 
   @Column({ type: 'varchar', length: 50 })

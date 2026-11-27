@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { DB_JSON } from '../common/db-types';
 
 @Entity('dish_categories')
 export class DishCategory {
@@ -11,7 +12,7 @@ export class DishCategory {
   @Column({ type: 'varchar', length: 255, unique: true })
   slug!: string;
 
-  @Column({ type: 'jsonb', default: [] })
+  @Column({ type: DB_JSON, nullable: true })
   aliases!: string[];
 
   @Column({ type: 'varchar', length: 255, nullable: true })

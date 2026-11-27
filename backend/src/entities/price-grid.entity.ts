@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { ZoneCategory } from './zone-category.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 export enum PosType {
   PARTICULIER = 'PARTICULIER',
@@ -13,7 +14,7 @@ export class PriceGrid {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   categoryId!: string;
 
   @Column({ type: 'enum', enum: PosType })
@@ -22,7 +23,7 @@ export class PriceGrid {
   @Column({ type: 'int' })
   dayPriceXof!: number;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ ...DB_UUID_COL, nullable: true })
   updatedById!: string | null;
 
   @UpdateDateColumn()

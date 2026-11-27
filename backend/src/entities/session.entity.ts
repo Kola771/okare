@@ -1,12 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
+import { DB_UUID_COL } from '../common/db-types';
 
 @Entity('sessions')
 export class Session {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'uuid' })
+  @Column({ ...DB_UUID_COL })
   userId!: string;
 
   @Column({ type: 'varchar', length: 255, unique: true })
