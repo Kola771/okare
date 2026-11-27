@@ -93,7 +93,7 @@ npx tsx src/seed.ts
 
 ## Migrations
 
-34 fichiers de migration TypeORM couvrant les 42 tables du schéma Prisma, dans `src/migrations/`.
+34 fichiers de migration TypeORM couvrant les 42 tables, dans `src/migrations/`.
 
 Chaque migration supporte PostgreSQL et MySQL via `queryRunner.connection.options.type`.
 
@@ -172,6 +172,6 @@ backend/
 │   └── migrations/
 │       └── 1732320000001..034-*.ts          # 34 fichiers de migration
 ├── prisma/
-│   └── schema.prisma            # Schéma de référence (42 tables)
+│   └── schema.prisma            # Schéma de référence (lecture seule)
 └── package.json
 ```
